@@ -4,30 +4,6 @@ import { View, Text, Navigator, Button, StyleSheet } from 'react-native';
 import { CommonActions, useNavigation } from '@react-navigation/native'
 import Game from "./Game";
 
-const styles = StyleSheet.create({
-    view: {
-        flex: 1,
-        backgroundColor: '#1abc9c',
-    },
-    header: {
-        flex: 1,
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'center',
-    },
-    title: {
-        fontSize: 80,
-        color: '#ecf0f1',
-        marginTop: 16,
-    },
-    content: {
-        flex: 2,
-    },
-    button: {
-        marginBottom: 10,
-    },
-});
-
 function goGame(){
     return ( <Game/> );
 }
@@ -56,3 +32,27 @@ export default class Home extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    view: {
+        flex: 1,
+        backgroundColor: '#1abc9c',
+    },
+    header: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
+    title: {
+        fontSize: 80,
+        color: '#ecf0f1',
+        marginTop: 16,
+    },
+    content: {
+        flex: 2,
+    },
+    button: {
+        marginBottom: 10,
+    },
+});

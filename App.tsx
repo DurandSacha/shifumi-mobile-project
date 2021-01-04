@@ -26,12 +26,14 @@ function HomeScreen({ navigation }) {
   );
 }
 
+/* Function for routing */ 
 function ConfigurationScreen() {
   return (
     <Configuration/>
   );
 }
 
+/* Function for routing */ 
 function GameScreen() {
   return (
     <Game/>
@@ -40,6 +42,7 @@ function GameScreen() {
 
 const Stack = createStackNavigator();
 
+/* a router */
 function App() {
   return (
     <NavigationContainer>
@@ -51,6 +54,8 @@ function App() {
     </NavigationContainer>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   view: {
