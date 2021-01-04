@@ -9,6 +9,13 @@ const br = `\n`;
 
 export default class Game extends Component {
 
+    // TODO : Displaying a set number 
+    // TODO : Record Data : which elements wins over the other?
+    // TODO : Compare user choice and IA choice
+    // TODO : Count the points
+    // TODO : Send a victory or defeat screen
+
+    
     constructor(props) {
         super(props);
 
