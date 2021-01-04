@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Navigator, Button, StyleSheet } from 'react-native';
+import { CommonActions, useNavigation } from '@react-navigation/native'
 import Game from "./Game";
 
 const styles = StyleSheet.create({
@@ -31,20 +32,24 @@ function goGame(){
     return ( <Game/> );
 }
 
+//const navigation = useNavigation()
+
 export default class Home extends Component {
+    // onPress={() => navigation.navigate('Configuration')}
+    // onPress={() => navigation.push('Configuration')}
 
     render() {
         return (
             <View style={styles.view}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>ShiFuMi</Text>
+                    <Text style={styles.title}>Shi Fu Mi</Text>
                 </View>
                 <View style={styles.content}>
                     <View style={{ marginBottom: 30 }}>
                         <Button title="Jeu solo" onPress={goGame} color="#138a72" />
                     </View>
                     <View style={{ marginBottom: 30 }}>
-                        <Button title="Configuration" onPress={goGame} color="#138a72" />
+                        <Button title="Configuration" onPress={() => navigation.push('Configuration')} color="#138a72" />
                     </View>
                 </View>
             </View>

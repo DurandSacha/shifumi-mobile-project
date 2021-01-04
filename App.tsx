@@ -1,21 +1,40 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from "./components/Home";
 import Game from "./components/Game";
+import Configuration from "./components/Configuration";
 
-function HomeScreen() {
+
+// This file init the projet, and displaying the home menu with navigation
+function HomeScreen({ navigation }) {
   return (
-    <Home/>
+    <View style={styles.view}>
+      <View style={styles.header}>
+          <Text style={styles.title}>Shi Fu Mi</Text>
+      </View>
+      <View style={styles.content}>
+          <View style={{ marginBottom: 30 }}>
+              <Button title="Jeu solo" onPress={() => navigation.push('Game')} color="#138a72" />
+          </View>
+          <View style={{ marginBottom: 30 }}>
+              <Button title="Configuration" onPress={() => navigation.push('Configuration')} color="#138a72" />
+          </View>
+      </View>
+  </View>
   );
 }
 
-function DetailsScreen() {
+function ConfigurationScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Details Screen</Text>
-    </View>
+    <Configuration/>
+  );
+}
+
+function GameScreen() {
+  return (
+    <Game/>
   );
 }
 
@@ -26,10 +45,36 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="Configuration" component={ConfigurationScreen} />
+        <Stack.Screen name="Game" component={GameScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  view: {
+      flex: 1,
+      backgroundColor: '#1abc9c',
+  },
+  header: {
+      flex: 1,
+      alignItems: 'center',
+      flexDirection: 'column',
+      justifyContent: 'center',
+  },
+  title: {
+      fontSize: 80,
+      color: '#ecf0f1',
+      marginTop: 16,
+  },
+  content: {
+      flex: 2,
+  },
+  button: {
+      marginBottom: 10,
+  },
+});
+
 
 export default App;
