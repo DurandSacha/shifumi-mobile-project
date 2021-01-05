@@ -22,6 +22,13 @@ export default class Game extends Component {
         };
     }
 
+    MakeGame() {
+        //console.log('Make a Game');
+        var userPoints = 0;
+        var machinePoints = 0;
+        //this.setState({ set: this.state.set + 1 })
+        return 0;
+    }
 
     MakeMachineChoice(){
 
@@ -32,33 +39,59 @@ export default class Game extends Component {
 
         this.state = { MachineChoice: choice[random] };
         return choice[random];
-    }
-
-    decideWhoWin(userChoice, MakeMachineChoice){
         
-        return 0;
     }
 
+    // And decide Who Win one set
     MakeSet(userChoice){
-        //this.setState({ debug: userChoice });
-        this.state = { debug: userChoice };
-        //this.setState.set = this.state.set + 1;
-        //return userChoice ;
-        console.log('makeSet effectué');
-        console.log('choix ' + this.state.MachineChoice);
+        //console.log('makeSet Function executed');
+        //var MachineChoice = this.state.MachineChoice;
+        
+        const MachineChoice = this.MakeMachineChoice() ;
+
+        console.log('choix machine :' + MachineChoice);
+        console.log('choix user :' + userChoice );
+
+        if (MachineChoice == userChoice){
+            var result = "null"
+            console.log('match nul');
+        }
+        else if (MachineChoice == "Pierre" && userChoice == "Feuille"){
+            var result = "Perdu"
+            console.log('Perdu');
+        }
+        else if (MachineChoice == "Pierre" && userChoice == "Ciseaux"){
+            var result = "Perdu"
+            console.log('Perdu');
+        }
+        else if (MachineChoice == "Feuille" && userChoice == "Ciseaux"){
+            var result = "Gagné"
+            console.log('Gagné');
+        }
+        else if (MachineChoice == "Feuille" && userChoice == "Pierre"){
+            var result = "Gagné"
+            console.log('Gagné');
+        }
+        else if (MachineChoice == "Ciseaux" && userChoice == "Pierre"){
+            var result = "Gagné"
+            console.log('Gagné');
+        }
+        else if (MachineChoice == "Ciseaux" && userChoice == "Feuille"){
+            var result = "Perdu"
+            console.log('Perdu');
+        }
+
         return 0;
     }
-    
-    //MakeMachineChoice;
 
     render(){
+
+        var set = this.state.set;
+        this.MakeGame();
         return (
             <View style={styles.view}>
                 <View style={styles.header}>
-                    <Text> Ton adversaire attend ton choix {br}{br}{br}{br}{br}</Text>
-                    <Text> Votre choix : {this.state.MachineChoice}</Text>
-                    <Text> Manche {this.state.set}</Text>
-                    <Text> Choix machine : {this.MakeMachineChoice()}</Text>
+                    <Text> Manche {set}</Text>
                     <View style={{flex:0, marginTop:10, padding: 15}} >
                         {/* onClick={() => this.MakeSet("Pierre")} */}
                         <Button className="square" onPress={() => this.MakeSet("Pierre")} title="Pierre"/> 
