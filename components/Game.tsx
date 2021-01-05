@@ -17,8 +17,8 @@ export default class Game extends Component {
         this.state = {
             set : 1,
             maxSet : 3,
-            currentChoice : false,
-            debug : '',
+            //currentUserChoice : false,
+            MachineChoice: ''
         };
     }
 
@@ -28,22 +28,24 @@ export default class Game extends Component {
         const choice = ['Feuille', 'Ciseaux', 'Pierre']
         /* Make a random choice */
         const random = Math.floor(Math.random() * choice.length);
-        console.log(random, choice[random]);
-    
+        //console.log(random, choice[random]);
+
+        this.state = { MachineChoice: choice[random] };
         return choice[random];
     }
 
     decideWhoWin(userChoice, MakeMachineChoice){
-
+        
         return 0;
     }
 
     MakeSet(userChoice){
         //this.setState({ debug: userChoice });
         this.state = { debug: userChoice };
-
         //this.setState.set = this.state.set + 1;
         //return userChoice ;
+        console.log('makeSet effectué');
+        console.log('choix ' + this.state.MachineChoice);
         return 0;
     }
     
@@ -54,17 +56,18 @@ export default class Game extends Component {
             <View style={styles.view}>
                 <View style={styles.header}>
                     <Text> Ton adversaire attend ton choix {br}{br}{br}{br}{br}</Text>
-                    <Text> debug : {this.state.debug}</Text>
+                    <Text> Votre choix : {this.state.MachineChoice}</Text>
                     <Text> Manche {this.state.set}</Text>
                     <Text> Choix machine : {this.MakeMachineChoice()}</Text>
                     <View style={{flex:0, marginTop:10, padding: 15}} >
-                        <Button className="square" onClick={this.MakeSet("Pierre")} title="Pierre"/> 
+                        {/* onClick={() => this.MakeSet("Pierre")} */}
+                        <Button className="square" onPress={() => this.MakeSet("Pierre")} title="Pierre"/> 
                     </View>
                     <View style={{flex:0, marginTop:10, padding: 15}} >
-                        <Button className="square" onClick={this.MakeSet("Feuille")} title="Feuille"/>
+                        <Button className="square" onPress={() => this.MakeSet("Feuille")} title="Feuille"/>
                     </View>
                     <View style={{flex:0, marginTop:10, padding: 15}} >
-                        <Button className="square" onClick={this.MakeSet("Ciseaux")} title="Ciseaux"/>
+                        <Button className="square" onPress={() => this.MakeSet("Ciseaux")} title="Ciseaux"/>
                     </View>
                 </View>
             </View>
