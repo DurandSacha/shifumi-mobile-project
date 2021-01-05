@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Navigator, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { CommonActions, useNavigation } from '@react-navigation/native'
 import Game from "./Game";
 
 function goGame(){
@@ -25,7 +24,7 @@ export default class Home extends Component {
                     </View>
 
                     <TouchableOpacity style={styles.container}>
-                        <Text style={styles.textButton}>Other </Text>
+                        <Text style={styles.textButton}> Other </Text>
                     </TouchableOpacity>
                 </View>
             </View>
