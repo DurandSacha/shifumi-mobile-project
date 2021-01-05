@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { View, Text,  Button, Alert, StyleSheet } from 'react-native';
+import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity } from 'react-native';
 
 const br = `\n`;
 
@@ -92,16 +92,43 @@ export default class Game extends Component {
             <View style={styles.view}>
                 <View style={styles.header}>
                     <Text> Manche {set}</Text>
-                    <View style={{flex:0, marginTop:10, padding: 15}} >
-                        {/* onClick={() => this.MakeSet("Pierre")} */}
-                        <Button className="square" onPress={() => this.MakeSet("Pierre")} title="Pierre"/> 
+
+                    <View style={styles.container1}>
+                        <View style={styles.rect}>
+                        <TouchableOpacity onPress={() => this.MakeSet("Ciseaux")}>
+                            <Image
+                            source={require('../assets/images/ciseau.png')}
+                            resizeMode="contain"
+                            style={styles.image1}
+                            />
+                        </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={{flex:0, marginTop:10, padding: 15}} >
-                        <Button className="square" onPress={() => this.MakeSet("Feuille")} title="Feuille"/>
+
+                    <View style={styles.container2}>
+                        <View style={styles.rect}>
+                            <TouchableOpacity onPress={() => this.MakeSet("Feuille")}>
+                                <Image
+                                source={require('../assets/images/feuille.png')}
+                                resizeMode="contain"
+                                style={styles.image1}
+                                />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={{flex:0, marginTop:10, padding: 15}} >
-                        <Button className="square" onPress={() => this.MakeSet("Ciseaux")} title="Ciseaux"/>
+
+                    <View style={styles.container3}>
+                        <View style={styles.rect}>
+                            <TouchableOpacity onPress={() => this.MakeSet("Pierre")}>
+                                <Image
+                                source={require('../assets/images/pierre.png')}
+                                resizeMode="contain"
+                                style={styles.image1}
+                                />
+                            </TouchableOpacity>
+                        </View>
                     </View>
+
                 </View>
             </View>
         );
@@ -111,9 +138,9 @@ export default class Game extends Component {
 
 const styles = StyleSheet.create({
     square : {
-        marginBottom:10,
-        marginTop:10,
-        padding: 15,
+        marginBottom:2,
+        marginTop:2,
+        padding: 2,
     },
     view: {
         flex: 1,
@@ -139,6 +166,48 @@ const styles = StyleSheet.create({
     scoreColorOne: {
         backgroundColor: '#9b59b6',
     },
+    container1: {
+        width: 112.5,
+        height: 150,
+        backgroundColor: 'rgba(191,44,44,1)',
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop:10,
+    },
+    container2: {
+        width: 112.5,
+        height: 150,
+        backgroundColor: 'rgba(242,203,5,1)',
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop:10,
+    },
+    container3: {
+        width: 112.5,
+        height: 150,
+        backgroundColor: 'rgba(74,140,91,1)',
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop:10,
+    },
+    rect: {
+        width: 112.5,
+        height: 155,
+        borderRadius: 10,
+        borderWidth: 5,
+        borderColor: 'rgba(255,255,255,1)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop:1,
+      },
+    image1: {
+        width: 70,
+        height: 70,
+        //backgroundColor: 'rgba(255,10,44,1)'
+      },
 });
 
 

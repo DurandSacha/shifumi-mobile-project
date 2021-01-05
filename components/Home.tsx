@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Navigator, Button, StyleSheet } from 'react-native';
+import { View, Text, Navigator, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { CommonActions, useNavigation } from '@react-navigation/native'
 import Game from "./Game";
 
@@ -8,11 +8,7 @@ function goGame(){
     return ( <Game/> );
 }
 
-//const navigation = useNavigation()
-
 export default class Home extends Component {
-    // onPress={() => navigation.navigate('Configuration')}
-    // onPress={() => navigation.push('Configuration')}
 
     render() {
         return (
@@ -27,6 +23,10 @@ export default class Home extends Component {
                     <View style={{ marginBottom: 30 }}>
                         <Button title="Configuration" onPress={() => navigation.push('Configuration')} color="#138a72" />
                     </View>
+
+                    <TouchableOpacity style={styles.container}>
+                        <Text style={styles.textButton}>Other </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         );
@@ -54,5 +54,18 @@ const styles = StyleSheet.create({
     },
     button: {
         marginBottom: 10,
+    },
+    container: {
+        backgroundColor: '#2175BF',
+        borderRadius: 15,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+        textButton: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+        fontSize: 18,
     },
 });
