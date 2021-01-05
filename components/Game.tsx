@@ -1,10 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { View, Text,  Button, Alert, StyleSheet } from 'react-native';
 
-function MakeMachineChoice(){
-    return 0;
-}
-
 const br = `\n`;
 
 export default class Game extends Component {
@@ -15,32 +11,60 @@ export default class Game extends Component {
     // TODO : Count the points
     // TODO : Send a victory or defeat screen
 
-    
     constructor(props) {
         super(props);
 
         this.state = {
-            set: 0,
-            maxSet: 3,
-            currentChoice : false
+            set : 1,
+            maxSet : 3,
+            currentChoice : false,
+            debug : '',
         };
     }
 
+
+    MakeMachineChoice(){
+
+        const choice = ['Feuille', 'Ciseaux', 'Pierre']
+        /* Make a random choice */
+        const random = Math.floor(Math.random() * choice.length);
+        console.log(random, choice[random]);
     
+        return choice[random];
+    }
+
+    decideWhoWin(userChoice, MakeMachineChoice){
+
+        return 0;
+    }
+
+    MakeSet(userChoice){
+        //this.setState({ debug: userChoice });
+        this.state = { debug: userChoice };
+
+        //this.setState.set = this.state.set + 1;
+        //return userChoice ;
+        return 0;
+    }
+    
+    //MakeMachineChoice;
+
     render(){
         return (
             <View style={styles.view}>
                 <View style={styles.header}>
                     <Text> Ton adversaire attend ton choix {br}{br}{br}{br}{br}</Text>
-
+                    <Text> debug : {this.state.debug}</Text>
+                    <Text> Manche {this.state.set}</Text>
+                    <Text> Choix machine : {this.MakeMachineChoice()}</Text>
                     <View style={{flex:0, marginTop:10, padding: 15}} >
-                        <Button className="square" onClick={function() { alert('clic'); } } title="Pierre"/> 
+                        <Button className="square" onClick={this.MakeSet("Pierre")} title="Pierre"/> 
                     </View>
                     <View style={{flex:0, marginTop:10, padding: 15}} >
-                        <Button className="square" onClick={function() { alert('clic'); } } title="Feuille "/>
+                        <Button className="square" onClick={this.MakeSet("Feuille")} title="Feuille"/>
                     </View>
                     <View style={{flex:0, marginTop:10, padding: 15}} >
-                        <Button className="square" onClick={function() { alert('clic'); } } title="Ciseaux"/>
+                        <Button className="square" onClick={this.MakeSet("Ciseaux")} title="Ciseaux"/>
                     </View>
                 </View>
             </View>
