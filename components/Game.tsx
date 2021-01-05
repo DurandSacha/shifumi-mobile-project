@@ -20,14 +20,6 @@ export default class Game extends Component {
         };
     }
 
-    MakeGame() {
-        //console.log('Make a Game');
-        var userPoints = 0;
-        var machinePoints = 0;
-        //this.setState({ set: this.state.set + 1 })
-        return 0;
-    }
-
     MakeMachineChoice(){
 
         const choice = ['Feuille', 'Ciseaux', 'Pierre']
@@ -38,6 +30,44 @@ export default class Game extends Component {
         this.state = { MachineChoice: choice[random] };
         return choice[random];
         
+    }
+
+    updateGame(result){
+
+        //TODO: Update set color circle (05/01 ; 06/01)
+
+
+        if (this.state.currentSet == 1){
+            if (result == "Gagné"){
+                this.setState({colorSet1: 'green'});
+                console.log('colored');
+            }
+            else{
+                this.setState({colorSet1: 'red'});
+                console.log('colored');
+            }
+        }
+
+        if (this.state.currentSet == 2){
+            if (result == "Gagné"){
+                this.setState({colorSet2: 'green'});
+            }
+            else{
+                this.setState({colorSet2: 'red'});
+            }
+        }
+        if (this.state.currentSet == 3){
+            if (result == "Gagné"){
+                this.setState({colorSet3: 'green'});
+            }
+            else{
+                this.setState({colorSet3: 'red'});
+            }
+        }
+
+        //TODO: Here Finish This game if currentSet > 3 (07/01 or 08/01)  
+
+        //TODO: Finish game if set = 3 and decide who is winner (who have 2 set ) (06/01)
     }
 
     // And decide Who Win one set
@@ -69,21 +99,20 @@ export default class Game extends Component {
         else if (MachineChoice == "Ciseaux" && userChoice == "Feuille"){
             var result = "Perdu";
         }
-        //TODO: increment State 
 
         this.setState(function(state, props) {
             return {
                 currentSet: this.state.currentSet + 1
+                
             };
           });
+        this.updateGame(result);
 
-        //TODO: Displaying card played 
+        //TODO: Displaying card played  (06/01)
+        // One : Disable image
+        // Two : Get different choice 
+        // Three : Displaying good image
 
-        //TODO: Update set color circle 
-        
-        //TODO: Finish game if set = 3 and decide who is winner
-
-        console.log(this.state.currentSet);
         console.log(result);
         return ;  
     }
