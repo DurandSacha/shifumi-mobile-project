@@ -4,12 +4,12 @@ import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity } from
 const br = `\n`;
 
 export default class Game extends Component {
-    
+
     constructor(props) {
         super(props);
 
         this.state = {
-            set : 0,
+            currentSet : 0,
             maxSet : 3,
             //currentUserChoice : false,
             MachineChoice: '',
@@ -70,7 +70,12 @@ export default class Game extends Component {
             var result = "Perdu";
         }
         //TODO: increment State 
-        this.setState({ set: this.state.set + 1 })
+
+        this.setState(function(state, props) {
+            return {
+                currentSet: this.state.currentSet + 1
+            };
+          });
 
         //TODO: Displaying card played 
 
@@ -78,7 +83,7 @@ export default class Game extends Component {
         
         //TODO: Finish game if set = 3 and decide who is winner
 
-
+        console.log(this.state.currentSet);
         console.log(result);
         return ;  
     }
@@ -119,7 +124,7 @@ export default class Game extends Component {
 
 
                     {/*************  CARD ********************/}
-                    <Text style={styles.setText}> Manche 1 </Text>
+                    <Text style={styles.setText}> Manche {this.state.currentSet} </Text>
                     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
                         <View style={styles.container1}>
                             <View style={styles.rect}>
