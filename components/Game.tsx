@@ -57,8 +57,8 @@ export default class Game extends Component {
             console.log('match nul');
         }
         else if (MachineChoice == "Pierre" && userChoice == "Feuille"){
-            var result = "Perdu"
-            console.log('Perdu');
+            var result = "Gagné"
+            console.log('Gagné');
         }
         else if (MachineChoice == "Pierre" && userChoice == "Ciseaux"){
             var result = "Perdu"
@@ -69,8 +69,8 @@ export default class Game extends Component {
             console.log('Gagné');
         }
         else if (MachineChoice == "Feuille" && userChoice == "Pierre"){
-            var result = "Gagné"
-            console.log('Gagné');
+            var result = "Perdu"
+            console.log('Perdu');
         }
         else if (MachineChoice == "Ciseaux" && userChoice == "Pierre"){
             var result = "Gagné"
