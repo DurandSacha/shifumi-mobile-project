@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity } from 'react-native';
+import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground } from 'react-native';
 
 const br = `\n`;
 
@@ -20,6 +20,8 @@ export default class Game extends Component {
         };
 
         this.currentSet = 0;
+        this.visibilityEnemyCard = false;
+        this.visibilityUserCard = false ;
 
         this.updateGame = this.updateGame.bind(this);
     }
@@ -38,7 +40,6 @@ export default class Game extends Component {
 
     updateGame = (result) => {
 
-        //TODO: Update set color circle (05/01 ; 06/01)
         console.log('Update : ' + result );
         //console.log('currentSet : ' + currentSet );
         //console.log('updateGame');
@@ -79,9 +80,8 @@ export default class Game extends Component {
         }
         console.log(result);
 
-        //TODO: Here Finish This game if currentSet > 3 (07/01 or 08/01)  
-
         //TODO: Finish game if set = 3 and decide who is winner (who have 2 set ) (06/01)
+        //TODO: Redirection to resume menu  
     }
 
     // And decide Who Win one set
@@ -130,77 +130,81 @@ export default class Game extends Component {
 
         return (
             <View style={styles.view}>
-                <View style={styles.header}>
+                <ImageBackground source={require('../assets/images/Background.png')} style={styles.imageBackground}>
+                    <View style={styles.header}>
 
-                    <Image
-                        source={require('../assets/images/dosCarte4.png')}
-                        resizeMode="contain"
-                        style={styles.enemyCard}
-                        />
-                    
-                    {/*************CARD PLAYED ************ */}
-                    <Image
-                        source={require('../assets/images/ciseau.png')} /* Take a correct picture */
-                        resizeMode="contain"
-                        style={styles.CardPlayed}
-                        />
+                        <Image
+                            source={require('../assets/images/dosCarte4.png')}
+                            resizeMode="contain"
+                            style={styles.enemyCard}
+                            />
+                        
+                        {/*************CARD PLAYED ************ */}
+                        <Image
+                            source={require('../assets/images/ciseau.png')} /* Take a correct picture */
+                            resizeMode="contain"
+                            style={styles.CardPlayed}
+                            />
+                            {/* this.visibilityEnemyCard */}
 
-                    <Text style={styles.BattleText}>Choisissez une carte</Text>
+                        <Text style={styles.BattleText}>Choisissez une carte</Text>
 
-                    {/***********SET SCORE  *****************/}
-                    <View style={styles.AroundScoreContainer}>
-                        <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet1 }]} ></View>
-                        <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet2 }]} ></View>
-                        <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet3 }]} ></View>
-                    </View>
-                    {/*************CARD PLAYED ************ */}
-                    <Image
-                        source={require('../assets/images/ciseau.png')} /* Take a correct picture */
-                        resizeMode="contain"
-                        style={styles.CardPlayed}
-                        />
-
-
-                    {/*************  CARD ********************/}
-                    <Text style={styles.setText}> Manche {this.state.currentSet} </Text>
-                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
-                        <View style={styles.container1}>
-                            <View style={styles.rect}>
-                            <TouchableOpacity onPress={() => this.MakeSet("Ciseaux")}>
-                                <Image
-                                source={require('../assets/images/ciseau.png')}
-                                resizeMode="contain"
-                                style={styles.image1}
-                                />
-                            </TouchableOpacity>
-                            </View>
+                        {/***********SET SCORE  *****************/}
+                        <View style={styles.AroundScoreContainer}>
+                            <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet1 }]} ></View>
+                            <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet2 }]} ></View>
+                            <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet3 }]} ></View>
                         </View>
+                        {/*************CARD PLAYED ************ */}
+                        <Image
+                            source={require('../assets/images/ciseau.png')} /* Take a correct picture */
+                            resizeMode="contain"
+                            style={styles.CardPlayed}
+                            />
+                            {/* this.visibilityUserCard */}
 
-                        <View style={styles.container2}>
-                            <View style={styles.rect}>
-                                <TouchableOpacity onPress={() => this.MakeSet("Feuille")}>
+
+                        {/*************  CARD ********************/}
+                        <Text style={styles.setText}> Manche {this.state.currentSet} </Text>
+                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
+                            <View style={styles.container1}>
+                                <View style={styles.rect}>
+                                <TouchableOpacity onPress={() => this.MakeSet("Ciseaux")}>
                                     <Image
-                                    source={require('../assets/images/feuille.png')}
+                                    source={require('../assets/images/ciseau.png')}
                                     resizeMode="contain"
                                     style={styles.image1}
                                     />
                                 </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
 
-                        <View style={styles.container3}>
-                            <View style={styles.rect}>
-                                <TouchableOpacity onPress={() => this.MakeSet("Pierre")}>
-                                    <Image
-                                    source={require('../assets/images/pierre.png')}
-                                    resizeMode="contain"
-                                    style={styles.image1}
-                                    />
-                                </TouchableOpacity>
+                            <View style={styles.container2}>
+                                <View style={styles.rect}>
+                                    <TouchableOpacity onPress={() => this.MakeSet("Feuille")}>
+                                        <Image
+                                        source={require('../assets/images/feuille.png')}
+                                        resizeMode="contain"
+                                        style={styles.image1}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+
+                            <View style={styles.container3}>
+                                <View style={styles.rect}>
+                                    <TouchableOpacity onPress={() => this.MakeSet("Pierre")}>
+                                        <Image
+                                        source={require('../assets/images/pierre.png')}
+                                        resizeMode="contain"
+                                        style={styles.image1}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     </View>
-                </View>
+                </ImageBackground>
             </View>
         );
     }
@@ -213,11 +217,20 @@ const styles = StyleSheet.create({
         marginTop:2,
         padding: 2,
     },
-    view: {  //TODO: Place Background Image // 1080*1920
+    imageBackground: {
+        flex: 4,
+        //borderWidth: -100,
+        width: '100%',
+        height: '100%',
+
+    },
+    view: {  
         flex: 1,
         backgroundColor: '#1abc9c',
-        paddingLeft: 10,
-        paddingRight: 10,
+        //backgroundImage: '',
+        
+        //paddingLeft: 10,
+        //paddingRight: 10,
     },
     header: {
         flex: 1,
