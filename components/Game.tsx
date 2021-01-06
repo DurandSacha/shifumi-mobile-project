@@ -22,6 +22,7 @@ export default class Game extends Component {
             cardToDisplayEnemy : 'feuille',
         };
 
+        this.opacityIcon = 0;
         this.currentSet = 0;
         this.updateGame = this.updateGame.bind(this);
     }
@@ -85,11 +86,12 @@ export default class Game extends Component {
         
         const MachineChoice = this.makeMachineChoice() ;
         
+        this.opacityIcon = 1;
         this.setState({
             cardToDisplayUser: userChoice,
             cardToDisplayEnemy: MachineChoice,
-            visibilityUserCard: 0,
-            visibilityEnemyCard: 0,
+            visibilityUserCard: 1,
+            visibilityEnemyCard: 1,
         });
 
         if (MachineChoice == userChoice){  var result = "null";  this.currentSet = this.currentSet -1;}
@@ -123,8 +125,7 @@ export default class Game extends Component {
                             />
                         
                         {/*************ENEMY CARD PLAYED ************ */} 
-                        {/* {this.state.visibilityEnemyCard == 1 ?  1 : 0} */}
-                        <View style={[styles.containerEnemyCardPlayed, { opacity: this.state.visibilityEnemyCard   }]}>
+                        <View style={[styles.containerEnemyCardPlayed, { opacity: this.opacityIcon   }]}>
                             <Image
                                 source={Img[this.state.cardToDisplayEnemy]}
                                 resizeMode="contain"
@@ -132,7 +133,7 @@ export default class Game extends Component {
                                 />
                         </View>
 
-                        <Text style={styles.BattleText}>Choisissez une carte ( visibilité : {this.state.visibilityEnemyCard} )</Text>
+                        <Text style={styles.BattleText}>Choisissez une carte ( visibilité : {this.opacityIcon} )</Text>
 
                         <View style={styles.AroundScoreContainer}>
                             <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet1 }]} ></View>
