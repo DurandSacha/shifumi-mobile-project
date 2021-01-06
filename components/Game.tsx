@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground } from 'react-native';
+import Img from '../assets/images/_image';
 
 const br = `\n`;
 
@@ -17,40 +18,29 @@ export default class Game extends Component {
             colorSet2: 'grey',
             colorSet3: 'grey',
 
+            visibilityEnemyCard : 0,
+            visibilityUserCard : 0,
+            cardToDisplayUser : 'feuille',
+            cardToDisplayEnemy : 'feuille',
         };
 
         this.currentSet = 0;
-        
-        this.visibilityEnemyCard = 0;
-        this.visibilityUserCard = 0;
-
-        this.cardToDisplayUser = '';
-        this.cardToDisplayEnemy = '';
 
         this.updateGame = this.updateGame.bind(this);
     }
 
-    MakeMachineChoice = () => {
-
+    makeMachineChoice = () => {
         const choice = ['Feuille', 'Ciseaux', 'Pierre']
-        /* Make a random choice */
         const random = Math.floor(Math.random() * choice.length);
-        //console.log(random, choice[random]);
-
         this.state = { MachineChoice: choice[random] };
         return choice[random];
-        
     }
 
     updateGame = (result) => {
 
         console.log('Update : ' + result );
-        //console.log('currentSet : ' + currentSet );
-        //console.log('updateGame');
-        console.log(this.state);
         var currentSet = this.currentSet;
-        //var currentSet = this.state.currentSet;
-        //var currentSet = this.state.currentSet;
+        //if (currentSet > 3){ currentSet = currentSet - 1}
 
         if (currentSet == 1){
             if (result == "Gagné"){
@@ -74,31 +64,39 @@ export default class Game extends Component {
         if (currentSet == 3){
             if (result == "Gagné"){
                 this.setState({colorSet3: 'green'});
+                currentSet == currentSet + 10
             }
             else if(result == "null"){}
             else{
                 this.setState({colorSet3: 'red'});
+                currentSet == currentSet + 10
             }
+            return 0;
+        }
+        if (currentSet > 3){
 
             console.log('Game Finished');
+            //TODO: Finish game if set = 3 and decide who is winner (who have 2 set ) (06/01)
+            //TODO: Redirection to resume menu
+            // this.outGame();
+            //TODO: Refactoring
+            
         }
-        console.log(result);
-
-        //TODO: Finish game if set = 3 and decide who is winner (who have 2 set ) (06/01)
-        //TODO: Redirection to resume menu  
+        
+          
     }
 
     // And decide Who Win one set
     MakeSet = (userChoice) => {
         
-        const MachineChoice = this.MakeMachineChoice() ;
-
-        this.cardToDisplayUser = userChoice;
-        this.cardToDisplayEnemy = MachineChoice;
-
-        this.visibilityUserCard = 1;
-        this.visibilityEnemyCard = 1;
-
+        const MachineChoice = this.makeMachineChoice() ;
+        
+        this.setState({
+            cardToDisplayUser: userChoice,
+            cardToDisplayEnemy: MachineChoice,
+            visibilityUserCard: 1,
+            visibilityEnemyCard: 1
+        });
 
         if (MachineChoice == userChoice){
             var result = "null";
@@ -123,30 +121,35 @@ export default class Game extends Component {
             var result = "Perdu";
         }
 
-        
-        this.currentSet = this.currentSet + 1;
-        this.updateGame(result);
+        if (this.currentSet < 3){
+            this.currentSet = this.currentSet + 1;
+            this.updateGame(result);
+        }
 
         return ;  
     }
 
     render(){
 
+        console.log('EnemyDisplayCard: ' + this.state.cardToDisplayEnemy + ' & opacity : ' + this.state.visibilityEnemyCard);
+        console.log('UserDisplayCard: ' + this.state.cardToDisplayUser + ' & opacity : ' + this.state.visibilityUserCard);
+
+        // Img[this.state.cardToDisplayUser]
         return (
             <View style={styles.view}>
-                <ImageBackground source={require('../assets/images/Background.png')} style={styles.imageBackground}>
+                <ImageBackground source={Img.background} style={styles.imageBackground}>
                     <View style={styles.header}>
 
                         <Image
-                            source={require('../assets/images/dosCarte4.png')}
+                            source={Img.dosCarte}
                             resizeMode="contain"
                             style={styles.enemyCard}
                             />
                         
                         {/*************ENEMY CARD PLAYED ************ */}
-                        <View style={[styles.containerEnemyCardPlayed,{ opacity: this.visibilityEnemyCard }]}>
+                        <View style={[styles.containerEnemyCardPlayed, { opacity: this.state.visibilityEnemyCard }]}>
                             <Image
-                                source={{ uri:'../assets/images/'+ this.cardToDisplayEnemy +'.png'}}
+                                source={Img[this.state.cardToDisplayEnemy]}
                                 resizeMode="contain"
                                 style={styles.CardPlayed}
                                 />
@@ -162,9 +165,9 @@ export default class Game extends Component {
                         </View>
 
                         {/************* USER CARD PLAYED ************ */}
-                        <View style={[styles.containerUserCardPlayed,{ opacity: this.visibilityUserCard }]}>
+                        <View style={[styles.containerUserCardPlayed,{ opacity: this.state.visibilityUserCard }]}>
                             <Image
-                                source={{uri: '../assets/images/'+ this.cardToDisplayUser +'.png'}}
+                                source={Img[this.state.cardToDisplayUser]}
                                 resizeMode="contain"
                                 style={styles.CardPlayed}
                                 />
@@ -177,7 +180,7 @@ export default class Game extends Component {
                                 <View style={styles.rect}>
                                 <TouchableOpacity onPress={() => this.MakeSet("Ciseaux")}>
                                     <Image
-                                    source={require('../assets/images/ciseau.png')}
+                                    source={Img.ciseau}
                                     resizeMode="contain"
                                     style={styles.image1}
                                     />
@@ -189,7 +192,7 @@ export default class Game extends Component {
                                 <View style={styles.rect}>
                                     <TouchableOpacity onPress={() => this.MakeSet("Feuille")}>
                                         <Image
-                                        source={require('../assets/images/feuille.png')}
+                                        source={Img.feuille}
                                         resizeMode="contain"
                                         style={styles.image1}
                                         />
@@ -201,7 +204,7 @@ export default class Game extends Component {
                                 <View style={styles.rect}>
                                     <TouchableOpacity onPress={() => this.MakeSet("Pierre")}>
                                         <Image
-                                        source={require('../assets/images/pierre.png')}
+                                        source={Img.pierre}
                                         resizeMode="contain"
                                         style={styles.image1}
                                         />
@@ -321,7 +324,7 @@ const styles = StyleSheet.create({
         ],
     },
     BattleText: {
-        fontSize: 15,
+        fontSize: 17,
         marginTop: 0,
         fontWeight: "bold",
     },
@@ -367,6 +370,16 @@ const styles = StyleSheet.create({
             title="SAVE"
             accessibilityLabel="Learn more about this button"
           /> 
-          </TouchableHighlight>
+</TouchableHighlight>
+
+
+this.setState(function(state, props) {
+            return {
+                cardToDisplayUser: userChoice,
+                cardToDisplayEnemy: MachineChoice,
+                visibilityUserCard: 1,
+                visibilityEnemyCard: 1
+            };
+          });
 
 */
