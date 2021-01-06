@@ -18,9 +18,13 @@ export default class Game extends Component {
             colorSet3: 'grey',
 
         };
+
+        this.currentSet = 0;
+
+        this.updateGame = this.updateGame.bind(this);
     }
 
-    MakeMachineChoice(){
+    MakeMachineChoice = () => {
 
         const choice = ['Feuille', 'Ciseaux', 'Pierre']
         /* Make a random choice */
@@ -32,38 +36,48 @@ export default class Game extends Component {
         
     }
 
-    updateGame(result){
+    updateGame = (result) => {
 
         //TODO: Update set color circle (05/01 ; 06/01)
+        console.log('Update : ' + result );
+        //console.log('currentSet : ' + currentSet );
+        //console.log('updateGame');
+        console.log(this.state);
+        var currentSet = this.currentSet;
+        //var currentSet = this.state.currentSet;
+        //var currentSet = this.state.currentSet;
 
-
-        if (this.state.currentSet == 1){
+        if (currentSet == 1){
             if (result == "Gagné"){
                 this.setState({colorSet1: 'green'});
-                console.log('colored');
             }
+            else if(result == "null"){}
             else{
                 this.setState({colorSet1: 'red'});
-                console.log('colored');
             }
         }
 
-        if (this.state.currentSet == 2){
+        if (currentSet == 2){
             if (result == "Gagné"){
                 this.setState({colorSet2: 'green'});
             }
+            else if(result == "null"){}
             else{
                 this.setState({colorSet2: 'red'});
             }
         }
-        if (this.state.currentSet == 3){
+        if (currentSet == 3){
             if (result == "Gagné"){
                 this.setState({colorSet3: 'green'});
             }
+            else if(result == "null"){}
             else{
                 this.setState({colorSet3: 'red'});
             }
+
+            console.log('Game Finished');
         }
+        console.log(result);
 
         //TODO: Here Finish This game if currentSet > 3 (07/01 or 08/01)  
 
@@ -71,15 +85,16 @@ export default class Game extends Component {
     }
 
     // And decide Who Win one set
-    MakeSet(userChoice){
+    MakeSet = (userChoice) => {
         
         const MachineChoice = this.MakeMachineChoice() ;
 
-        console.log('choix machine :' + MachineChoice);
-        console.log('choix user :' + userChoice );
+        //console.log('choix machine :' + MachineChoice);
+        //console.log('choix user :' + userChoice );
 
         if (MachineChoice == userChoice){
             var result = "null";
+            this.currentSet = this.currentSet -1;
         }
         else if (MachineChoice == "Pierre" && userChoice == "Feuille"){
             var result = "Gagné";
@@ -100,20 +115,14 @@ export default class Game extends Component {
             var result = "Perdu";
         }
 
-        this.setState(function(state, props) {
-            return {
-                currentSet: this.state.currentSet + 1
-                
-            };
-          });
+        
+        this.currentSet = this.currentSet + 1;
         this.updateGame(result);
 
         //TODO: Displaying card played  (06/01)
         // One : Disable image
         // Two : Get different choice 
         // Three : Displaying good image
-
-        console.log(result);
         return ;  
     }
 
@@ -140,9 +149,9 @@ export default class Game extends Component {
 
                     {/***********SET SCORE  *****************/}
                     <View style={styles.AroundScoreContainer}>
-                        <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet1 },]} ></View>
-                        <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet2 },]} ></View>
-                        <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet3 },]} ></View>
+                        <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet1 }]} ></View>
+                        <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet2 }]} ></View>
+                        <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet3 }]} ></View>
                     </View>
                     {/*************CARD PLAYED ************ */}
                     <Image
@@ -204,7 +213,7 @@ const styles = StyleSheet.create({
         marginTop:2,
         padding: 2,
     },
-    view: {  //TODO: Place Background Image
+    view: {  //TODO: Place Background Image // 1080*1920
         flex: 1,
         backgroundColor: '#1abc9c',
         paddingLeft: 10,
