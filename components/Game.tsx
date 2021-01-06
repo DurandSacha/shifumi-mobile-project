@@ -12,12 +12,10 @@ export default class Game extends Component {
         this.state = {
             currentSet : 0,
             maxSet : 3,
-            //currentUserChoice : false,
             MachineChoice: '',
             colorSet1: 'grey',
             colorSet2: 'grey',
             colorSet3: 'grey',
-
             visibilityEnemyCard : 0,
             visibilityUserCard : 0,
             cardToDisplayUser : 'feuille',
@@ -25,7 +23,6 @@ export default class Game extends Component {
         };
 
         this.currentSet = 0;
-
         this.updateGame = this.updateGame.bind(this);
     }
 
@@ -51,7 +48,6 @@ export default class Game extends Component {
                 this.setState({colorSet1: 'red'});
             }
         }
-
         if (currentSet == 2){
             if (result == "Gagné"){
                 this.setState({colorSet2: 'green'});
@@ -73,6 +69,7 @@ export default class Game extends Component {
             }
             return 0;
         }
+
         if (currentSet > 3){
 
             console.log('Game Finished');
@@ -80,10 +77,7 @@ export default class Game extends Component {
             //TODO: Redirection to resume menu
             // this.outGame();
             //TODO: Refactoring
-            
         }
-        
-          
     }
 
     // And decide Who Win one set
@@ -94,47 +88,29 @@ export default class Game extends Component {
         this.setState({
             cardToDisplayUser: userChoice,
             cardToDisplayEnemy: MachineChoice,
-            visibilityUserCard: 1,
-            visibilityEnemyCard: 1
+            visibilityUserCard: 0,
+            visibilityEnemyCard: 0,
         });
 
-        if (MachineChoice == userChoice){
-            var result = "null";
-            this.currentSet = this.currentSet -1;
-        }
-        else if (MachineChoice == "Pierre" && userChoice == "Feuille"){
-            var result = "Gagné";
-        }
-        else if (MachineChoice == "Pierre" && userChoice == "Ciseaux"){
-            var result = "Perdu";
-        }
-        else if (MachineChoice == "Feuille" && userChoice == "Ciseaux"){
-            var result = "Gagné";
-        }
-        else if (MachineChoice == "Feuille" && userChoice == "Pierre"){
-            var result = "Perdu";
-        }
-        else if (MachineChoice == "Ciseaux" && userChoice == "Pierre"){
-            var result = "Gagné";
-        }
-        else if (MachineChoice == "Ciseaux" && userChoice == "Feuille"){
-            var result = "Perdu";
-        }
+        if (MachineChoice == userChoice){  var result = "null";  this.currentSet = this.currentSet -1;}
+        else if (MachineChoice == "Pierre" && userChoice == "Feuille"){var result = "Gagné";}
+        else if (MachineChoice == "Pierre" && userChoice == "Ciseaux"){var result = "Perdu";}
+        else if (MachineChoice == "Feuille" && userChoice == "Ciseaux"){var result = "Gagné";}
+        else if (MachineChoice == "Feuille" && userChoice == "Pierre"){var result = "Perdu";}
+        else if (MachineChoice == "Ciseaux" && userChoice == "Pierre"){var result = "Gagné";}
+        else if (MachineChoice == "Ciseaux" && userChoice == "Feuille"){var result = "Perdu";}
 
         if (this.currentSet < 3){
             this.currentSet = this.currentSet + 1;
             this.updateGame(result);
         }
-
         return ;  
     }
 
     render(){
-
         console.log('EnemyDisplayCard: ' + this.state.cardToDisplayEnemy + ' & opacity : ' + this.state.visibilityEnemyCard);
         console.log('UserDisplayCard: ' + this.state.cardToDisplayUser + ' & opacity : ' + this.state.visibilityUserCard);
-
-        // Img[this.state.cardToDisplayUser]
+        
         return (
             <View style={styles.view}>
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
@@ -146,8 +122,9 @@ export default class Game extends Component {
                             style={styles.enemyCard}
                             />
                         
-                        {/*************ENEMY CARD PLAYED ************ */}
-                        <View style={[styles.containerEnemyCardPlayed, { opacity: this.state.visibilityEnemyCard }]}>
+                        {/*************ENEMY CARD PLAYED ************ */} 
+                        {/* {this.state.visibilityEnemyCard == 1 ?  1 : 0} */}
+                        <View style={[styles.containerEnemyCardPlayed, { opacity: this.state.visibilityEnemyCard   }]}>
                             <Image
                                 source={Img[this.state.cardToDisplayEnemy]}
                                 resizeMode="contain"
@@ -155,9 +132,8 @@ export default class Game extends Component {
                                 />
                         </View>
 
-                        <Text style={styles.BattleText}>Choisissez une carte</Text>
+                        <Text style={styles.BattleText}>Choisissez une carte ( visibilité : {this.state.visibilityEnemyCard} )</Text>
 
-                        {/***********SET SCORE  *****************/}
                         <View style={styles.AroundScoreContainer}>
                             <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet1 }]} ></View>
                             <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet2 }]} ></View>
@@ -187,7 +163,6 @@ export default class Game extends Component {
                                 </TouchableOpacity>
                                 </View>
                             </View>
-
                             <View style={styles.container2}>
                                 <View style={styles.rect}>
                                     <TouchableOpacity onPress={() => this.MakeSet("Feuille")}>
@@ -199,7 +174,6 @@ export default class Game extends Component {
                                     </TouchableOpacity>
                                 </View>
                             </View>
-
                             <View style={styles.container3}>
                                 <View style={styles.rect}>
                                     <TouchableOpacity onPress={() => this.MakeSet("Pierre")}>
@@ -217,7 +191,6 @@ export default class Game extends Component {
             </View>
         );
     }
-    
 }
 
 const styles = StyleSheet.create({
@@ -236,10 +209,6 @@ const styles = StyleSheet.create({
     view: {  
         flex: 1,
         backgroundColor: '#1abc9c',
-        //backgroundImage: '',
-        
-        //paddingLeft: 10,
-        //paddingRight: 10,
     },
     header: {
         flex: 1,
@@ -296,12 +265,10 @@ const styles = StyleSheet.create({
     image1: {
         width: 70,
         height: 70,
-        //backgroundColor: 'rgba(255,10,44,1)'
       },
     enemyCard: {
         width: 1500,
         height: 300,
-    //backgroundColor: 'rgba(255,10,44,1)'
     },
     CardPlayed: {
         width: 50,
@@ -346,40 +313,5 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between', 
         alignItems: 'stretch',
         marginTop: 5,
-        
-
     }
-
 });
-
-
-/******************  HELP  ******************************/
-/*
--------------------customizable button--------------------
-<TouchableHighlight 
-                style ={{
-                    height: 40,
-                    width:160,
-                    borderRadius:10,
-                    backgroundColor : "yellow",
-                    marginLeft :50,
-                    marginRight:50,
-                    marginTop :20
-                }}>
-            <Button onPress={this._onPressButton}            
-            title="SAVE"
-            accessibilityLabel="Learn more about this button"
-          /> 
-</TouchableHighlight>
-
-
-this.setState(function(state, props) {
-            return {
-                cardToDisplayUser: userChoice,
-                cardToDisplayEnemy: MachineChoice,
-                visibilityUserCard: 1,
-                visibilityEnemyCard: 1
-            };
-          });
-
-*/
