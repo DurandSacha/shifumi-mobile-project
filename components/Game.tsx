@@ -20,8 +20,12 @@ export default class Game extends Component {
         };
 
         this.currentSet = 0;
-        this.visibilityEnemyCard = false;
-        this.visibilityUserCard = false ;
+        
+        this.visibilityEnemyCard = 0;
+        this.visibilityUserCard = 0;
+
+        this.cardToDisplayUser = '';
+        this.cardToDisplayEnemy = '';
 
         this.updateGame = this.updateGame.bind(this);
     }
@@ -89,8 +93,12 @@ export default class Game extends Component {
         
         const MachineChoice = this.MakeMachineChoice() ;
 
-        //console.log('choix machine :' + MachineChoice);
-        //console.log('choix user :' + userChoice );
+        this.cardToDisplayUser = userChoice;
+        this.cardToDisplayEnemy = MachineChoice;
+
+        this.visibilityUserCard = 1;
+        this.visibilityEnemyCard = 1;
+
 
         if (MachineChoice == userChoice){
             var result = "null";
@@ -119,10 +127,6 @@ export default class Game extends Component {
         this.currentSet = this.currentSet + 1;
         this.updateGame(result);
 
-        //TODO: Displaying card played  (06/01)
-        // One : Disable image
-        // Two : Get different choice 
-        // Three : Displaying good image
         return ;  
     }
 
@@ -139,13 +143,14 @@ export default class Game extends Component {
                             style={styles.enemyCard}
                             />
                         
-                        {/*************CARD PLAYED ************ */}
-                        <Image
-                            source={require('../assets/images/ciseau.png')} /* Take a correct picture */
-                            resizeMode="contain"
-                            style={styles.CardPlayed}
-                            />
-                            {/* this.visibilityEnemyCard */}
+                        {/*************ENEMY CARD PLAYED ************ */}
+                        <View style={[styles.containerEnemyCardPlayed,{ opacity: this.visibilityEnemyCard }]}>
+                            <Image
+                                source={{ uri:'../assets/images/'+ this.cardToDisplayEnemy +'.png'}}
+                                resizeMode="contain"
+                                style={styles.CardPlayed}
+                                />
+                        </View>
 
                         <Text style={styles.BattleText}>Choisissez une carte</Text>
 
@@ -155,17 +160,18 @@ export default class Game extends Component {
                             <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet2 }]} ></View>
                             <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet3 }]} ></View>
                         </View>
-                        {/*************CARD PLAYED ************ */}
-                        <Image
-                            source={require('../assets/images/ciseau.png')} /* Take a correct picture */
-                            resizeMode="contain"
-                            style={styles.CardPlayed}
-                            />
-                            {/* this.visibilityUserCard */}
 
+                        {/************* USER CARD PLAYED ************ */}
+                        <View style={[styles.containerUserCardPlayed,{ opacity: this.visibilityUserCard }]}>
+                            <Image
+                                source={{uri: '../assets/images/'+ this.cardToDisplayUser +'.png'}}
+                                resizeMode="contain"
+                                style={styles.CardPlayed}
+                                />
+                        </View>
 
-                        {/*************  CARD ********************/}
-                        <Text style={styles.setText}> Manche {this.state.currentSet} </Text>
+                        {/*************  CHOOSE A CARD ********************/}
+                        <Text style={styles.setText}> Manche {this.currentSet + 1} </Text>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
                             <View style={styles.container1}>
                                 <View style={styles.rect}>
@@ -299,6 +305,20 @@ const styles = StyleSheet.create({
         height: 40,
         marginTop: -110,
         marginBottom: 75,
+    },
+    containerEnemyCardPlayed: {
+        transform: [
+            { rotate: "90deg" },
+            { translateX: -100 },
+            { translateY: 100 }
+        ],
+    },
+    containerUserCardPlayed: {
+        transform: [
+            { rotate: "-90deg" },
+            { translateX: 70 },
+            { translateY: 100 }
+        ],
     },
     BattleText: {
         fontSize: 15,
