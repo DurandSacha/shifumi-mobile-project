@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground } from 'react-native';
+//import Configuration from "./components/Configuration";
 import Img from '../assets/images/_image';
 
 const br = `\n`;
@@ -24,7 +25,7 @@ export default class Game extends Component {
 
         this.opacityIcon = 0;
         this.currentSet = 0;
-        this.updateGame = this.updateGame.bind(this);
+        this.MakeSet = this.MakeSet.bind(this);
     }
 
     makeMachineChoice = () => {
@@ -66,14 +67,24 @@ export default class Game extends Component {
             else if(result == "null"){}
             else{
                 this.setState({colorSet3: 'red'});
-                currentSet == currentSet + 10
             }
             return 0;
         }
 
-        if (currentSet > 3){
+        if (currentSet >= 3){
+            console.log(this.props);
+            // navigation.push('Configuration') ;
+            //const { navigate } = this.props.navigation; 
+            //navigate('Configuration');
 
+            this.props.navigation.navigate('Configuration');
+
+            //const { navigate } = this.props.navigation; navigate('Home')
+            //this.props.navigation.navigate('Home')
             console.log('Game Finished');
+
+
+
             //TODO: Finish game if set = 3 and decide who is winner (who have 2 set ) (06/01)
             //TODO: Redirection to resume menu
             // this.outGame();
@@ -85,14 +96,14 @@ export default class Game extends Component {
     MakeSet = (userChoice) => {
         
         const MachineChoice = this.makeMachineChoice() ;
-        
         this.opacityIcon = 1;
         this.setState({
-            cardToDisplayUser: userChoice,
-            cardToDisplayEnemy: MachineChoice,
             visibilityUserCard: 1,
             visibilityEnemyCard: 1,
+            cardToDisplayUser: userChoice,
+            cardToDisplayEnemy: MachineChoice,
         });
+        this.forceUpdate();
 
         if (MachineChoice == userChoice){  var result = "null";  this.currentSet = this.currentSet -1;}
         else if (MachineChoice == "Pierre" && userChoice == "Feuille"){var result = "Gagné";}
@@ -102,17 +113,18 @@ export default class Game extends Component {
         else if (MachineChoice == "Ciseaux" && userChoice == "Pierre"){var result = "Gagné";}
         else if (MachineChoice == "Ciseaux" && userChoice == "Feuille"){var result = "Perdu";}
 
-        if (this.currentSet < 3){
+        if (this.currentSet <= 3){
             this.currentSet = this.currentSet + 1;
             this.updateGame(result);
+            this.forceUpdate();
         }
         return ;  
     }
 
     render(){
-        console.log('EnemyDisplayCard: ' + this.state.cardToDisplayEnemy + ' & opacity : ' + this.state.visibilityEnemyCard);
-        console.log('UserDisplayCard: ' + this.state.cardToDisplayUser + ' & opacity : ' + this.state.visibilityUserCard);
-        
+        console.log('EnemyDisplayCard: ' + this.state.cardToDisplayEnemy + ' & opacity : ' + this.state.visibilityEnemyCard + ' ' + this.opacityIcon);
+        console.log('UserDisplayCard: ' + this.state.cardToDisplayUser + ' & opacity : ' + this.state.visibilityUserCard + ' ' + this.opacityIcon);
+
         return (
             <View style={styles.view}>
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
@@ -133,7 +145,7 @@ export default class Game extends Component {
                                 />
                         </View>
 
-                        <Text style={styles.BattleText}>Choisissez une carte ( visibilité : {this.opacityIcon} )</Text>
+                        <Text style={styles.BattleText}>Choisissez une carte ( visibilité : {this.state.visibilityUserCard} )</Text>
 
                         <View style={styles.AroundScoreContainer}>
                             <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet1 }]} ></View>
@@ -142,7 +154,7 @@ export default class Game extends Component {
                         </View>
 
                         {/************* USER CARD PLAYED ************ */}
-                        <View style={[styles.containerUserCardPlayed,{ opacity: this.state.visibilityUserCard }]}>
+                        <View style={[styles.containerUserCardPlayed, { opacity: this.state.visibilityUserCard } ]}>
                             <Image
                                 source={Img[this.state.cardToDisplayUser]}
                                 resizeMode="contain"
@@ -316,3 +328,6 @@ const styles = StyleSheet.create({
         marginTop: 5,
     }
 });
+
+
+// this.forceUpdate()
