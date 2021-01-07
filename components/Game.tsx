@@ -1,5 +1,10 @@
 import React, { PropTypes, Component } from 'react';
-import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground} from 'react-native';
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+//import App from '../App';
+
 //import Configuration from "./components/Configuration";
 import Img from '../assets/images/_image';
 import EndGame from './EndGame';
@@ -42,8 +47,10 @@ export default class Game extends Component {
 
     updateGame = (result, userChoice, MachineChoice) => {
 
-        console.log(userChoice);
-        // this.updateGame(result,userChoice,MachineChoice);
+        console.log('user : ' + this.pointUser);
+        console.log('machine : ' + this.pointMachine);
+
+
         this.setState({
             visibilityUserCard: 1,
             visibilityEnemyCard: 1,
@@ -51,9 +58,7 @@ export default class Game extends Component {
             cardToDisplayEnemy: MachineChoice,
         });
 
-        console.log('Update game' );
         let currentSet = this.currentSet;
-        console.log(currentSet);
         if (currentSet == 1){
             if (result == "Gagné"){
                 this.pointUser = this.pointUser + 1 ;
@@ -86,27 +91,10 @@ export default class Game extends Component {
             else{
                 this.setState({colorSet3: 'red'});
                 this.pointMachine = this.pointMachine + 1 ;
-            }
-            return 0;
-        }
-        else if(currentSet >= 4){
-            if (this.pointMachine > this.pointUser ){ 
-                console.log("redirect to defeat screen");
-                return (<EndGame resultGame="defeat"/>);
-                // or //this.props.navigation.navigate('Configuration'); 
-            }
-            else {
-                console.log("redirect to victory screen");
-                return (<EndGame resultGame="victory" />);
-                // or //this.props.navigation.navigate('Configuration');
-            }
-
-            //TODO: Redirection to resume menu
-            //TODO: Refactoring
+            }  
         }
     }
 
-    // And decide Who Win one set
     MakeSet = (userChoice) => {
         
         let MachineChoice = this.makeMachineChoice() ;
@@ -121,18 +109,28 @@ export default class Game extends Component {
 
         if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
         this.updateGame(result,userChoice,MachineChoice);
-
         this.forceUpdate();
 
         return ;  
     }
 
-    render(){
-        console.log('EnemyDisplayCard: ' + this.state.cardToDisplayEnemy + ' & opacity : ' + this.state.visibilityEnemyCard);
-        console.log('UserDisplayCard: ' + this.state.cardToDisplayUser + ' & opacity : ' + this.state.visibilityUserCard);
-
+    render =() => {
         const visibilityEnemyCard = this.state.visibilityEnemyCard;
         const visibilityUserCard = this.state.visibilityUserCard;
+
+        // ENDGAME 
+        if (this.currentSet >= 3 && this.pointMachine >= 2 ){
+            // TODO: sleep 2 second
+            console.log("redirect to defeat screen");
+            this.props.navigation.navigate('EndGame');
+        }
+        if(this.currentSet >= 3 && this.pointUser >= 2) { 
+            // TODO: sleep 2 second
+            console.log("redirect to victory screen");
+            this.props.navigation.navigate('EndGame');
+        }
+
+
         return (
             <View style={styles.view}>
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
@@ -153,7 +151,7 @@ export default class Game extends Component {
                                 />
                         </View>
 
-                        <Text style={styles.BattleText}>Choisissez une carte ( visibilité : {visibilityUserCard} )</Text>
+                        <Text style={styles.BattleText}>Choisissez une carte</Text>
 
                         <View style={styles.AroundScoreContainer}>
                             <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet1 }]} ></View>

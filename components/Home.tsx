@@ -8,8 +8,9 @@ function goGame(){
 }
 
 export default class Home extends Component {
-
+    
     render() {
+
         return (
             <View style={styles.view}>
                 <View style={styles.header}>

@@ -4,15 +4,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { props } from 'react-native';
 import Game from "./components/Game";
+import EndGame from "./components/EndGame";
 import Configuration from "./components/Configuration";
-
+import 'react-native-gesture-handler';
 
 // This file init the projet, and displaying the home menu with navigation
 function HomeScreen({ navigation }) {
   return (
     <View style={styles.view}>
       <View style={styles.header}>
-          <Text style={styles.title}>Shi Fu Mi</Text>
+          <Text style={styles.title}>Shi fu mi</Text>
       </View>
       <View style={styles.content}>
           <View style={{ marginBottom: 30 }}>
@@ -34,9 +35,16 @@ function ConfigurationScreen() {
 }
 
 /* Function for routing */ 
-function GameScreen() {
+function GameScreen({ navigation }) {
   return (
-    <Game {...props} />
+    <Game navigation={navigation}/>
+  );
+}
+
+/* Function for endGame */ 
+function EndGameScreen({ navigation }) {
+  return (
+    <EndGame navigation={navigation}/>
   );
 }
 
@@ -50,12 +58,11 @@ function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Configuration" component={ConfigurationScreen} />
         <Stack.Screen name="Game" component={GameScreen} />
+        <Stack.Screen name="EndGame" component={EndGameScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   view: {

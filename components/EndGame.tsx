@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Navigator, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 
 
 export default class EndGame extends Component {
 
-    constructor(props) {
-        super(props);
-
-        console.log(this.props.result);
-    }
 
     render() {
         return (
@@ -18,15 +13,9 @@ export default class EndGame extends Component {
                     <Text style={styles.title}>Partie terminée</Text>
                 </View>
                 <View style={styles.content}>
-                    {/*
                     <View style={{ marginBottom: 30 }}>
-                        <Button title="Configuration" onPress={() => navigation.push('Configuration')} color="#138a72" />
+                        <Button title="Menu principal" onPress={() => this.props.navigation.navigate('Home')} color="#138a72" />
                     </View>
-                    */}
-
-                    <TouchableOpacity style={styles.container}>
-                        <Text style={styles.textButton}> Menu principal </Text>
-                    </TouchableOpacity>
                 </View>
             </View>
         );
@@ -45,7 +34,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     title: {
-        fontSize: 80,
+        fontSize: 30,
         color: '#ecf0f1',
         marginTop: 16,
     },
