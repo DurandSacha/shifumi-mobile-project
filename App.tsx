@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { props } from 'react-native';
 import Game from "./components/Game";
 import Configuration from "./components/Configuration";
 
@@ -35,7 +36,7 @@ function ConfigurationScreen() {
 /* Function for routing */ 
 function GameScreen() {
   return (
-    <Game/>
+    <Game {...props} />
   );
 }
 

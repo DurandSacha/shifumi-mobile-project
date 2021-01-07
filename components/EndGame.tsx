@@ -5,6 +5,12 @@ import { View, Text, Navigator, Button, StyleSheet, TouchableOpacity } from 'rea
 
 export default class EndGame extends Component {
 
+    constructor(props) {
+        super(props);
+
+        console.log(this.props.result);
+    }
+
     render() {
         return (
             <View style={styles.view}>
