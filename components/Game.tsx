@@ -18,8 +18,8 @@ export default class Game extends Component {
             colorSet1: 'grey',
             colorSet2: 'grey',
             colorSet3: 'grey',
-            visibilityEnemyCard : 1,
-            visibilityUserCard : 1,
+            visibilityEnemyCard : 0,
+            visibilityUserCard : 0,
             cardToDisplayUser : 'feuille',
             cardToDisplayEnemy : 'feuille',
             pointMachine : 0,
@@ -34,13 +34,22 @@ export default class Game extends Component {
     }
 
     makeMachineChoice = () => {
-        const choice = ['Feuille', 'Ciseaux', 'Pierre']
+        const choice = ['feuille', 'ciseau', 'pierre']
         const random = Math.floor(Math.random() * choice.length);
         this.state = { MachineChoice: choice[random] };
         return choice[random];
     }
 
-    updateGame = (result) => {
+    updateGame = (result, userChoice, MachineChoice) => {
+
+        console.log(userChoice);
+        // this.updateGame(result,userChoice,MachineChoice);
+        this.setState({
+            visibilityUserCard: 1,
+            visibilityEnemyCard: 1,
+            cardToDisplayUser: userChoice,
+            cardToDisplayEnemy: MachineChoice,
+        });
 
         console.log('Update game' );
         let currentSet = this.currentSet;
@@ -100,27 +109,21 @@ export default class Game extends Component {
     // And decide Who Win one set
     MakeSet = (userChoice) => {
         
-        const MachineChoice = this.makeMachineChoice() ;
-        this.setState({
-            visibilityUserCard: 1,
-            visibilityEnemyCard: 1,
-            cardToDisplayUser: userChoice,
-            cardToDisplayEnemy: MachineChoice,
-        });
-        
+        let MachineChoice = this.makeMachineChoice() ;
 
         if (MachineChoice == userChoice){  var result = "null";  this.currentSet = this.currentSet -1;}
-        else if (MachineChoice == "Pierre" && userChoice == "Feuille"){var result = "Gagné";}
-        else if (MachineChoice == "Pierre" && userChoice == "Ciseaux"){var result = "Perdu";}
-        else if (MachineChoice == "Feuille" && userChoice == "Ciseaux"){var result = "Gagné";}
-        else if (MachineChoice == "Feuille" && userChoice == "Pierre"){var result = "Perdu";}
-        else if (MachineChoice == "Ciseaux" && userChoice == "Pierre"){var result = "Gagné";}
-        else if (MachineChoice == "Ciseaux" && userChoice == "Feuille"){var result = "Perdu";}
+        else if (MachineChoice == "pierre" && userChoice == "feuille"){var result = "Gagné";}
+        else if (MachineChoice == "pierre" && userChoice == "ciseau"){var result = "Perdu";}
+        else if (MachineChoice == "feuille" && userChoice == "ciseau"){var result = "Gagné";}
+        else if (MachineChoice == "feuille" && userChoice == "pierre"){var result = "Perdu";}
+        else if (MachineChoice == "ciseau" && userChoice == "pierre"){var result = "Gagné";}
+        else if (MachineChoice == "ciseau" && userChoice == "feuille"){var result = "Perdu";}
 
         if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
-        this.updateGame(result);
+        this.updateGame(result,userChoice,MachineChoice);
 
         this.forceUpdate();
+
         return ;  
     }
 
@@ -128,6 +131,8 @@ export default class Game extends Component {
         console.log('EnemyDisplayCard: ' + this.state.cardToDisplayEnemy + ' & opacity : ' + this.state.visibilityEnemyCard);
         console.log('UserDisplayCard: ' + this.state.cardToDisplayUser + ' & opacity : ' + this.state.visibilityUserCard);
 
+        const visibilityEnemyCard = this.state.visibilityEnemyCard;
+        const visibilityUserCard = this.state.visibilityUserCard;
         return (
             <View style={styles.view}>
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
@@ -140,7 +145,7 @@ export default class Game extends Component {
                             />
                         
                         {/*************ENEMY CARD PLAYED ************ */} 
-                        <View style={[styles.containerEnemyCardPlayed, { opacity: this.state.visibilityEnemyCard   }]}>
+                        <View style={[styles.containerEnemyCardPlayed, { opacity: visibilityEnemyCard   }]}>
                             <Image
                                 source={Img[this.state.cardToDisplayEnemy]}
                                 resizeMode="contain"
@@ -148,7 +153,7 @@ export default class Game extends Component {
                                 />
                         </View>
 
-                        <Text style={styles.BattleText}>Choisissez une carte ( visibilité : {this.state.visibilityUserCard} )</Text>
+                        <Text style={styles.BattleText}>Choisissez une carte ( visibilité : {visibilityUserCard} )</Text>
 
                         <View style={styles.AroundScoreContainer}>
                             <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet1 }]} ></View>
@@ -170,7 +175,7 @@ export default class Game extends Component {
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
                             <View style={styles.container1}>
                                 <View style={styles.rect}>
-                                <TouchableOpacity onPress={() => this.MakeSet("Ciseaux")}>
+                                <TouchableOpacity onPress={() => this.MakeSet("ciseau")}>
                                     <Image
                                     source={Img.ciseau}
                                     resizeMode="contain"
@@ -181,7 +186,7 @@ export default class Game extends Component {
                             </View>
                             <View style={styles.container2}>
                                 <View style={styles.rect}>
-                                    <TouchableOpacity onPress={() => this.MakeSet("Feuille")}>
+                                    <TouchableOpacity onPress={() => this.MakeSet("feuille")}>
                                         <Image
                                         source={Img.feuille}
                                         resizeMode="contain"
@@ -192,7 +197,7 @@ export default class Game extends Component {
                             </View>
                             <View style={styles.container3}>
                                 <View style={styles.rect}>
-                                    <TouchableOpacity onPress={() => this.MakeSet("Pierre")}>
+                                    <TouchableOpacity onPress={() => this.MakeSet("pierre")}>
                                         <Image
                                         source={Img.pierre}
                                         resizeMode="contain"
