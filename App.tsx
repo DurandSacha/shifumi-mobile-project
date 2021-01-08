@@ -7,6 +7,7 @@ import Game from "./components/Game";
 import EndGame from "./components/EndGame";
 import Configuration from "./components/Configuration";
 import 'react-native-gesture-handler';
+import {Scene, Router} from 'react-native-router-flux';
 
 // This file init the projet, and displaying the home menu with navigation
 function HomeScreen({ navigation }) {
@@ -37,7 +38,8 @@ function ConfigurationScreen() {
 /* Function for routing */ 
 function GameScreen({ navigation }) {
   return (
-    <Game navigation={navigation}/>
+    /*<Scene key="Game" component={Game} title="Profile" hideTabBar={true} />*/
+      <Game navigation={navigation}/>
   );
 }
 

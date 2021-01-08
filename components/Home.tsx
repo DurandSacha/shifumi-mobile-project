@@ -4,29 +4,32 @@ import { View, Text, Navigator, Button, StyleSheet, TouchableOpacity } from 'rea
 import Game from "./Game";
 
 function goGame(){
-    return ( <Game/> );
+    return ( <Game hideTabBar={true}/> );
 }
 
 export default class Home extends Component {
     
     render() {
-
+        //this.forceUpdate();
         return (
             <View style={styles.view}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>Shi Fu Mi</Text>
-                </View>
-                <View style={styles.content}>
-                    <View style={{ marginBottom: 30 }}>
-                        <Button title="Jeu solo" onPress={goGame} color="#138a72" />
-                    </View>
-                    <View style={{ marginBottom: 30 }}>
-                        <Button title="Configuration" onPress={() => navigation.push('Configuration')} color="#138a72" />
+                    <View>
+                        <Text style={styles.title}>Shi Fu</Text>
+                        <Text style={styles.title}>Test</Text>
                     </View>
 
-                    <TouchableOpacity style={styles.container}>
-                        <Text style={styles.textButton}> Other </Text>
-                    </TouchableOpacity>
+                    <View style={styles.viewButton}>
+                        <Button title="Jeu solo" onPress={goGame} color="#138a72" />
+                        
+                        <View style={styles.viewButton}>
+                            <Button title="Configuration" onPress={() => navigation.push('Configuration')} color="#138a72" />
+                        </View>
+
+                        <TouchableOpacity onPress={() => navigation.push('Configuration')} color="#138a72" >
+                            <Text> Hello New Button </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         );
@@ -37,6 +40,13 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         backgroundColor: '#1abc9c',
+    },
+    viewButton:{
+        width: 80,
+    },
+    button: {
+        marginBottom: 10,
+        width: 80,
     },
     header: {
         flex: 1,
@@ -51,9 +61,6 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 2,
-    },
-    button: {
-        marginBottom: 10,
     },
     container: {
         backgroundColor: '#2175BF',

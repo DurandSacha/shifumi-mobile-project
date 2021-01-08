@@ -31,10 +31,10 @@ export default class Game extends Component {
         this.pointUser = 0;
 
         this.currentSet = 0;
-        //this.MakeSet = this.MakeSet.bind(this);
     }
 
     makeMachineChoice = () => {
+        // TODO: make better than random 
         const choice = ['feuille', 'ciseau', 'pierre']
         const random = Math.floor(Math.random() * choice.length);
         this.state = { MachineChoice: choice[random] };
@@ -42,10 +42,6 @@ export default class Game extends Component {
     }
 
     updateGame = (result, userChoice, MachineChoice) => {
-
-        console.log('user : ' + this.pointUser);
-        console.log('machine : ' + this.pointMachine);
-
 
         this.setState({
             visibilityUserCard: 1,
@@ -116,19 +112,15 @@ export default class Game extends Component {
         let navigation = this.props.navigation;
         // ENDGAME 
         if (this.currentSet >= 3 && this.pointMachine >= 2 ){
-            console.log("redirect to defeat screen");
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['defeat'] });
              }, 100);
         }
         if(this.currentSet >= 3 && this.pointUser >= 2) { 
-            console.log("redirect to victory screen");
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['victory'] });
              }, 100); // 700 
         }
-        // navigate('Profile', { names: ['Brent', 'Satya', 'Michaś'] })
-        // navigation.navigate('Details', { itemId: 86, otherParam: 'anything you want here', });
     }
 
     render =() => {
@@ -139,14 +131,11 @@ export default class Game extends Component {
             <View style={styles.view}>
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
                     <View style={styles.header}>
-
                         <Image
                             source={Img.dosCarte}
                             resizeMode="contain"
                             style={styles.enemyCard}
                             />
-                        
-                        {/*************ENEMY CARD PLAYED ************ */} 
                         <View style={[styles.containerEnemyCardPlayed, { opacity: visibilityEnemyCard   }]}>
                             <Image
                                 source={Img[cardToDisplayEnemy]}
@@ -163,7 +152,6 @@ export default class Game extends Component {
                             <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet3 }]} ></View>
                         </View>
 
-                        {/************* USER CARD PLAYED ************ */}
                         <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
                             <Image
                                 source={Img[cardToDisplayUser]}
@@ -228,10 +216,8 @@ const styles = StyleSheet.create({
     },
     imageBackground: {
         flex: 4,
-        //borderWidth: -100,
         width: '100%',
         height: '100%',
-
     },
     header: {
         flex: 1,
@@ -338,6 +324,3 @@ const styles = StyleSheet.create({
         marginTop: 5,
     }
 });
-
-
-// this.forceUpdate()
