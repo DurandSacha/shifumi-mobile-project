@@ -5,12 +5,30 @@ import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default class EndGame extends Component {
 
+    
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            resultGame : ''
+        }
+    }
+
+    componentDidMount = () => {
+        if (this.props.result == 'victory'){
+             this.setState({resultGame: 'Victoire'})
+        }
+        else { this.setState({resultGame: 'Défaite'}) }
+    }
+    
 
     render() {
+        //this.displayingWhoIsWinner;
         return (
             <View style={styles.view}>
                 <View style={styles.header}>
                     <Text style={styles.title}>Partie terminée</Text>
+                    <Text style={styles.title}>{this.state.resultGame}</Text>
                 </View>
                 <View style={styles.content}>
                     <View style={{ marginBottom: 30 }}>

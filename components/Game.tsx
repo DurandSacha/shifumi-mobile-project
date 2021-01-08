@@ -17,7 +17,6 @@ export default class Game extends Component {
         super(props);
 
         this.state = {
-            currentSet : 0,
             maxSet : 3,
             MachineChoice: '',
             colorSet1: 'grey',
@@ -109,27 +108,39 @@ export default class Game extends Component {
 
         if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
         this.updateGame(result,userChoice,MachineChoice);
+        this.redirectGame();
         this.forceUpdate();
 
         return ;  
     }
 
+    componentWillUnmount() {
+    setTimeout(function(){console.log("game component destroyed"); }, 5000);
+    }
+
+    redirectGame = () => {
+
+        let navigation = this.props.navigation;
+        // ENDGAME 
+        if (this.currentSet >= 3 && this.pointMachine >= 2 ){
+            console.log("redirect to defeat screen");
+            setTimeout(function(){
+                navigation.navigate('EndGame',{ result: ['defeat'] });
+             }, 100);
+        }
+        if(this.currentSet >= 3 && this.pointUser >= 2) { 
+            console.log("redirect to victory screen");
+            setTimeout(function(){
+                navigation.navigate('EndGame',{ result: ['victory'] });
+             }, 100); // 700 
+        }
+        // navigate('Profile', { names: ['Brent', 'Satya', 'Michaś'] })
+        // navigation.navigate('Details', { itemId: 86, otherParam: 'anything you want here', });
+    }
+
     render =() => {
         const visibilityEnemyCard = this.state.visibilityEnemyCard;
         const visibilityUserCard = this.state.visibilityUserCard;
-
-        // ENDGAME 
-        if (this.currentSet >= 3 && this.pointMachine >= 2 ){
-            // TODO: sleep 2 second
-            console.log("redirect to defeat screen");
-            this.props.navigation.navigate('EndGame');
-        }
-        if(this.currentSet >= 3 && this.pointUser >= 2) { 
-            // TODO: sleep 2 second
-            console.log("redirect to victory screen");
-            this.props.navigation.navigate('EndGame');
-        }
-
 
         return (
             <View style={styles.view}>

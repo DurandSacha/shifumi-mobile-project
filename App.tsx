@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { props } from 'react-native';
 import Game from "./components/Game";
@@ -41,10 +41,12 @@ function GameScreen({ navigation }) {
   );
 }
 
-/* Function for endGame */ 
+/* Function for endGame  (    'defeat' & 'victory' )   */ 
 function EndGameScreen({ navigation }) {
+  const route = useRoute();
+  const { result } = route.params;
   return (
-    <EndGame navigation={navigation}/>
+    <EndGame navigation={navigation} result={result}/>
   );
 }
 
