@@ -4,7 +4,6 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Img from '../assets/images/_image';
-import EndGame from './EndGame';
 
 const br = `\n`;
 
@@ -29,12 +28,10 @@ export default class Game extends Component {
 
         this.pointMachine = 0;
         this.pointUser = 0;
-
         this.currentSet = 0;
     }
 
     makeMachineChoice = () => {
-        // TODO: make better than random 
         const choice = ['feuille', 'ciseau', 'pierre']
         const random = Math.floor(Math.random() * choice.length);
         this.state = { MachineChoice: choice[random] };
@@ -101,25 +98,28 @@ export default class Game extends Component {
 
         if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
         this.updateGame(result,userChoice,MachineChoice);
-        this.redirectGame();
         this.forceUpdate();
-
+        this.redirectGame();
+        
+        console.log(this.pointMachine);
+        console.log(this.pointUser);
         return ;  
     }
 
     redirectGame = () => {
-
+        //let result = null;
         let navigation = this.props.navigation;
         // ENDGAME 
+        // TODO: Bug with alltime victory
         if (this.currentSet >= 3 && this.pointMachine >= 2 ){
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['defeat'] });
-             }, 700);
+             }, 100);
         }
         if(this.currentSet >= 3 && this.pointUser >= 2) { 
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['victory'] });
-             }, 700);  
+             }, 100); // 700 
         }
     }
 
@@ -131,17 +131,9 @@ export default class Game extends Component {
             <View style={styles.view}>
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
                     <View style={styles.header}>
-                        <Image
-                            source={Img.dosCarte}
-                            resizeMode="contain"
-                            style={styles.enemyCard}
-                            />
+                        <Image source={Img.dosCarte} resizeMode="contain" style={styles.enemyCard}/>
                         <View style={[styles.containerEnemyCardPlayed, { opacity: visibilityEnemyCard   }]}>
-                            <Image
-                                source={Img[cardToDisplayEnemy]}
-                                resizeMode="contain"
-                                style={styles.CardPlayed}
-                                />
+                            <Image source={Img[cardToDisplayEnemy]} resizeMode="contain" style={styles.CardPlayed} />
                         </View>
 
                         <Text style={styles.BattleText}>Choisissez une carte</Text>
@@ -153,11 +145,7 @@ export default class Game extends Component {
                         </View>
 
                         <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
-                            <Image
-                                source={Img[cardToDisplayUser]}
-                                resizeMode="contain"
-                                style={styles.CardPlayed}
-                                />
+                            <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayed} />
                         </View>
 
                         {/*************  CHOOSE A CARD ********************/}
@@ -166,33 +154,21 @@ export default class Game extends Component {
                             <View style={styles.container1}>
                                 <View style={styles.rect}>
                                 <TouchableOpacity onPress={() => this.MakeSet("ciseau")}>
-                                    <Image
-                                    source={Img.ciseau}
-                                    resizeMode="contain"
-                                    style={styles.image1}
-                                    />
+                                    <Image source={Img.ciseau} resizeMode="contain" style={styles.image1} />
                                 </TouchableOpacity>
                                 </View>
                             </View>
                             <View style={styles.container2}>
                                 <View style={styles.rect}>
                                     <TouchableOpacity onPress={() => this.MakeSet("feuille")}>
-                                        <Image
-                                        source={Img.feuille}
-                                        resizeMode="contain"
-                                        style={styles.image1}
-                                        />
+                                        <Image source={Img.feuille} resizeMode="contain" style={styles.image1} />
                                     </TouchableOpacity>
                                 </View>
                             </View>
                             <View style={styles.container3}>
                                 <View style={styles.rect}>
                                     <TouchableOpacity onPress={() => this.MakeSet("pierre")}>
-                                        <Image
-                                        source={Img.pierre}
-                                        resizeMode="contain"
-                                        style={styles.image1}
-                                        />
+                                        <Image source={Img.pierre} resizeMode="contain" style={styles.image1} />
                                     </TouchableOpacity>
                                 </View>
                             </View>

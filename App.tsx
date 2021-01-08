@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity, ImageBackground } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { props } from 'react-native';
 import Game from "./components/Game";
 import EndGame from "./components/EndGame";
 import Configuration from "./components/Configuration";
@@ -41,24 +40,19 @@ function ConfigurationScreen() {
 
 /* Function for routing */ 
 function GameScreen({ navigation }) {
-  return (
-    /*<Scene key="Game" component={Game} title="Profile" hideTabBar={true} />*/
-      <Game navigation={navigation}/>
-  );
+  return ( <Game navigation={navigation}/> );
 }
 
 
 function EndGameScreen({ navigation }) {
   const route = useRoute();
   const { result } = route.params;
-  return (
-    <EndGame navigation={navigation} result={result}/>
-  );
+  return ( <EndGame navigation={navigation} result={result}/> );
 }
 
 const Stack = createStackNavigator();
 
-/* a router */
+/* routing system */
 function App() {
   return (
     <NavigationContainer>
@@ -86,7 +80,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderWidth: 4,
     borderColor: "#774D3B",
-    
   },
   MenuButtonText:{
     color: 'white',
@@ -119,8 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
 export default App;
-
-
-// TODO: remove the applications headbands 

@@ -14,13 +14,14 @@ export default class EndGame extends Component {
         super(props);
 
         this.state = {
-            resultGame : ''
+            resultGame : null
         }
 
         this.navigation = this.props.navigation;
     }
 
     componentDidMount = () => {
+        console.log(this.props.result);
         if (this.props.result == 'victory'){
              this.setState({resultGame: 'Victoire'})
         }
