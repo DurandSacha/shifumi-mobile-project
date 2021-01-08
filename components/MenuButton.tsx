@@ -22,7 +22,7 @@ export default class EndGame extends Component {
     
 
     render() {
-        return (
+        return ( 
             <View style={styles.view}>
                 <TouchableOpacity onPress={this.navigate()}>
                     <Text>Button</Text>

@@ -4,9 +4,10 @@ import { View, Text, Navigator, Button, StyleSheet, TouchableOpacity } from 'rea
 import Game from "./Game";
 
 function goGame(){
-    return ( <Game hideTabBar={true}/> );
+    return ( <Game/> );
 }
 
+// This class is not used, use App.tsx 
 export default class Home extends Component {
     
     render() {
@@ -27,7 +28,7 @@ export default class Home extends Component {
                         </View>
 
                         <TouchableOpacity onPress={() => navigation.push('Configuration')} color="#138a72" >
-                            <Text> Hello New Button </Text>
+                            <Text> Configuration </Text>
                         </TouchableOpacity>
                     </View>
                 </View>

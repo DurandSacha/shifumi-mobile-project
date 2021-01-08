@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity, ImageBackground } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { props } from 'react-native';
@@ -8,22 +8,26 @@ import EndGame from "./components/EndGame";
 import Configuration from "./components/Configuration";
 import 'react-native-gesture-handler';
 import {Scene, Router} from 'react-native-router-flux';
+import Img from './assets/images/_image';
 
 // This file init the projet, and displaying the home menu with navigation
 function HomeScreen({ navigation }) {
   return (
     <View style={styles.view}>
-      <View style={styles.header}>
-          <Text style={styles.title}>Shi fu mi</Text>
-      </View>
-      <View style={styles.content}>
-          <View style={{ marginBottom: 30 }}>
-              <Button title="Jeu solo" onPress={() => navigation.push('Game')} color="#138a72" />
-          </View>
-          <View style={{ marginBottom: 30 }}>
-              <Button title="Configuration" onPress={() => navigation.push('Configuration')} color="#138a72" />
-          </View>
-      </View>
+      <ImageBackground source={Img.background} style={styles.imageBackground}>
+        <View style={styles.header}>
+            <Text style={styles.title}>Shi fu mi</Text>
+        </View>
+        <View style={styles.content}>
+            <TouchableOpacity style={styles.MenuButtonContainer} onPress={() => navigation.push('Game')} color="#138a72" >
+                <Text style={styles.MenuButtonText}> Jeu solo</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.MenuButtonContainer} onPress={() => navigation.push('Configuration')} color="#138a72" >
+                <Text style={styles.MenuButtonText}> Configuration</Text>
+            </TouchableOpacity>
+        </View>
+      </ImageBackground>
   </View>
   );
 }
@@ -43,7 +47,7 @@ function GameScreen({ navigation }) {
   );
 }
 
-/* Function for endGame  (    'defeat' & 'victory' )   */ 
+
 function EndGameScreen({ navigation }) {
   const route = useRoute();
   const { result } = route.params;
@@ -58,7 +62,7 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator headerMode="none" initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Configuration" component={ConfigurationScreen} />
         <Stack.Screen name="Game" component={GameScreen} />
@@ -69,9 +73,29 @@ function App() {
 }
 
 const styles = StyleSheet.create({
+  imageBackground: {
+    flex: 4,
+    width: '100%',
+    height: '100%',
+},
+  MenuButtonContainer : {
+    alignItems: 'center',
+    width: 210,
+    backgroundColor: 'grey',
+    padding: 30,
+    marginTop: 20,
+    borderWidth: 4,
+    borderColor: "#774D3B",
+    
+  },
+  MenuButtonText:{
+    color: 'white',
+    fontSize : 20,
+  },
   view: {
       flex: 1,
       backgroundColor: '#1abc9c',
+      alignItems: 'center',
   },
   header: {
       flex: 1,
@@ -80,15 +104,18 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
   },
   title: {
-      fontSize: 80,
-      color: '#ecf0f1',
-      marginTop: 16,
+      fontSize: 60,
+      color: '#774D3B',
+      marginTop: 150,
+      fontWeight:'bold',
   },
   content: {
       flex: 2,
+      alignItems: 'center',
+      marginTop: 80,
   },
   button: {
-      marginBottom: 10,
+      marginBottom: 15,
   },
 });
 

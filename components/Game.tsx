@@ -114,12 +114,12 @@ export default class Game extends Component {
         if (this.currentSet >= 3 && this.pointMachine >= 2 ){
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['defeat'] });
-             }, 100);
+             }, 700);
         }
         if(this.currentSet >= 3 && this.pointUser >= 2) { 
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['victory'] });
-             }, 100); // 700 
+             }, 700);  
         }
     }
 
@@ -309,8 +309,8 @@ const styles = StyleSheet.create({
         marginBottom: 0,
     },
     AroundScore:{
-        width: 20,
-        height: 20,
+        width: 30,
+        height: 30,
         borderRadius: 150/2,
         justifyContent: 'center',
         backgroundColor: '#888888',

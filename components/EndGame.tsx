@@ -34,7 +34,6 @@ export default class EndGame extends Component {
         return (
             <View style={styles.view}>
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
-                    <View style={styles.header}>
                         <View style={styles.header}>
                             <View style={styles.TextContainer} >
                                 <Text style={styles.TextBasic}>Partie terminée</Text>
@@ -42,16 +41,10 @@ export default class EndGame extends Component {
                             </View>
                         </View>
                         <View style={styles.content}>
-                            <View style={styles.MenuButtonContainer}>
-                                <Button title="Menu principal" onPress={() => this.props.navigation.navigate('Home')} color="#138a72" />
-                            </View>
-                        </View>
-
-                        <View style={styles.MenuButtonContainer}>
-                            {/* route always executed, even without pressing the button */}
-                            {/*<MenuButton routeName="Home" buttonText="Menu principal" navigation={this.navigation}/> */}
-                        </View>
-                    </View>                
+                            <TouchableOpacity style={styles.MenuButtonContainer} onPress={() => this.props.navigation.push('Home')} color="#138a72" >
+                                <Text style={styles.MenuButtonText}> Retour menu</Text>
+                            </TouchableOpacity>  
+                        </View>      
                 </ImageBackground>
             </View>
         );
@@ -70,6 +63,11 @@ const styles = StyleSheet.create({
         height: '100%',
 
     },
+    content: {
+        flex: 2,
+        alignItems: 'center',
+        marginTop: 80,
+    },
     header: {
         flex: 1,
         alignItems: 'center',
@@ -81,46 +79,34 @@ const styles = StyleSheet.create({
         color: '#ecf0f1',
         marginTop: 16,
     },
-    content: {
-        flex: 2,
-        marginTop: 50,
-    },
     button: {
         marginBottom: 10,
     },
-    MenuButtonContainer:{
-        flex: 2,
-        marginBottom: 30,
-        marginTop: 150,
-    },
-    MenuButton:{
-        
-    },
-    container: {
-        backgroundColor: '#2175BF',
-        borderRadius: 15,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        justifyContent: 'center',
+    MenuButtonContainer : {
         alignItems: 'center',
-    },
-        textButton: {
-        color: '#FFFFFF',
-        fontWeight: 'bold',
-        fontSize: 18,
-    },
-    TextContainer:{
-        marginTop:300,
-        marginBottom:50,
-        color:'red',
-    },
+        width: 210,
+        backgroundColor: 'grey',
+        padding: 30,
+        marginTop:100,
+        borderWidth: 4,
+        borderColor: "#774D3B",
+        
+      },
+      MenuButtonText:{
+        color: 'white',
+        fontSize : 20,
+        //marginTop: -200,
+      },
     TextBasic:{
+        marginTop:250,
         color:'red',
-        fontSize:20,
+        fontSize:25,
+        //marginTop: -200,
     },
     textResult:{
         color:'red',
-        fontSize:40,
+        fontSize:50,
+        fontWeight:'bold',
     }
 
 });
