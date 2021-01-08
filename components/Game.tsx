@@ -3,9 +3,6 @@ import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, Image
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-//import App from '../App';
-
-//import Configuration from "./components/Configuration";
 import Img from '../assets/images/_image';
 import EndGame from './EndGame';
 
@@ -114,10 +111,6 @@ export default class Game extends Component {
         return ;  
     }
 
-    componentWillUnmount() {
-    setTimeout(function(){console.log("game component destroyed"); }, 5000);
-    }
-
     redirectGame = () => {
 
         let navigation = this.props.navigation;
@@ -139,8 +132,8 @@ export default class Game extends Component {
     }
 
     render =() => {
-        const visibilityEnemyCard = this.state.visibilityEnemyCard;
-        const visibilityUserCard = this.state.visibilityUserCard;
+
+        const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3 } = this.state;
 
         return (
             <View style={styles.view}>
@@ -156,7 +149,7 @@ export default class Game extends Component {
                         {/*************ENEMY CARD PLAYED ************ */} 
                         <View style={[styles.containerEnemyCardPlayed, { opacity: visibilityEnemyCard   }]}>
                             <Image
-                                source={Img[this.state.cardToDisplayEnemy]}
+                                source={Img[cardToDisplayEnemy]}
                                 resizeMode="contain"
                                 style={styles.CardPlayed}
                                 />
@@ -171,9 +164,9 @@ export default class Game extends Component {
                         </View>
 
                         {/************* USER CARD PLAYED ************ */}
-                        <View style={[styles.containerUserCardPlayed, { opacity: this.state.visibilityUserCard } ]}>
+                        <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
                             <Image
-                                source={Img[this.state.cardToDisplayUser]}
+                                source={Img[cardToDisplayUser]}
                                 resizeMode="contain"
                                 style={styles.CardPlayed}
                                 />

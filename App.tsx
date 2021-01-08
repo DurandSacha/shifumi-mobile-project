@@ -92,3 +92,6 @@ const styles = StyleSheet.create({
 
 
 export default App;
+
+
+// TODO: remove the applications headbands 

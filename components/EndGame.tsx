@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import Img from '../assets/images/_image';
+import MenuButton from './MenuButton';
+import 'react-native-gesture-handler';
 
+const br = `\n`;
 
 export default class EndGame extends Component {
 
@@ -12,6 +16,8 @@ export default class EndGame extends Component {
         this.state = {
             resultGame : ''
         }
+
+        this.navigation = this.props.navigation;
     }
 
     componentDidMount = () => {
@@ -24,17 +30,29 @@ export default class EndGame extends Component {
 
     render() {
         //this.displayingWhoIsWinner;
+        const { resultGame } = this.state;
         return (
             <View style={styles.view}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>Partie terminée</Text>
-                    <Text style={styles.title}>{this.state.resultGame}</Text>
-                </View>
-                <View style={styles.content}>
-                    <View style={{ marginBottom: 30 }}>
-                        <Button title="Menu principal" onPress={() => this.props.navigation.navigate('Home')} color="#138a72" />
-                    </View>
-                </View>
+                <ImageBackground source={Img.background} style={styles.imageBackground}>
+                    <View style={styles.header}>
+                        <View style={styles.header}>
+                            <View style={styles.TextContainer} >
+                                <Text style={styles.TextBasic}>Partie terminée</Text>
+                                <Text style={styles.textResult}>{resultGame}</Text>
+                            </View>
+                        </View>
+                        <View style={styles.content}>
+                            <View style={styles.MenuButtonContainer}>
+                                <Button title="Menu principal" onPress={() => this.props.navigation.navigate('Home')} color="#138a72" />
+                            </View>
+                        </View>
+
+                        <View style={styles.MenuButtonContainer}>
+                            {/* route always executed, even without pressing the button */}
+                            {/*<MenuButton routeName="Home" buttonText="Menu principal" navigation={this.navigation}/> */}
+                        </View>
+                    </View>                
+                </ImageBackground>
             </View>
         );
     }
@@ -44,6 +62,13 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         backgroundColor: '#1abc9c',
+    },
+    imageBackground: {
+        flex: 4,
+        //borderWidth: -100,
+        width: '100%',
+        height: '100%',
+
     },
     header: {
         flex: 1,
@@ -58,9 +83,18 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 2,
+        marginTop: 50,
     },
     button: {
         marginBottom: 10,
+    },
+    MenuButtonContainer:{
+        flex: 2,
+        marginBottom: 30,
+        marginTop: 150,
+    },
+    MenuButton:{
+        
     },
     container: {
         backgroundColor: '#2175BF',
@@ -75,4 +109,18 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18,
     },
+    TextContainer:{
+        marginTop:300,
+        marginBottom:50,
+        color:'red',
+    },
+    TextBasic:{
+        color:'red',
+        fontSize:20,
+    },
+    textResult:{
+        color:'red',
+        fontSize:40,
+    }
+
 });
