@@ -15,18 +15,20 @@ export default class Buttons extends Component {
         super(props);
     }
 
+    /*
     navigate = () => {
         this.props.navigation.navigate(this.props.routeName);
         // TODO: integrate routes with params :  navigation.navigate('EndGame',{ result: ['victory'] });
     }
+    */
     
 
     render() {
+        let {navigation, buttonText, NameRenderView} = this.props
         return ( 
             <View style={styles.view}>
-                <TouchableOpacity onPress={this.navigate()}>
-                    <Text>Button</Text>
-                    <Text>{this.props.buttonText}</Text>
+                <TouchableOpacity style={styles.MenuButtonContainer} onPress={() => navigation.push(NameRenderView)} color="#138a72">
+                    <Text style={styles.MenuButtonText} >{buttonText}</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -34,8 +36,21 @@ export default class Buttons extends Component {
 }
 
 const styles = StyleSheet.create({
-    view: {
-        flex: 1,
-        backgroundColor: '#1abc9c',
+  
+    MenuButtonText:{
+        color: 'white',
+        fontSize : 20,
+      },
+    button: {
+    marginBottom: 15,
     },
+    MenuButtonContainer : {
+        alignItems: 'center',
+        width: 210,
+        backgroundColor: 'grey',
+        padding: 30,
+        marginTop: 20,
+        borderWidth: 4,
+        borderColor: "#774D3B",
+      },
 });

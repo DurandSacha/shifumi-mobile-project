@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Button, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import Img from '../assets/images/_image';
-import MenuButton from './MenuButton';
+import Buttons from './Layout/Buttons';
 import 'react-native-gesture-handler';
 
 const br = `\n`;
@@ -22,15 +22,12 @@ export default class EndGame extends Component {
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
                         <View style={styles.header}>
                             <View style={styles.TextContainer} >
-                                <Text style={styles.TextBasic}>Partie terminée</Text>
-                                <Text style={styles.textResult}>{result}</Text>
+                                <Text style={styles.TextBasic}>Partie terminée</Text><Text style={styles.textResult}>{result}</Text>
                             </View>
                         </View>
                         <View style={styles.content}>
-                            <TouchableOpacity style={styles.MenuButtonContainer} onPress={() => this.props.navigation.push('Home')} color="#138a72" >
-                                <Text style={styles.MenuButtonText}> Retour menu</Text>
-                            </TouchableOpacity>  
-                        </View>      
+                            <Buttons buttonText="Retour Menu" navigation={this.navigation} NameRenderView="Home" />
+                        </View>     
                 </ImageBackground>
             </View>
         );

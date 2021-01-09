@@ -8,6 +8,7 @@ import Configuration from "./components/Configuration";
 import 'react-native-gesture-handler';
 import {Scene, Router} from 'react-native-router-flux';
 import Img from './assets/images/_image';
+import Buttons from './components/Layout/Buttons';
 
 // This file init the projet, and displaying the home menu with navigation
 function HomeScreen({ navigation }) {
@@ -18,13 +19,8 @@ function HomeScreen({ navigation }) {
             <Text style={styles.title}>Shi fu mi</Text>
         </View>
         <View style={styles.content}>
-            <TouchableOpacity style={styles.MenuButtonContainer} onPress={() => navigation.push('Game')} color="#138a72" >
-                <Text style={styles.MenuButtonText}> Jeu solo</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.MenuButtonContainer} onPress={() => navigation.push('Configuration')} color="#138a72" >
-                <Text style={styles.MenuButtonText}> Configuration</Text>
-            </TouchableOpacity>
+            <Buttons buttonText="Jeu Solo" navigation={navigation} NameRenderView="Game" />
+            <Buttons buttonText="Configuration" navigation={navigation} NameRenderView="Configuration" />
         </View>
       </ImageBackground>
   </View>
