@@ -4,7 +4,10 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Img from '../assets/images/_image';
-import CircleScore from './Layout/CircleScore';
+//import CircleScore from './Layout/CircleScore';
+import CircleScore from '../components/Layout/CircleScore';
+import Card from '../components/Layout/Card';
+import Buttons from '../components/Layout/Buttons';
 
 const br = `\n`;
 
@@ -101,10 +104,6 @@ export default class Game extends Component {
         this.updateGame(result,userChoice,MachineChoice);
         this.forceUpdate();
         this.redirectGame();
-        
-        console.log('manche : ' + this.currentSet + '====================');
-        console.log('machine: ' + this.pointMachine);
-        console.log('user: ' + this.pointUser);
         return ;  
     }
 
@@ -136,22 +135,16 @@ export default class Game extends Component {
                     <View style={styles.header}>
                         <Image source={Img.dosCarte} resizeMode="contain" style={styles.enemyCard}/>
                         <View style={[styles.containerEnemyCardPlayed, { opacity: visibilityEnemyCard   }]}>
-                            <Image source={Img[cardToDisplayEnemy]} resizeMode="contain" style={styles.CardPlayed} />
+                            <Image source={Img[cardToDisplayEnemy]} resizeMode="contain" style={styles.CardPlayedEnemy} />
                         </View>
 
-                        <Text style={styles.BattleText}>Choisissez une carte</Text>
-
-                        <View style={styles.AroundScoreContainer}>
-                            <View style={[ styles.AroundScore,{ backgroundColor: colorSet1 }]} ></View>
-                            <View style={[ styles.AroundScore,{ backgroundColor: colorSet2 }]} ></View>
-                            <View style={[ styles.AroundScore,{ backgroundColor: colorSet3 }]} ></View>
+                        <View>
+                            <Text style={styles.BattleText}>Choisissez une carte</Text>
+                            <CircleScore colorSet1={colorSet1} colorSet2={colorSet2} colorSet3={colorSet3} />
                         </View>
-
-                        <CircleScore colorset1 ={colorSet1} colorset2 ={colorSet2} colorset3 ={colorSet3} />
-
 
                         <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
-                            <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayed} />
+                            <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} />
                         </View>
 
                         {/*************  CHOOSE A CARD ********************/}
@@ -261,11 +254,18 @@ const styles = StyleSheet.create({
         width: 1500,
         height: 300,
     },
-    CardPlayed: {
-        width: 50,
-        height: 40,
+    CardPlayedUser: {
+        width: 90,
+        height: 60,
+        marginTop: 110,
+        marginBottom: 75,
+    },
+    CardPlayedEnemy: {
+        width: 80,
+        height: 55,
         marginTop: -110,
         marginBottom: 75,
+
     },
     containerEnemyCardPlayed: {
         transform: [
@@ -277,32 +277,17 @@ const styles = StyleSheet.create({
     containerUserCardPlayed: {
         transform: [
             { rotate: "-90deg" },
-            { translateX: 70 },
-            { translateY: 100 }
+            { translateX: 0 },
+            { translateY: -20 }
         ],
     },
     BattleText: {
         fontSize: 17,
-        marginTop: 0,
+        marginTop: -70,
         fontWeight: "bold",
     },
     setText:{
         fontSize: 15,
-        marginBottom: 0,
-    },
-    AroundScore:{
-        width: 30,
-        height: 30,
-        borderRadius: 150/2,
-        justifyContent: 'center',
-        backgroundColor: '#888888',
-        marginRight: 5
-    },
-    AroundScoreContainer:{
-        flex: 1, 
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
-        alignItems: 'stretch',
-        marginTop: 5,
+        marginBottom: 10,
     }
 });

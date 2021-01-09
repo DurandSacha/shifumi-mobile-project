@@ -12,28 +12,27 @@ export default class CircleScore extends Component {
     
     constructor(props) {
         super(props);
-
-        this.state = {
-            colorSet1 : this.props.colorSet1,
-            colorSet2 : this.props.colorSet2,
-            colorSet3 : this.props.colorSet3,
-        }
     }
 
     
     render() {
+        let { colorSet1, colorSet2, colorSet3 } = this.props;
+
+        
         return ( 
-            <View style={styles.AroundScoreContainer}>
-                <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet1 }]} ></View>
-                <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet2 }]} ></View>
-                <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet3 }]} ></View>
+            <View>
+                <View style={styles.AroundScoreContainer}>
+                    <View style={[ styles.AroundScore,{ backgroundColor: colorSet1 }]} ></View>
+                    <View style={[ styles.AroundScore,{ backgroundColor: colorSet2 }]} ></View>
+                    <View style={[ styles.AroundScore,{ backgroundColor: colorSet3 }]} ></View>
+                </View>
             </View>
         );
     }
 }
 const styles = StyleSheet.create({
     view: {
-        flex: 1,
+        flex: 0,
         backgroundColor: '#1abc9c',
     },
     AroundScore:{
@@ -42,10 +41,10 @@ const styles = StyleSheet.create({
         borderRadius: 150/2,
         justifyContent: 'center',
         backgroundColor: '#888888',
-        marginRight: 5
+        marginRight: 0,
     },
     AroundScoreContainer:{
-        flex: 1, 
+        flex: 0, 
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         alignItems: 'stretch',
