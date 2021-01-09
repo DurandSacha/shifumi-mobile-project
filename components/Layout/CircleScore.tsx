@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Button, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
-import Img from '../assets/images/_image';
-
-
-
-// NOT IMPLEMENTED
 
 export default class CircleScore extends Component {
 
@@ -14,7 +9,6 @@ export default class CircleScore extends Component {
         super(props);
     }
 
-    
     render() {
         let { colorSet1, colorSet2, colorSet3 } = this.props;
 

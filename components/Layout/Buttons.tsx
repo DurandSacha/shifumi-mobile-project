@@ -1,27 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { View, Text, Button, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
-import Img from '../assets/images/_image';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-
-// NOT IMPLEMENTED
-
-// props.routeName
-// props.buttonText
 export default class Buttons extends Component {
 
-    
     constructor(props) {
         super(props);
     }
-
-    /*
-    navigate = () => {
-        this.props.navigation.navigate(this.props.routeName);
-        // TODO: integrate routes with params :  navigation.navigate('EndGame',{ result: ['victory'] });
-    }
-    */
-    
 
     render() {
         let {navigation, buttonText, NameRenderView} = this.props

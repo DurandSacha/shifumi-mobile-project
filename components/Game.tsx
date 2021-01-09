@@ -108,10 +108,7 @@ export default class Game extends Component {
     }
 
     redirectGame = () => {
-        //let result = null;
         var navigation = this.props.navigation;
-        // ENDGAME 
-        // TODO: Bug with alltime victory
         if (this.currentSet >= 3 && this.pointMachine >= 2 ){
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['Défaite'] });

@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Game from "./components/Game";
 import EndGame from "./components/EndGame";
 import Configuration from "./components/Configuration";
 import 'react-native-gesture-handler';
-import {Scene, Router} from 'react-native-router-flux';
 import Img from './assets/images/_image';
 import Buttons from './components/Layout/Buttons';
 
@@ -30,7 +29,7 @@ function HomeScreen({ navigation }) {
 /* Function for routing */ 
 function ConfigurationScreen() {
   return (
-    <Configuration/>
+    <Configuration navigation={navigation}/>
   );
 }
 
@@ -39,7 +38,7 @@ function GameScreen({ navigation }) {
   return ( <Game navigation={navigation}/> );
 }
 
-
+/* Function for routing */
 function EndGameScreen({ navigation }) {
   const route = useRoute();
   const { result } = route.params;
