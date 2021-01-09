@@ -4,6 +4,7 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Img from '../assets/images/_image';
+import CircleScore from './Layout/CircleScore';
 
 const br = `\n`;
 
@@ -101,25 +102,27 @@ export default class Game extends Component {
         this.forceUpdate();
         this.redirectGame();
         
-        console.log(this.pointMachine);
-        console.log(this.pointUser);
+        console.log('manche : ' + this.currentSet + '====================');
+        console.log('machine: ' + this.pointMachine);
+        console.log('user: ' + this.pointUser);
         return ;  
     }
 
     redirectGame = () => {
         //let result = null;
-        let navigation = this.props.navigation;
+        var navigation = this.props.navigation;
         // ENDGAME 
         // TODO: Bug with alltime victory
         if (this.currentSet >= 3 && this.pointMachine >= 2 ){
             setTimeout(function(){
-                navigation.navigate('EndGame',{ result: ['defeat'] });
+                navigation.navigate('EndGame',{ result: ['Défaite'] });
              }, 100);
         }
-        if(this.currentSet >= 3 && this.pointUser >= 2) { 
+        else if (this.currentSet >= 3 && this.pointUser >= 2){
+            //console.log('victory part'); 
             setTimeout(function(){
-                navigation.navigate('EndGame',{ result: ['victory'] });
-             }, 100); // 700 
+                navigation.navigate('EndGame',{ result: ['Victoire'] });
+             }, 100);
         }
     }
 
@@ -139,10 +142,13 @@ export default class Game extends Component {
                         <Text style={styles.BattleText}>Choisissez une carte</Text>
 
                         <View style={styles.AroundScoreContainer}>
-                            <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet1 }]} ></View>
-                            <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet2 }]} ></View>
-                            <View style={[ styles.AroundScore,{ backgroundColor: this.state.colorSet3 }]} ></View>
+                            <View style={[ styles.AroundScore,{ backgroundColor: colorSet1 }]} ></View>
+                            <View style={[ styles.AroundScore,{ backgroundColor: colorSet2 }]} ></View>
+                            <View style={[ styles.AroundScore,{ backgroundColor: colorSet3 }]} ></View>
                         </View>
+
+                        <CircleScore colorset1 ={colorSet1} colorset2 ={colorSet2} colorset3 ={colorSet3} />
+
 
                         <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
                             <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayed} />

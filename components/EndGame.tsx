@@ -12,33 +12,18 @@ export default class EndGame extends Component {
     
     constructor(props) {
         super(props);
-
-        this.state = {
-            resultGame : null
-        }
-
         this.navigation = this.props.navigation;
     }
 
-    componentDidMount = () => {
-        console.log(this.props.result);
-        if (this.props.result == 'victory'){
-             this.setState({resultGame: 'Victoire'})
-        }
-        else { this.setState({resultGame: 'Défaite'}) }
-    }
-    
-
     render() {
-        //this.displayingWhoIsWinner;
-        const { resultGame } = this.state;
+        let { result } = this.props
         return (
             <View style={styles.view}>
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
                         <View style={styles.header}>
                             <View style={styles.TextContainer} >
                                 <Text style={styles.TextBasic}>Partie terminée</Text>
-                                <Text style={styles.textResult}>{resultGame}</Text>
+                                <Text style={styles.textResult}>{result}</Text>
                             </View>
                         </View>
                         <View style={styles.content}>
