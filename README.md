@@ -4,13 +4,19 @@ The shi fu mi application is a mobile application. The application consists of a
 
 ## Technology
 
-    - React Native
-    - Expo
+- React Native
+- Expo
 
 ## Use this project
 
 ```bash
 $ git clone https://github.com/DurandSacha/shifumi-mobile-project
+```
+
+```bash
 $ npm install
-# expo start
+```
+
+```bash
+$ expo start
 ```
