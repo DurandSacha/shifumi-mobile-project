@@ -52,39 +52,25 @@ export default class Game extends Component {
         });
 
         let currentSet = this.currentSet;
-        if (currentSet == 1){
-            if (result == "Gagné"){
-                this.pointUser = this.pointUser + 1 ;
-                this.setState({colorSet1: 'green'});
+
+        let i = 0
+        while (i <= 3) {
+            i = i + 1;
+            if (currentSet == i){
+                if(result == "null"){}
+                else if (result == "Gagné"){
+                    this.pointUser = this.pointUser + 1 ;
+                    if (currentSet == 1) { this.setState({colorSet1 : 'green'}) };
+                    if (currentSet == 2) { this.setState({colorSet2 : 'green'}) };
+                    if (currentSet == 3) { this.setState({colorSet3 : 'green'}) };
+                }
+                else{
+                    if (currentSet == 1) { this.setState({colorSet1 : 'red'}) };
+                    if (currentSet == 2) { this.setState({colorSet2 : 'red'}) };
+                    if (currentSet == 3) { this.setState({colorSet3 : 'red'}) };
+                    this.pointMachine = this.pointMachine + 1 ;
+                }
             }
-            else if(result == "null"){}
-            else{
-                this.setState({colorSet1: 'red'});
-                this.pointMachine = this.pointMachine + 1 ;
-            }
-        }
-        else if(currentSet == 2){
-            if (result == "Gagné"){
-                this.pointUser = this.pointUser + 1 ;
-                this.setState({colorSet2: 'green'});
-            }
-            else if(result == "null"){}
-            else{
-                this.setState({colorSet2: 'red'});
-                this.pointMachine = this.pointMachine + 1 ;
-            }
-        }
-        else if(currentSet == 3){
-            if (result == "Gagné"){
-                this.pointUser = this.pointUser + 1 ;
-                this.setState({colorSet3: 'green'});
-                currentSet == currentSet + 10
-            }
-            else if(result == "null"){}
-            else{
-                this.setState({colorSet3: 'red'});
-                this.pointMachine = this.pointMachine + 1 ;
-            }  
         }
     }
 
@@ -112,13 +98,13 @@ export default class Game extends Component {
         if (this.currentSet >= 3 && this.pointMachine >= 2 ){
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['Défaite'] });
-             }, 600);
+             }, 700);
         }
         else if (this.currentSet >= 3 && this.pointUser >= 2){
             //console.log('victory part'); 
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['Victoire'] });
-             }, 600);
+             }, 700);
         }
     }
 
@@ -143,6 +129,7 @@ export default class Game extends Component {
                         <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
                             <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} />
                         </View>
+
 
                         <Text style={styles.setText}> Coup n°{this.currentSet + 1} </Text>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
