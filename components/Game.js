@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground} from 'react-native';
 import 'react-native-gesture-handler';
 import Img from '../assets/images/_image';
-import CircleScore from '../components/Layout/CircleScore';
+import CircleScore from './Layout/CircleScore';
 import Card from './Layout/Card';
 
 const br = `\n`;
@@ -125,7 +125,6 @@ export default class Game extends Component {
                         <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
                             <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} />
                         </View>
-
 
                         <Text style={styles.setText}> Coup n°{this.currentSet + 1} </Text>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>

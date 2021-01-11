@@ -12,11 +12,11 @@ export default class EndGame extends Component {
     
     constructor(props) {
         super(props);
-        this.navigation = this.props.navigation;
     }
 
     render() {
-        let { result } = this.props
+        let { result } = this.props;
+        const { navigation} = this.props;
         return (
             <View style={styles.view}>
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
@@ -26,7 +26,7 @@ export default class EndGame extends Component {
                             </View>
                         </View>
                         <View style={styles.content}>
-                            <Buttons buttonText="Retour Menu" navigation={this.navigation} NameRenderView="Home" />
+                            <Buttons buttonText="Retour Menu" navigation={navigation} NameRenderView="Home" />
                         </View>     
                 </ImageBackground>
             </View>
@@ -41,10 +41,8 @@ const styles = StyleSheet.create({
     },
     imageBackground: {
         flex: 4,
-        //borderWidth: -100,
         width: '100%',
         height: '100%',
-
     },
     content: {
         flex: 2,
@@ -78,13 +76,11 @@ const styles = StyleSheet.create({
       MenuButtonText:{
         color: 'white',
         fontSize : 20,
-        //marginTop: -200,
       },
     TextBasic:{
         marginTop:250,
         color:'red',
         fontSize:25,
-        //marginTop: -200,
     },
     textResult:{
         color:'red',

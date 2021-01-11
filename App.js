@@ -27,7 +27,7 @@ function HomeScreen({ navigation }) {
 }
 
 /* Function for routing */ 
-function ConfigurationScreen() {
+function ConfigurationScreen({ navigation }) {
   return (
     <Configuration navigation={navigation}/>
   );
