@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     containerEnemyCardPlayed: {
         transform: [
             { rotate: "90deg" },
-            { translateX: -100 },
+            { translateX: -130 },
             { translateY: 100 }
         ],
     },
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     },
     BattleText: {
         fontSize: 17,
-        marginTop: -70,
+        marginTop: -45,
         fontWeight: "bold",
     },
     setText:{
