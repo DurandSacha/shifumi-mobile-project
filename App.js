@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, AsyncStorage } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Game from "./components/Game";
@@ -8,6 +8,55 @@ import Configuration from "./components/Configuration";
 import 'react-native-gesture-handler';
 import Img from './assets/images/_image';
 import Buttons from './components/Layout/Buttons';
+import Parse from 'parse';
+
+/*
+parse-server --appId 123456789 --masterKey 123456789 --databaseURI mongodb://localhost/shifumi
+*/
+
+Parse.initialize("123456789");
+Parse.serverURL = 'http://localhost:1337/';
+
+/*
+createUser = async (username, email, password, color) => {
+  const user = new Parse.User();
+
+  user.set("username", username);
+  user.set("email", email);
+  user.set("password", password);
+  user.set("color", color);
+
+  return user.signUp()
+      .then((userObj) => {
+
+          localStorage.setItem("userId", userObj.id);
+
+          return userObj;
+      }, (error) => {
+          // Execute any logic that should take place if the save fails.
+          // error is a Parse.Error with an error code and message.
+          console.error('Failed to create new object, with error code: ' + error.message);
+
+          return null;
+      });
+}
+
+*/
+
+/****** TRY 2 **************************/
+const user = new Parse.User();
+user.set("username", "sacha");
+user.set("password", "000000");
+user.set("email", "email@example.com");
+//localStorage.setItem("userId", user.id);
+
+//const user = await Parse.User.logIn("sacha", "000000");
+//const currentUser = Parse.User.current();
+console.log(user);
+
+
+
+
 
 // This file init the projet, and displaying the home menu with navigation
 function HomeScreen({ navigation }) {
@@ -106,5 +155,13 @@ const styles = StyleSheet.create({
       marginBottom: 15,
   },
 });
+
+
+/**************************      PARSING         ***************************** */
+
+
+
+
+/***************End PARSING **************************/
 
 export default App;

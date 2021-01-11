@@ -10,7 +10,6 @@ export default class CircleScore extends Component {
     render() {
         let { colorSet1, colorSet2, colorSet3 } = this.props;
 
-        
         return ( 
             <View>
                 <View style={styles.AroundScoreContainer}>

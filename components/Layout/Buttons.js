@@ -9,12 +9,13 @@ export default class Buttons extends Component {
 
     render() {
         let {navigation, buttonText, NameRenderView} = this.props
+
         return ( 
-            <View style={styles.view}>
+            
                 <TouchableOpacity style={styles.MenuButtonContainer} onPress={() => navigation.push(NameRenderView)} color="#138a72">
                     <Text style={styles.MenuButtonText} >{buttonText}</Text>
                 </TouchableOpacity>
-            </View>
+            
         );
     }
 }

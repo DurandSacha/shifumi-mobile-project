@@ -5,7 +5,30 @@ import Img from '../assets/images/_image';
 import Buttons from './Layout/Buttons';
 import 'react-native-gesture-handler';
 
+const Parse = require('parse/react-native.js');
+import { AsyncStorage } from 'react-native';
+Parse.setAsyncStorage(AsyncStorage);
+Parse.initialize("YOUR_APP_ID", "YOUR_JAVASCRIPT_KEY");
+Parse.serverURL = 'http://YOUR_PARSE_SERVER:1337/parse';
+
 const br = `\n`;
+
+const GameScore = Parse.Object.extend("GameScore");
+const gameScore = new GameScore();
+
+gameScore.set("score", 1337);
+gameScore.set("playerName", "Sean Plott");
+gameScore.set("cheatMode", false);
+
+gameScore.save()
+.then((gameScore) => {
+  // Execute any logic that should take place after the object is saved.
+  alert('New object created with objectId: ' + gameScore.id);
+}, (error) => {
+  // Execute any logic that should take place if the save fails.
+  // error is a Parse.Error with an error code and message.
+  alert('Failed to create new object, with error code: ' + error.message);
+});
 
 export default class EndGame extends Component {
 

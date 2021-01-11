@@ -90,7 +90,7 @@ export default class Game extends Component {
     }
 
     redirectGame = () => {
-        var navigation = this.props.navigation;
+        let navigation = this.props.navigation;
         if (this.currentSet >= 3 && this.pointMachine >= 2 ){
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['Défaite'] });
@@ -126,20 +126,12 @@ export default class Game extends Component {
                             <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} />
                         </View>
 
-                        <Text style={styles.setText}> Coup n°{this.currentSet + 1} </Text>
+                        <Text style={styles.setText}> Coup n°{ this.currentSet } </Text>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
-
-                            <TouchableOpacity onPress={() => this.MakeSet("ciseau")}>
-                                <Card icon={Img.ciseau} color="rgba(191,44,44,1)"/>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={() => this.MakeSet("feuille")}>
-                                <Card icon={Img.feuille} color="rgba(242,203,5,1)"/>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={() => this.MakeSet("pierre")}>
-                                <Card icon={Img.pierre} color="rgba(74,140,91,1)"/>
-                            </TouchableOpacity>
+                            
+                            <Card onPress={() => this.MakeSet("ciseau")} icon={Img.ciseau} color="rgba(191,44,44,1)"/>
+                            <Card onPress={() => this.MakeSet("feuille")} icon={Img.feuille} color="rgba(242,203,5,1)"/>
+                            <Card onPress={() => this.MakeSet("pierre")} icon={Img.feuille} color="rgba(74,140,91,1)"/>
                         </View>
                     </View>
                 </ImageBackground>

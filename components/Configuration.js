@@ -17,6 +17,7 @@ export default class Configuration extends Component {
         }
 
         // SAVE AND EXPORT CONFIGURATION 
+        // use redux ? 
     }
 
     render() {
