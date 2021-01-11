@@ -6,6 +6,7 @@ The shi fu mi application is a mobile application. The application consists of a
 
 - React Native
 - Expo
+- Parse server ( for back end )
 
 ## Use this project
 
