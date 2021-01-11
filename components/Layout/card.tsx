@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { View, StyleSheet, Image} from 'react-native';
-//import Img from '.../assets/images/_image';
-import Game from '../Game';
-
-// NOT IMPLEMENTED
 
 export default class Card extends Component {
 

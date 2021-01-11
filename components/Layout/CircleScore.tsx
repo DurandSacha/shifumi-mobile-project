@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { View, Text, Button, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 export default class CircleScore extends Component {
 
-    
     constructor(props) {
         super(props);
     }

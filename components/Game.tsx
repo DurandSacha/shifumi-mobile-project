@@ -1,13 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground} from 'react-native';
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import Img from '../assets/images/_image';
-//import CircleScore from './Layout/CircleScore';
 import CircleScore from '../components/Layout/CircleScore';
 import Card from './Layout/Card';
-import Buttons from '../components/Layout/Buttons';
 
 const br = `\n`;
 
