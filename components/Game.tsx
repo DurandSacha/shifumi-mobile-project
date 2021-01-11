@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Img from '../assets/images/_image';
 //import CircleScore from './Layout/CircleScore';
 import CircleScore from '../components/Layout/CircleScore';
-import Card from '../components/Layout/Card';
+import Card from './Layout/Card';
 import Buttons from '../components/Layout/Buttons';
 
 const br = `\n`;
@@ -112,13 +112,13 @@ export default class Game extends Component {
         if (this.currentSet >= 3 && this.pointMachine >= 2 ){
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['Défaite'] });
-             }, 100);
+             }, 600);
         }
         else if (this.currentSet >= 3 && this.pointUser >= 2){
             //console.log('victory part'); 
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['Victoire'] });
-             }, 100);
+             }, 600);
         }
     }
 
@@ -144,30 +144,20 @@ export default class Game extends Component {
                             <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} />
                         </View>
 
-                        {/*************  CHOOSE A CARD ********************/}
                         <Text style={styles.setText}> Coup n°{this.currentSet + 1} </Text>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
-                            <View style={styles.container1}>
-                                <View style={styles.rect}>
-                                <TouchableOpacity onPress={() => this.MakeSet("ciseau")}>
-                                    <Image source={Img.ciseau} resizeMode="contain" style={styles.image1} />
-                                </TouchableOpacity>
-                                </View>
-                            </View>
-                            <View style={styles.container2}>
-                                <View style={styles.rect}>
-                                    <TouchableOpacity onPress={() => this.MakeSet("feuille")}>
-                                        <Image source={Img.feuille} resizeMode="contain" style={styles.image1} />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            <View style={styles.container3}>
-                                <View style={styles.rect}>
-                                    <TouchableOpacity onPress={() => this.MakeSet("pierre")}>
-                                        <Image source={Img.pierre} resizeMode="contain" style={styles.image1} />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
+
+                            <TouchableOpacity onPress={() => this.MakeSet("ciseau")}>
+                                <Card icon={Img.ciseau} color="rgba(191,44,44,1)"/>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => this.MakeSet("feuille")}>
+                                <Card icon={Img.feuille} color="rgba(242,203,5,1)"/>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => this.MakeSet("pierre")}>
+                                <Card icon={Img.pierre} color="rgba(74,140,91,1)"/>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </ImageBackground>
