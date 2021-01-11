@@ -3,7 +3,9 @@ const Img = {
     ciseau: require('./ciseau.png'),
     pierre : require('./pierre.png'),
     background : require('./Background.png'),
-    dosCarte : require('./dosCarte4.png')
+    dosCarte : require('./dosCarte4.png'),
+    noSelected : require('./noSelected.png'),
+    selected : require('./selected.png'),
 }
 
 export default Img;
