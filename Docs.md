@@ -1,22 +1,30 @@
   PROTOCOLE : 
 
 0. install mongoDB, python, parse 
-1. create cloud/config.js
+1. create cloud/main.js
 2. create config.json and set good variable
-3. launch : parse-server --appId 123456789 --masterKey 123456789 --databaseURI mongodb://localhost/shifumi
+3. launch : parse-server --appId 0123456789 --masterKey 0123456789 --databaseURI mongodb://localhost/shifumi
 4. Test With PostMan (http://localhost:1337/parse/classes/_U) Get/Post ( { "username" : "stan", "email" : "sacha6623@gmail.com", "password" : "000000" })
 - Header : Content/Type : application/json
-- Header : X-Parse-Application-Id : 123456789
+- Header : X-Parse-Application-Id : 0123456789
 
 5. Connect application (HERE) ( TRY GET/POST REQUEST WITH APPLICATION)  ( Help : SDK javascript )
 6. Launch application and server simultaneously
 7. Update Parse Code for multi
-8. Deploy
+8. Deploy server (api+bdd)
+
+
+
 
 0. launch dashboard ( it's works ) :
     - npm install -g parse-dashboard
-    - parse-dashboard --dev --appId 123456789 --masterKey 123456789 --serverURL "http://localhost:1337/parse" --appName ShiFuMi
+    - parse-dashboard --dev --appId 0123456789 --masterKey 0123456789 --serverURL "http://localhost:1337/parse" --appName ShiFuMi
     - access http://localhost:4040/apps
+
+
+
+
+
 
 
 ------------------------------------------------------------------------------- 

@@ -8,55 +8,76 @@ import Configuration from "./components/Configuration";
 import 'react-native-gesture-handler';
 import Img from './assets/images/_image';
 import Buttons from './components/Layout/Buttons';
-import Parse from 'parse';
+import 'localstorage-polyfill';
+import config from './config.json';
+
 
 /*
-parse-server --appId 123456789 --masterKey 123456789 --databaseURI mongodb://localhost/shifumi
+run : parse-server --appId 123456789 --masterKey 123456789 --databaseURI mongodb://localhost/shifumi
 */
 
-Parse.initialize("123456789");
-Parse.serverURL = 'http://localhost:1337/';
+/* Configuring parse */
+const Parse = require('parse/react-native.js');
+Parse.setAsyncStorage(localStorage);
+Parse.initialize("0123456789", "0123456789");
+Parse.serverURL = 'http://10.0.2.2:1337/parse/';  // localhost or 10.0.2.2
 
-/*
-createUser = async (username, email, password, color) => {
+Parse.appId = '0123456789';
+Parse.applicationId = '0123456789';
+Parse.databaseURI = 'mongodb://10.0.2.2:27017/shifumi';
+Parse.restAPIKey = '0123456789';
+
+
+console.log('app.js executed');
+
+newUser = async () => {
   const user = new Parse.User();
+  user.set("username", "name02");
+  user.set("password", "pass02");
+  user.set("email", "sacha.durand@akarah.com");
 
-  user.set("username", username);
-  user.set("email", email);
-  user.set("password", password);
-  user.set("color", color);
+  //console.log(user);
+  try {
+    user.signUp();
+    localStorage.setItem("userId", user.id);
+    //await user.save();
+    
+  }
+  catch (error) {
+  // Show the error message somewhere and let the user try again.
+  alert("Error: " + error.code + " " + error.message);
+  }
 
-  return user.signUp()
-      .then((userObj) => {
-
-          localStorage.setItem("userId", userObj.id);
-
-          return userObj;
-      }, (error) => {
-          // Execute any logic that should take place if the save fails.
-          // error is a Parse.Error with an error code and message.
-          console.error('Failed to create new object, with error code: ' + error.message);
-
-          return null;
-      });
 }
+newUser();
 
-*/
 
-/****** TRY 2 **************************/
+/********************************** */
+
 const user = new Parse.User();
+
 user.set("username", "sacha");
+user.set("email", "sacha@akarah.com");
 user.set("password", "000000");
-user.set("email", "email@example.com");
-//localStorage.setItem("userId", user.id);
 
-//const user = await Parse.User.logIn("sacha", "000000");
-//const currentUser = Parse.User.current();
-console.log(user);
+user.signUp()
+  .then((userObj) => {
+    alert('user signed function 2');
+      localStorage.setItem("userId", userObj.id);
+
+      return userObj;
+  }, (error) => {
+      // Execute any logic that should take place if the save fails.
+      // error is a Parse.Error with an error code and message.
+      console.error('Failed to create new object, with error code: ' + error.message);
+
+      return null;
+  });
 
 
 
 
+/********************************** */
 
 // This file init the projet, and displaying the home menu with navigation
 function HomeScreen({ navigation }) {

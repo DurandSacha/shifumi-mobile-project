@@ -131,7 +131,7 @@ export default class Game extends Component {
                             
                             <Card onPress={() => this.MakeSet("ciseau")} icon={Img.ciseau} color="rgba(191,44,44,1)"/>
                             <Card onPress={() => this.MakeSet("feuille")} icon={Img.feuille} color="rgba(242,203,5,1)"/>
-                            <Card onPress={() => this.MakeSet("pierre")} icon={Img.feuille} color="rgba(74,140,91,1)"/>
+                            <Card onPress={() => this.MakeSet("pierre")} icon={Img.pierre} color="rgba(74,140,91,1)"/>
                         </View>
                     </View>
                 </ImageBackground>
