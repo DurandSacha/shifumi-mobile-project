@@ -21,3 +21,7 @@ $ npm install
 ```bash
 $ expo start
 ```
+## Project using back end parse server from other repository 
+
+- Parse server deployed with heroku on domain 
+- parse server using mongoDB atlas
