@@ -30,5 +30,3 @@ you can check the parse server here :
 ```bash
 https://shifumi-game-akarah.herokuapp.com/parse/classes/User
 ```
-
-https://shifumi-game-akarah.herokuapp.com/parse/classes/User
