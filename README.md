@@ -25,3 +25,10 @@ $ expo start
 
 - Parse server deployed with heroku on domain 
 - parse server using mongoDB atlas
+
+you can check the parse server here : 
+```bash
+https://shifumi-game-akarah.herokuapp.com/parse/classes/User
+```
+
+https://shifumi-game-akarah.herokuapp.com/parse/classes/User
