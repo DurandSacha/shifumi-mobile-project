@@ -10,34 +10,18 @@ import 'react-native-gesture-handler';
 import Img from './assets/images/_image';
 import Buttons from './components/Layout/Buttons';
 import 'localstorage-polyfill';
-import config from './config.json';
-
-
-/*
-run : parse-server --appId 123456789 --masterKey 123456789 --databaseURI mongodb://localhost/shifumi
-*/
-
-/* Configuring parse */
 const Parse = require('parse/react-native.js');
 
-//Parse.initialize("YOUR_APP_ID", "YOUR_JAVASCRIPT_KEY", "YOUR_MASTERKEY");
-
-Parse.setAsyncStorage(localStorage);
-Parse.initialize("0123456789", "0123456789");
-Parse.serverURL = 'http://192.168.2.66:1337/parse/';  // localhost or 10.0.2.2 or 0.0.0.0 or 192.168.2.66
-
 /*
-Parse.appId = '0123456789';
-Parse.applicationId = '0123456789';
-Parse.databaseURI = 'mongodb://10.0.2.2:27017/shifumi';
-Parse.restAPIKey = '0123456789';
+Back end (Parse Server) is available and deployed with : https://github.com/DurandSacha/parse-server-example at https://shifumi-game-akarah.herokuapp.com/parse/function/hello
+- Heroku app with connected github
+- MongoDB is configured with : https://cloud.mongodb.com/v2 
 */
 
+Parse.setAsyncStorage(localStorage);
+Parse.initialize("0123456789", "0123456789", "0123456789");
+Parse.serverURL = 'https://shifumi-game-akarah.herokuapp.com/parse/'; 
 
-//console.log('app.js executed');
-
-
-/***************** SIGN UP TEST  ***************** */
 
 newUser = async () => {
   const user = new Parse.User();
@@ -45,56 +29,45 @@ newUser = async () => {
   user.set("password", "pass02");
   user.set("email", "sacha.durand@akarah.com");
 
-  console.log(user);
+  //console.log(user);
   try {
     user.signUp();
     localStorage.setItem("userId", user.id);
     //await user.save();
+    console.log(JSON.stringify(user))
     
   }
   catch (error) {
   // Show the error message somewhere and let the user try again.
-  alert("Error: " + error.code + " " + error.message);
+  console.log("Error: " + error.code + " " + error.message);
   }
 }
 newUser();
 
 
-/*****************FETCHING WITH HEADER ***************** */
-
-/*
+/***************** ONE SIGN UP REQUEST ***************** */
 
 var myHeaders = new Headers();
 myHeaders.append("X-Parse-Application-Id", "0123456789");
 myHeaders.append("Content-Type", "application/json");
 
 var params = { 
-  method: 'GET',
+  method: 'POST',
   headers: myHeaders,
-  //mode: 'cors',
-  //cache: 'default' };
+  body: {"username":"sachaD", "email":"sacha.durand@akarah.com", "email": "akarah@com" }
 }
 
-fetch('http://192.168.2.66:1337/parse/classes/_User', params).then(function(response) {
-  console.log(response);
+fetch('https://shifumi-game-akarah.herokuapp.com/parse/classes/User', params).then(function(response) {
+  console.log(JSON.stringify(response))
 })
 .then(function(error) {
-  alert("Error: " + error);
-  console.log('error fetch');
+  console.log("Error: " + error);
 });
 
-*/
 
-/*****************AXIOS REQUEST TEST ********************* */
-/*
-testServer = async () => {
-Axios.post('http://192.168.2.66:1337/parse/classes/_User').then(function (response) {
-  console.log("POST RESPONSE: "+JSON.stringify(response));
-})
-testServer();
-*/
 
 /***************** SIGNUP FUNCTION ***************** */
+
 
 const user = new Parse.User();
 
@@ -104,7 +77,7 @@ user.set("password", "000000");
 
 user.signUp()
   .then((userObj) => {
-    alert('user signed function 2');
+    console.log(JSON.stringify(userObj))
       localStorage.setItem("userId", userObj.id);
 
       return userObj;
