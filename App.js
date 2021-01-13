@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from 'axios';
 import { View, Text, StyleSheet, ImageBackground, AsyncStorage } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,17 +19,25 @@ run : parse-server --appId 123456789 --masterKey 123456789 --databaseURI mongodb
 
 /* Configuring parse */
 const Parse = require('parse/react-native.js');
+
+//Parse.initialize("YOUR_APP_ID", "YOUR_JAVASCRIPT_KEY", "YOUR_MASTERKEY");
+
 Parse.setAsyncStorage(localStorage);
 Parse.initialize("0123456789", "0123456789");
-Parse.serverURL = 'http://10.0.2.2:1337/parse/';  // localhost or 10.0.2.2
+Parse.serverURL = 'http://192.168.2.66:1337/parse/';  // localhost or 10.0.2.2 or 0.0.0.0 or 192.168.2.66
 
+/*
 Parse.appId = '0123456789';
 Parse.applicationId = '0123456789';
 Parse.databaseURI = 'mongodb://10.0.2.2:27017/shifumi';
 Parse.restAPIKey = '0123456789';
+*/
 
 
-console.log('app.js executed');
+//console.log('app.js executed');
+
+
+/***************** SIGN UP TEST  ***************** */
 
 newUser = async () => {
   const user = new Parse.User();
@@ -36,7 +45,7 @@ newUser = async () => {
   user.set("password", "pass02");
   user.set("email", "sacha.durand@akarah.com");
 
-  //console.log(user);
+  console.log(user);
   try {
     user.signUp();
     localStorage.setItem("userId", user.id);
@@ -47,12 +56,45 @@ newUser = async () => {
   // Show the error message somewhere and let the user try again.
   alert("Error: " + error.code + " " + error.message);
   }
-
 }
 newUser();
 
 
-/********************************** */
+/*****************FETCHING WITH HEADER ***************** */
+
+/*
+
+var myHeaders = new Headers();
+myHeaders.append("X-Parse-Application-Id", "0123456789");
+myHeaders.append("Content-Type", "application/json");
+
+var params = { 
+  method: 'GET',
+  headers: myHeaders,
+  //mode: 'cors',
+  //cache: 'default' };
+}
+
+fetch('http://192.168.2.66:1337/parse/classes/_User', params).then(function(response) {
+  console.log(response);
+})
+.then(function(error) {
+  alert("Error: " + error);
+  console.log('error fetch');
+});
+
+*/
+
+/*****************AXIOS REQUEST TEST ********************* */
+/*
+testServer = async () => {
+Axios.post('http://192.168.2.66:1337/parse/classes/_User').then(function (response) {
+  console.log("POST RESPONSE: "+JSON.stringify(response));
+})
+testServer();
+*/
+
+/***************** SIGNUP FUNCTION ***************** */
 
 const user = new Parse.User();
 
@@ -77,7 +119,8 @@ user.signUp()
 
 
 
-/********************************** */
+
+
 
 // This file init the projet, and displaying the home menu with navigation
 function HomeScreen({ navigation }) {
