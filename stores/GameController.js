@@ -41,8 +41,10 @@ createGameInstance = async (player1name) => {
       return error
     });
   }
+  // TODO: Use only Parse
+  // TODO: Get Id of GameInstance 
+  // TODO: Get information from gameinstance ( player1,... empty ? ) 
   // TODO: place a name of player1
-  //createGameInstance('michel');
 
 
 

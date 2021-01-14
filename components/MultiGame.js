@@ -139,7 +139,7 @@ export default class Game extends Component {
                 <View style={styles.view}>
                      <ImageBackground source={Img.background} style={styles.imageBackground}>
                         <Text style={styles.centerText}>Recherche d'adversaire</Text>
-                        <Text style={styles.centerTextMin}>Patientez</Text>
+                        <Text style={styles.centerTextMin}>Patientez...</Text>
                     </ImageBackground>
                 </View>
             )
