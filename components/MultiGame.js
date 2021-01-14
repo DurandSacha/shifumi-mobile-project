@@ -4,6 +4,7 @@ import 'react-native-gesture-handler';
 import Img from '../assets/images/_image';
 import CircleScore from './Layout/CircleScore';
 import Card from './Layout/Card';
+import '../stores/GameController';
 
 const br = `\n`;
 
@@ -118,6 +119,8 @@ export default class Game extends Component {
     }
 
     searchOtherPlayer = () => {
+        createGameInstance();
+
         // search oter game in database with empty player2 column
         // if have no place, Instance one object game in database
         // subscribe to player1 

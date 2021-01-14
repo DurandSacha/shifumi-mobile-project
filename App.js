@@ -29,6 +29,8 @@ Parse.serverURL = 'https://shifumi-game-akarah.herokuapp.com:1337/parse/';
 
 
 /****TRYING TO REGISTER GAME INSTANCE WITH PARSE */
+/* TODO: See this with akarah ********************/ 
+
 
 createGameObject = async () => {
   const GameInstance = Parse.Object.extend("GameInstance");
@@ -47,13 +49,14 @@ createGameObject = async () => {
     alert('There has been a problem with your fetch operation: ' + error.message);
     throw error;
   });
-
   //game.saveInBackground();
 
 }
 createGameObject();
 
 /*********************************************** */
+
+
 
 
 
@@ -95,12 +98,11 @@ createUser('sacha8000','sacha888@gmail.com', '000000');
 */
 
 
-console.log('------------------------------------');
-
-
 // This file init the projet, and displaying the home menu with navigation
 function HomeScreen({ navigation }) {
-  //localStorage.setItem('terminated', 0);   // use for reset variable
+  if (localStorage.getItem('terminated') < 1 || localStorage.getItem('terminated') == null){
+    localStorage.setItem('terminated', 0);
+  }
   let terminated = localStorage.getItem('terminated');
 
   return (
