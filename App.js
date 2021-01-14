@@ -1,15 +1,17 @@
 import * as React from 'react';
 import axios from 'axios';
-import { View, Text, StyleSheet, ImageBackground, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Game from "./components/Game";
+//import Game from "./components/Game";
 import EndGame from "./components/EndGame";
 import Configuration from "./components/Configuration";
 import 'react-native-gesture-handler';
 import Img from './assets/images/_image';
 import Buttons from './components/Layout/Buttons';
 import 'localstorage-polyfill';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// or import AsyncStorage from '@react-native-community/async-storage';
 const Parse = require('parse/react-native.js');
 
 /*
@@ -18,81 +20,78 @@ Back end (Parse Server) is available and deployed with : https://github.com/Dura
 - MongoDB is configured with : https://cloud.mongodb.com/v2 
 */
 
-Parse.setAsyncStorage(localStorage);
+//Parse.setAsyncStorage(localStorage);
+Parse.setAsyncStorage(AsyncStorage);
+
 Parse.initialize("0123456789", "0123456789", "0123456789");
-Parse.serverURL = 'https://shifumi-game-akarah.herokuapp.com/parse/'; 
+Parse.serverURL = 'https://shifumi-game-akarah.herokuapp.com:1337/parse/'; 
 
 
-newUser = async () => {
-  const user = new Parse.User();
-  user.set("username", "name02");
-  user.set("password", "pass02");
-  user.set("email", "sacha.durand@akarah.com");
+/****TRYING TO REGISTER GAME INSTANCE WITH PARSE */
 
-  //console.log(user);
-  try {
-    user.signUp();
-    localStorage.setItem("userId", user.id);
-    //await user.save();
-    console.log(JSON.stringify(user))
-    
-  }
-  catch (error) {
-  // Show the error message somewhere and let the user try again.
-  console.log("Error: " + error.code + " " + error.message);
-  }
-}
-newUser();
-
-
-/***************** ONE SIGN UP REQUEST ***************** */
-
-var myHeaders = new Headers();
-myHeaders.append("X-Parse-Application-Id", "0123456789");
-myHeaders.append("Content-Type", "application/json");
-
-var params = { 
-  method: 'POST',
-  headers: myHeaders,
-  body: {"username":"sachaD", "email":"sacha.durand@akarah.com", "email": "akarah@com" }
-}
-
-fetch('https://shifumi-game-akarah.herokuapp.com/parse/classes/User', params).then(function(response) {
-  console.log(JSON.stringify(response))
-})
-.then(function(error) {
-  console.log("Error: " + error);
-});
-
-
-
-/***************** SIGNUP FUNCTION ***************** */
-
-
-const user = new Parse.User();
-
-user.set("username", "sacha");
-user.set("email", "sacha@akarah.com");
-user.set("password", "000000");
-
-user.signUp()
-  .then((userObj) => {
-    console.log(JSON.stringify(userObj))
-      localStorage.setItem("userId", userObj.id);
-
-      return userObj;
-  }, (error) => {
-      // Execute any logic that should take place if the save fails.
-      // error is a Parse.Error with an error code and message.
-      console.error('Failed to create new object, with error code: ' + error.message);
-
-      return null;
+createGameObject = async () => {
+  const Game = Parse.Object.extend("Game");
+  const game = new Game();
+  game.set("player1", "user1");
+  game.set("player2", "user2");
+  game.save()
+  .then(function(game){
+    alert(game.id);
+    return game.json();
+  })
+  .then(function(err){
+    alert(err);
+  })
+  .catch(function(error) {
+    alert('There has been a problem with your fetch operation: ' + error.message);
+    throw error;
   });
 
+  //game.saveInBackground();
+
+}
+createGameObject();
+
+/*********************************************** */
 
 
 
+/***************** ONE SIGN UP REQUEST WORKING ***************** */
+/**** trying to display a data, with a get request, and try to use parse object.... */
 
+createUser = async (username, email, password) => {
+  let myHeaders = new Headers();
+  myHeaders.append("X-Parse-Application-Id", "0123456789");
+  myHeaders.append("Content-Type", "application/json");
+
+  const user = new Parse.User();
+    user.set("username", username);
+    user.set("password", password);
+    user.set("email", email);
+
+  var params = { 
+    method: 'POST',
+    headers: myHeaders,
+    body: user,
+  }
+
+  fetch('https://shifumi-game-akarah.herokuapp.com/parse/classes/User', params).then(function(response) {
+    //console.log(response.get("username"));
+    console.log(response.id);
+    //localStorage.setItem("userId", userObj.id);
+    //AsyncStorage.setItem("userId", response.id);
+    //user.save();
+    //console.log(AsyncStorage.getItem("userId"));
+    return response;
+  })
+  .then(function(error) {
+    //console.log("Error: " + error);
+    return error;
+  });
+}
+createUser('sacha8000','sacha888@gmail.com', '000000');
+
+console.log('------------------------------------');
 
 
 // This file init the projet, and displaying the home menu with navigation

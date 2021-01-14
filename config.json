@@ -1,7 +1,5 @@
 {
     "appId": "0123456789",
     "masterKey": "0123456789",
-    "appName": "ShiFuMi",
-    "cloud": "./cloud/main.js",
-    "databaseURI": "mongodb://localhost:27017/shifumi"
+    "appName": "ShiFuMi"
   }
