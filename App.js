@@ -3,7 +3,8 @@ import axios from 'axios';
 import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-//import Game from "./components/Game";
+import Game from "./components/Game";
+import MultiGame from "./components/MultiGame";
 import EndGame from "./components/EndGame";
 import Configuration from "./components/Configuration";
 import 'react-native-gesture-handler';
@@ -30,8 +31,8 @@ Parse.serverURL = 'https://shifumi-game-akarah.herokuapp.com:1337/parse/';
 /****TRYING TO REGISTER GAME INSTANCE WITH PARSE */
 
 createGameObject = async () => {
-  const Game = Parse.Object.extend("Game");
-  const game = new Game();
+  const GameInstance = Parse.Object.extend("GameInstance");
+  const game = new GameInstance();
   game.set("player1", "user1");
   game.set("player2", "user2");
   game.save()
@@ -59,6 +60,7 @@ createGameObject();
 /***************** ONE SIGN UP REQUEST WORKING ***************** */
 /**** trying to display a data, with a get request, and try to use parse object.... */
 
+/*
 createUser = async (username, email, password) => {
   let myHeaders = new Headers();
   myHeaders.append("X-Parse-Application-Id", "0123456789");
@@ -90,20 +92,27 @@ createUser = async (username, email, password) => {
   });
 }
 createUser('sacha8000','sacha888@gmail.com', '000000');
+*/
+
 
 console.log('------------------------------------');
 
 
 // This file init the projet, and displaying the home menu with navigation
 function HomeScreen({ navigation }) {
+  //localStorage.setItem('terminated', 0);   // use for reset variable
+  let terminated = localStorage.getItem('terminated');
+
   return (
     <View style={styles.view}>
       <ImageBackground source={Img.background} style={styles.imageBackground}>
         <View style={styles.header}>
             <Text style={styles.title}>Shi fu mi</Text>
+            <Text style={styles.littleScore}>Partie effectuée : { terminated }</Text>
         </View>
         <View style={styles.content}>
             <Buttons buttonText="Jeu Solo" navigation={navigation} NameRenderView="Game" />
+            <Buttons buttonText="Jeu multijoueur" navigation={navigation} NameRenderView="MultiGame" />
             <Buttons buttonText="Configuration" navigation={navigation} NameRenderView="Configuration" />
         </View>
       </ImageBackground>
@@ -123,6 +132,11 @@ function GameScreen({ navigation }) {
   return ( <Game navigation={navigation}/> );
 }
 
+/* Function for routing */ 
+function MultiGameScreen({ navigation }) {
+  return ( <MultiGame navigation={navigation}/> );
+}
+
 /* Function for routing */
 function EndGameScreen({ navigation }) {
   const route = useRoute();
@@ -140,6 +154,7 @@ function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Configuration" component={ConfigurationScreen} />
         <Stack.Screen name="Game" component={GameScreen} />
+        <Stack.Screen name="MultiGame" component={MultiGameScreen} />
         <Stack.Screen name="EndGame" component={EndGameScreen} />
       </Stack.Navigator>
     </NavigationContainer>

@@ -4,6 +4,7 @@ import 'react-native-gesture-handler';
 import Img from '../assets/images/_image';
 import CircleScore from './Layout/CircleScore';
 import Card from './Layout/Card';
+import 'localstorage-polyfill';
 
 const br = `\n`;
 
@@ -93,12 +94,16 @@ export default class Game extends Component {
         let navigation = this.props.navigation;
         if (this.currentSet >= 3 && this.pointMachine >= 2 ){
             setTimeout(function(){
+                let terminated = localStorage.getItem('terminated');
+                localStorage.setItem('terminated', parseInt(terminated) + parseInt(1) );
                 navigation.navigate('EndGame',{ result: ['Défaite'] });
              }, 700);
         }
         else if (this.currentSet >= 3 && this.pointUser >= 2){
             //console.log('victory part'); 
             setTimeout(function(){
+                let terminated = localStorage.getItem('terminated');
+                localStorage.setItem('terminated', parseInt(terminated) + parseInt(1) );
                 navigation.navigate('EndGame',{ result: ['Victoire'] });
              }, 700);
         }
