@@ -7,10 +7,9 @@ class Database {
         let query = new Parse.Query(Object);
         return query.get(id)
             .then((obj) => {
-                //console.log(obj)
                 return obj;
             }, (error) => {
-                console.log(error.message);
+                //console.log(error.message);
                 // The object was not retrieved successfully.
                 // error is a Parse.Error with an error code and message.
                 return null;

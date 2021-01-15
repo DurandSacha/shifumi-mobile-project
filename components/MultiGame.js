@@ -110,7 +110,6 @@ export default class Game extends Component {
              }, 700);
         }
         else if (this.currentSet >= 3 && this.pointUser >= 2){
-            //console.log('victory part'); 
             setTimeout(function(){
                 navigation.navigate('EndGame',{ result: ['Victoire'] });
              }, 700);
@@ -124,19 +123,27 @@ export default class Game extends Component {
 
     searchOtherPlayerAndStartGame = async () => {
 
-        // Query : Search other game with empty player2 column   // subscribe in player 2 and start Game 
-        searchGameInstanceWithEmptyPlayer2('player1');
+        // Query : Search other game with empty place   
+        gamefound = await searchGameInstanceWithEmptyPlayer2();
 
-        // else: create Game instance and subscribe in player1 column
-        await createGameInstance('ImAPlayer1');
-        gameInstance = await db.get('GameInstance', localStorage.getItem("gameId") );
-        console.log(gameInstance.attributes.player1)
+        if( gamefound != null ){
+            console.log('game found : id = ' + gamefound);
+            // TODO: subscribe in player 2 and start Game 
+            //  this.setState({gameFound : 1 });
+        }
+        else if( gamefound == null ) {
+            console.log('game not found, creating instance and search player');
+            // TODO: subscribe in player1 column
+            await createGameInstance('ImAPlayer1');
+            gameInstance = await db.get('GameInstance', localStorage.getItem("gameId") );
 
-        // wait player 2 subsribtion and start game
+            
+            // TODO: wait player 2 subsribtion and start game
 
-        // comparate a choice  in instanceGame database ( player1,player2,set1,set2,set3,set4,...,result)               
-        
-        //  this.setState({gameFound : 1 });
+        }
+
+        // TODO: FUNCTION for comparate a choice  in instanceGame database ( player1,player2,set1,set2,set3,set4,...,result)               
+
     }
 
     render =() => {

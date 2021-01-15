@@ -25,8 +25,9 @@ Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize("0123456789", "0123456789", "0123456789");
 Parse.serverURL = 'https://shifumi-game-akarah.herokuapp.com/parse/'; 
 
+/******* TODO GENERAL  ***************/
 // TODO: Asynchrone wit event subscription ( wait player, wait cardPlayed)
-// TODO: Make file for handling database db.js
+// TODO: if player quit a matchmaking, delete his server
 
 
 // This file init the projet, and displaying the home menu with navigation

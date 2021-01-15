@@ -100,7 +100,6 @@ export default class Game extends Component {
              }, 700);
         }
         else if (this.currentSet >= 3 && this.pointUser >= 2){
-            //console.log('victory part'); 
             setTimeout(function(){
                 let terminated = localStorage.getItem('terminated');
                 localStorage.setItem('terminated', parseInt(terminated) + parseInt(1) );
