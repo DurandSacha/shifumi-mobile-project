@@ -13,12 +13,16 @@ import 'localstorage-polyfill';
 const Parse = require('parse/react-native.js');
 
 
-Parse.setAsyncStorage(localStorage);
-Parse.initialize("0123456789", "0123456789", "0123456789");
-Parse.serverURL = 'https://shifumi-game-akarah.herokuapp.com/parse/';
 
-/***************** ONE SIGN UP REQUEST WORKING ***************** */
-/**** trying to display a data, with a get request, and try to use parse object.... */
+
+
+
+
+
+
+
+
+/************************************************************ */
 
 /*
 createUser = async (username, email, password) => {
@@ -49,36 +53,3 @@ createUser = async (username, email, password) => {
   */
 
 /***************************************************************************************************************************** */
-
-/****TRYING TO REGISTER GAME INSTANCE WITH PARSE */
-/*
-const Game = Parse.Object.extend("Game");
-const game = new Game();
-game.set("player1", "user1");
-game.set("player2", "user2");
-game.save()
-.then((game) => {
-  // Execute any logic that should take place after the object is saved.
-  console.log('New object created with objectId: ' + game.id);
-}, (error) => {
-  // Execute any logic that should take place if the save fails.
-  // error is a Parse.Error with an error code and message.
-  console.log('Failed to create new object, with error code: ' + error.message);
-});
-*/
-/*********************************************** */
-
-
-/****** GET function ************************* */
-/*
-const query = new Parse.Query(GameScore);
-query.get("xWMyZ4YEGZ")
-.then((gameScore) => {
-  // The object was retrieved successfully.
-}, (error) => {
-  // The object was not retrieved successfully.
-  // error is a Parse.Error with an error code and message.
-});
-*/
-
-/**************************************** */

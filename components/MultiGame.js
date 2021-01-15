@@ -119,7 +119,7 @@ export default class Game extends Component {
     }
 
     searchOtherPlayer = () => {
-        createGameInstance();
+        //createGameInstance();
 
         // search oter game in database with empty player2 column
         // if have no place, Instance one object game in database

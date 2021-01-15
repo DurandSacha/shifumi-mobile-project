@@ -8,12 +8,34 @@ import 'localstorage-polyfill';
 const Parse = require('parse/react-native.js');
 
 
-Parse.setAsyncStorage(AsyncStorage);
-Parse.initialize("0123456789", "0123456789", "0123456789");
-Parse.serverURL = 'https://shifumi-game-akarah.herokuapp.com/parse/';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /***************** CREATE A GAME INSTANCE  ***************** */
-
+/*
 createGameInstance = async (player1name) => {
     player1name = "michel";
     let myHeaders = new Headers();
@@ -45,7 +67,7 @@ createGameInstance = async (player1name) => {
   // TODO: Get Id of GameInstance 
   // TODO: Get information from gameinstance ( player1,... empty ? ) 
   // TODO: place a name of player1
-
+*/
 
 
 /*****************   ***************** */
