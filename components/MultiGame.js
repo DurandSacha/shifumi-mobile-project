@@ -129,11 +129,14 @@ export default class Game extends Component {
         if( gamefound != null ){
             console.log('game found : id = ' + gamefound);
             // TODO: subscribe in player 2 and start Game 
+            await subscribeInAGame('player2',gamefound,"toto")
+            console.log(await db.get('GameInstance', gamefound ));
+
+
             //  this.setState({gameFound : 1 });
         }
         else if( gamefound == null ) {
             console.log('game not found, creating instance and search player');
-            // TODO: subscribe in player1 column
             await createGameInstance('ImAPlayer1');
             gameInstance = await db.get('GameInstance', localStorage.getItem("gameId") );
 
