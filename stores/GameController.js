@@ -1,13 +1,42 @@
-import * as React from 'react';
-import axios from 'axios';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
-import { NavigationContainer, useRoute } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-gesture-handler';
 import 'localstorage-polyfill';
-const Parse = require('parse/react-native.js');
+import Parse from 'parse';
+import db from '../utils/database';
+import 'localstorage-polyfill';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+createGameInstance = async (namePlayer1) => {
+  const GameInstance = Parse.Object.extend("GameInstance");
+  const game = new GameInstance();
+  game.set("player1", namePlayer1);
+  game.set("player2", "user2");
 
+  await game.save()
+  .then(function(game){
+    localStorage.setItem("gameId", game.id);
+    return game;
+  })
+  .then(function(error){
+    console.log(error);
+    //return error;
+  })
+  .catch(function(error) {
+    console.log('There has been a problem with your fetch operation: ' + error.message);
+    //return error;
+  });
+
+  //console.log(db.get('GameInstance',localStorage.getItem("gameId") ));
+}
+
+searchGameInstanceWithEmptyPlayer2 = (player1) => {
+  // query instance game where player2 == null 
+  return;
+}
+
+JoinGame = () => {
+  // join player1 column or player2 column ? 
+  return;
+}
 
 
 

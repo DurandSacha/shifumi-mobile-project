@@ -5,6 +5,10 @@ import Img from '../assets/images/_image';
 import CircleScore from './Layout/CircleScore';
 import Card from './Layout/Card';
 import '../stores/GameController';
+import '../stores/UserController';
+import 'localstorage-polyfill';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import db from '../utils/database';
 
 const br = `\n`;
 
@@ -115,18 +119,22 @@ export default class Game extends Component {
 
     /* Call before rendering */
     componentDidMount(){
-        this.searchOtherPlayer();
+        this.searchOtherPlayerAndStartGame();
     }
 
-    searchOtherPlayer = () => {
-        //createGameInstance();
+    searchOtherPlayerAndStartGame = async () => {
 
-        // search oter game in database with empty player2 column
-        // if have no place, Instance one object game in database
-        // subscribe to player1 
-        // wait player2 subscribing 
-        // Launch the game 
-        // comparate a choice                 
+        // Query : Search other game with empty player2 column   // subscribe in player 2 and start Game 
+        searchGameInstanceWithEmptyPlayer2('player1');
+
+        // else: create Game instance and subscribe in player1 column
+        await createGameInstance('ImAPlayer1');
+        gameInstance = await db.get('GameInstance', localStorage.getItem("gameId") );
+        console.log(gameInstance.attributes.player1)
+
+        // wait player 2 subsribtion and start game
+
+        // comparate a choice  in instanceGame database ( player1,player2,set1,set2,set3,set4,...,result)               
         
         //  this.setState({gameFound : 1 });
     }

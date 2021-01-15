@@ -21,108 +21,12 @@ Back end (Parse Server) is available and deployed with : https://github.com/Dura
 - MongoDB is configured with : https://cloud.mongodb.com/v2 
 */
 
-//Parse.setAsyncStorage(localStorage);
 Parse.setAsyncStorage(AsyncStorage);
-
 Parse.initialize("0123456789", "0123456789", "0123456789");
 Parse.serverURL = 'https://shifumi-game-akarah.herokuapp.com/parse/'; 
 
-
-/****TRYING TO REGISTER GAME INSTANCE WITH PARSE only */
-/* TODO: See this with akarah ********************/ 
-
-
-createGameObject = async () => {
-  const GameInstance = Parse.Object.extend("GameInstance");
-  const game = new GameInstance();
-  game.set("player1", "user1");
-  game.set("player2", "user2");
-
-  console.log(game);
-
-  game.save()
-  .then(function(game){
-    console.log(game.id);
-    return game.json();
-  })
-  .then(function(err){
-    console.log(err);
-  })
-  .catch(function(error) {
-    console.log('There has been a problem with your fetch operation: ' + error.message);
-    throw error;
-  });
-  //game.saveInBackground();
-
-}
-//createGameObject();
-
-/*********************************************** */
-
-createUserObject = async () => {
-  const User = Parse.Object.extend("User");
-  const user = new User();
-  user.set("player1", "user1");
-  user.set("player2", "user2");
-
-  console.log(user);
-
-  user.save()
-  .then(function(user){
-    console.log(user.id);
-    return user.json();
-  })
-  .then(function(err){
-    console.log(err);
-  })
-  .catch(function(error) {
-    console.log('There has been a problem with your fetch operation: ' + error.message);
-    throw error;
-  });
-  //game.saveInBackground();
-
-}
-
-
-
-
-
-/***************** ONE SIGN UP REQUEST WORKING ***************** */
-/**** trying to display a data, with a get request, and try to use parse object.... */
-
-/*
-createUser = async (username, email, password) => {
-  let myHeaders = new Headers();
-  myHeaders.append("X-Parse-Application-Id", "0123456789");
-  myHeaders.append("Content-Type", "application/json");
-
-  const user = new Parse.User();
-    user.set("username", username);
-    user.set("password", password);
-    user.set("email", email);
-
-  var params = { 
-    method: 'POST',
-    headers: myHeaders,
-    body: user,
-  }
-
-  fetch('https://shifumi-game-akarah.herokuapp.com/parse/classes/User', params).then(function(response) {
-    //console.log(response.get("username"));
-    console.log(response.id);
-    //localStorage.setItem("userId", userObj.id);
-    //AsyncStorage.setItem("userId", response.id);
-    //user.save();
-    //console.log(AsyncStorage.getItem("userId"));
-    return response;
-  })
-  .then(function(error) {
-    //console.log("Error: " + error);
-    return error;
-  });
-}
-createUser('sacha8000','sacha888@gmail.com', '000000');
-*/
+// TODO: Asynchrone wit event subscription ( wait player, wait cardPlayed)
+// TODO: Make file for handling database db.js
 
 
 // This file init the projet, and displaying the home menu with navigation
