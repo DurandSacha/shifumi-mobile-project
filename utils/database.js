@@ -21,7 +21,7 @@ class Database {
         let query = new Parse.Query(className);
         query.equalTo("objectId", id);
         let subscription = await query.subscribe();
-        subscription.on('enter', onUpdate);
+        subscription.on('update', onUpdate);
 
         return subscription;
     }

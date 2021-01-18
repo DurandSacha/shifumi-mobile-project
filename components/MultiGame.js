@@ -42,7 +42,10 @@ export default class Game extends Component {
 
     makePlayer2Choice = () => {
         this.setState({player2Hasplayed : 1});
+
         // TODO: wait player2 response // for each set
+        //   let subscription = await db.listen("GameInstance", this.idGameCreated, this.startGame )
+        //   subscription.on('update', (game) => { alert(game)  });
         return 'feuille';
     }
 
@@ -147,12 +150,12 @@ export default class Game extends Component {
             this.idGameCreated = localStorage.getItem("gameId");
             console.log('game was created : ' + this.idGameCreated);
 
-            //trying to wait player 2
-            let subscription = await db.listen("GameInstance", this.idGameCreated, this.startGame )
-            subscription.on('update', (game) => { alert(game)  });
+            // trying to wait player 2
+            let subscription = await db.listen("GameInstance", this.idGameCreated, this.startGame );
+            subscription.on('update', (game) => { alert(game)  }); 
 
             /*
-                        .then((subscription)=>{
+            .then((subscription)=>{
                 console.log(subscription);
                 subscription.on('update', (game) => { alert(game)  });
             })
