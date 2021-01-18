@@ -12,8 +12,12 @@ createGameInstance = async (namePlayer1) => {
 
   await game.save()
   .then(function(game){
-    localStorage.setItem("gameId", game.id);
-  })
+      localStorage.setItem("gameId", game.id);
+      return game.id;
+    }, (error) => {
+      console.log(error.message);
+      return null;
+  });
 }
 
 searchGameInstanceWithEmptyPlayer2 = async () => {

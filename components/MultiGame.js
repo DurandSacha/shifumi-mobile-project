@@ -42,7 +42,7 @@ export default class Game extends Component {
 
     makePlayer2Choice = () => {
         this.setState({player2Hasplayed : 1});
-        // TODO: wait player2 response
+        // TODO: wait player2 response // for each set
         return 'feuille';
     }
 
@@ -124,27 +124,36 @@ export default class Game extends Component {
         this.idUser = Math.floor(Math.random() * Math.floor(15000)).toString();
     }
 
+    //TODO: delete game instance if player is not connected
+
     searchOtherPlayerAndStartGame = async () => {
 
-        // Query : Search other game with empty place   
         this.idGame = await searchGameInstanceWithEmptyPlayer2();
 
+        // join a existing game 
         if( this.idGame != null ){
             console.log('game found : id = ' + this.idGame);
-            // TODO: subscribe in player 2 and start Game 
             await subscribeInAGame('player2',this.idGame, this.idUser)
             this.setState({gameFound : 1 });
         }
+
+        // if game is not found, create game instance 
         else if( this.idGame == null ) {
-            console.log('game not found, creating instance and search player');
+            //console.log('create a game instance');
             await createGameInstance(this.idUser);
-            //let gameInstance = await db.get('GameInstance', localStorage.getItem("gameId") );
-            //console.log('no game found, create a game with id :' + gameInstance + ' and wait player');
+            this.idGameCreated = localStorage.getItem("gameId");
 
             
-            // TODO: wait player 2 subsribtion and start game
+            if( this.idGameCreated != null ){
+                console.log('game was created : ' + this.idGameCreated);
+            }
+            else{
+                console.log('problem with game instance creation');
+            }
 
+            // TODO: Listen gameinstance in database, if "player2 is not empty : start game 
         }
+
 
         // TODO: FUNCTION for comparate a choice  in instanceGame database ( player1,player2,set1,set2,set3,set4,...,result)               
 
