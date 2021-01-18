@@ -33,6 +33,8 @@ export default class Game extends Component {
             player2Hasplayed : 0,
         };
 
+        this.idGame = null;
+        this.idUser = null;
         this.pointPlayer2 = 0;
         this.pointUser = 0;
         this.currentSet = 0;
@@ -119,26 +121,25 @@ export default class Game extends Component {
     /* Call before rendering */
     componentDidMount(){
         this.searchOtherPlayerAndStartGame();
+        this.idUser = Math.floor(Math.random() * Math.floor(15000)).toString();
     }
 
     searchOtherPlayerAndStartGame = async () => {
 
         // Query : Search other game with empty place   
-        gamefound = await searchGameInstanceWithEmptyPlayer2();
+        this.idGame = await searchGameInstanceWithEmptyPlayer2();
 
-        if( gamefound != null ){
-            console.log('game found : id = ' + gamefound);
+        if( this.idGame != null ){
+            console.log('game found : id = ' + this.idGame);
             // TODO: subscribe in player 2 and start Game 
-            await subscribeInAGame('player2',gamefound,"toto")
-            console.log(await db.get('GameInstance', gamefound ));
-
-
-            //  this.setState({gameFound : 1 });
+            await subscribeInAGame('player2',this.idGame, this.idUser)
+            this.setState({gameFound : 1 });
         }
-        else if( gamefound == null ) {
+        else if( this.idGame == null ) {
             console.log('game not found, creating instance and search player');
-            await createGameInstance('ImAPlayer1');
-            gameInstance = await db.get('GameInstance', localStorage.getItem("gameId") );
+            await createGameInstance(this.idUser);
+            //let gameInstance = await db.get('GameInstance', localStorage.getItem("gameId") );
+            //console.log('no game found, create a game with id :' + gameInstance + ' and wait player');
 
             
             // TODO: wait player 2 subsribtion and start game
