@@ -142,11 +142,8 @@ const styles = StyleSheet.create({
 });
 
 
-/**************************      PARSING         ***************************** */
+// DEMO: 
 
-
-
-
-/***************End PARSING **************************/
+//.then(((subscription)=>{console.log(subscription)}, (error)=>{console.log(error.message)})
 
 export default App;

@@ -34,7 +34,7 @@ export default class Game extends Component {
         };
 
         this.idGame = null;
-        this.idUser = null;
+        this.idUser = '0';
         this.pointPlayer2 = 0;
         this.pointUser = 0;
         this.currentSet = 0;
@@ -82,7 +82,7 @@ export default class Game extends Component {
     }
 
     MakeSet = (userChoice) => {
-        
+        //player2indatabase = ( 'player1' || 'player2')
         let Player2Choice = this.makePlayer2Choice() ;
         // after player 2 make choice
         if(this.state.player2Hasplayed == 1){
@@ -126,6 +126,10 @@ export default class Game extends Component {
 
     //TODO: delete game instance if player is not connected
 
+    startGame = () => {
+         this.setState({gameFound : 1 });
+    }
+
     searchOtherPlayerAndStartGame = async () => {
 
         this.idGame = await searchGameInstanceWithEmptyPlayer2();
@@ -137,30 +141,32 @@ export default class Game extends Component {
             this.setState({gameFound : 1 });
         }
 
-        // if game is not found, create game instance 
+        // if game is not found, create game instance and wait a player2
         else if( this.idGame == null ) {
-            //console.log('create a game instance');
             await createGameInstance(this.idUser);
             this.idGameCreated = localStorage.getItem("gameId");
+            console.log('game was created : ' + this.idGameCreated);
 
-            
-            if( this.idGameCreated != null ){
-                console.log('game was created : ' + this.idGameCreated);
-            }
-            else{
-                console.log('problem with game instance creation');
-            }
+            //trying to wait player 2
+            let subscription = await db.listen("GameInstance", this.idGameCreated, this.startGame )
+            subscription.on('update', (game) => { alert(game)  });
 
-            // TODO: Listen gameinstance in database, if "player2 is not empty : start game 
+            /*
+                        .then((subscription)=>{
+                console.log(subscription);
+                subscription.on('update', (game) => { alert(game)  });
+            })
+            */
         }
-
 
         // TODO: FUNCTION for comparate a choice  in instanceGame database ( player1,player2,set1,set2,set3,set4,...,result)               
 
     }
 
-    render =() => {
+    render = () => {
         const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound } = this.state;
+
+        
 
         if(gameFound == 0){
             return(

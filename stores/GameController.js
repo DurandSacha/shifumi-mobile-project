@@ -8,7 +8,7 @@ createGameInstance = async (namePlayer1) => {
   const GameInstance = Parse.Object.extend("GameInstance");
   const game = new GameInstance();
   game.set("player1", namePlayer1);
-  game.set("player2", null);
+  game.set("player2", '0');
 
   await game.save()
   .then(function(game){
@@ -46,6 +46,25 @@ subscribeInAGame = async (place,instanceId,name) => {
 
   return;
 }
+
+/*
+listenGamePlayer = async (idGameInstance) => {
+  const game = await db.get("GameInstance", idGameInstance);
+
+  let query = new Parse.Query("GameInstance");
+  query.equalTo("id", idGameInstance);
+
+  //query.equalTo("player2", null);
+
+  let subscription = await query.subscribe();
+  subscription.on('update', () => { console.log('object updated')  });
+
+  return subscription;
+  
+}
+*/
+
+
 
 // TODO: scoring function
 

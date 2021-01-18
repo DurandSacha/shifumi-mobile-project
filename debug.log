@@ -12,3 +12,4 @@
 [0111/174507.977:ERROR:exception_snapshot_win.cc(99)] thread ID 11512 not found in process
 [0111/174507.977:ERROR:exception_snapshot_win.cc(99)] thread ID 24124 not found in process
 [0111/174507.977:ERROR:exception_snapshot_win.cc(99)] thread ID 20864 not found in process
+[0118/095256.122:ERROR:directory_reader_win.cc(43)] FindFirstFile: Le chemin d’accès spécifié est introuvable. (0x3)
