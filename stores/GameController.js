@@ -23,7 +23,7 @@ createGameInstance = async (namePlayer1) => {
 searchGameInstanceWithEmptyPlayer2 = async () => {
   // query instance game where player2 == null 
   var query = new Parse.Query('GameInstance');
-  query.equalTo("player2", null);
+  query.equalTo("player2", '0');
   games = await query.find();
 
   if(games.length == 0)

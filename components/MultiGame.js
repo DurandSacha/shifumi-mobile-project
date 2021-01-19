@@ -8,6 +8,7 @@ import '../stores/GameController';
 import '../stores/UserController';
 import 'localstorage-polyfill';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Parse from 'parse';
 import db from '../utils/database';
 
 const br = `\n`;
@@ -34,10 +35,11 @@ export default class Game extends Component {
         };
 
         this.idGame = null;
-        this.idUser = '0';
         this.pointPlayer2 = 0;
         this.pointUser = 0;
         this.currentSet = 0;
+        this.idUser = Math.floor(Math.random() * Math.floor(15000)).toString();
+
     }
 
     makePlayer2Choice = () => {
@@ -121,16 +123,18 @@ export default class Game extends Component {
         }
     }
 
-    /* Call before rendering */
+    //TODO: delete game instance if player is not connected
+
     componentDidMount(){
         this.searchOtherPlayerAndStartGame();
-        this.idUser = Math.floor(Math.random() * Math.floor(15000)).toString();
     }
+    
+    componentWillUnmount(){}
 
-    //TODO: delete game instance if player is not connected
 
     startGame = () => {
          this.setState({gameFound : 1 });
+         //console.log('startGame');
     }
 
     searchOtherPlayerAndStartGame = async () => {
@@ -145,21 +149,19 @@ export default class Game extends Component {
         }
 
         // if game is not found, create game instance and wait a player2
-        else if( this.idGame == null ) {
+        else if( this.idGame === null ||  typeof this.idGame == 'undefined' ) {
             await createGameInstance(this.idUser);
             this.idGameCreated = localStorage.getItem("gameId");
             console.log('game was created : ' + this.idGameCreated);
+            //this.startGame();
 
-            // trying to wait player 2
-            let subscription = await db.listen("GameInstance", this.idGameCreated, this.startGame );
-            subscription.on('update', (game) => { alert(game)  }); 
-
-            /*
-            .then((subscription)=>{
-                console.log(subscription);
-                subscription.on('update', (game) => { alert(game)  });
-            })
-            */
+            await db.listen("GameInstance", this.idGameCreated, this.startGame)
+            .then((success) => {
+                success.on('update', (game) => { console.log(game)  });
+                //console.log(success);
+              }, (error) => {
+                console.log(error.message);
+            });
         }
 
         // TODO: FUNCTION for comparate a choice  in instanceGame database ( player1,player2,set1,set2,set3,set4,...,result)               

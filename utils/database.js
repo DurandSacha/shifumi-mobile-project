@@ -16,10 +16,11 @@ class Database {
             });
     }
 
-    // use for listening a row in database, and make something if element was update
+    // use for listening a row in database, and make something if element was update   /notEqualTo  //equalTo
     listen = async (className, id, onUpdate) => {
         let query = new Parse.Query(className);
         query.equalTo("objectId", id);
+        //query.equalTo("player2", "0");
         let subscription = await query.subscribe();
         subscription.on('update', onUpdate);
 
