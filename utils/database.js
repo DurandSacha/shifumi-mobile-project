@@ -20,9 +20,12 @@ class Database {
     listen = async (className, id, onUpdate) => {
         let query = new Parse.Query(className);
         query.equalTo("objectId", id);
-        //query.equalTo("player2", "0");
         let subscription = await query.subscribe();
-        subscription.on('update', onUpdate);
+        subscription.on('update', onUpdate); // open // update // enter
+
+        subscription.on('update', function (message) {
+            console.log("database updated from listen in database: ", message); 
+        });
 
         return subscription;
     }

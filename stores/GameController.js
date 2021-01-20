@@ -10,6 +10,13 @@ createGameInstance = async (namePlayer1) => {
   game.set("player1", namePlayer1);
   game.set("player2", '0');
 
+  game.set("P1CurrentChoice", '0');
+  game.set("P2CurrentChoice", '0');
+
+  game.set("P1Point", '0');
+  game.set("P2Point", '0');
+  game.set("result", null);
+
   await game.save()
   .then(function(game){
       localStorage.setItem("gameId", game.id);

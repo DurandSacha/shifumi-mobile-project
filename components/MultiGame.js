@@ -13,7 +13,7 @@ import db from '../utils/database';
 
 const br = `\n`;
 
-export default class Game extends Component {
+export default class MultiGame extends Component {
 
     constructor(props) {
         super(props);
@@ -21,6 +21,7 @@ export default class Game extends Component {
         this.state = {
             gameFound : 0,
             maxSet : 3,
+            PlayerUserChoice: '',
             Player2Choice: '',
             colorSet1: 'grey',
             colorSet2: 'grey',
@@ -31,7 +32,7 @@ export default class Game extends Component {
             cardToDisplayEnemy : 'feuille',
             pointPlayer2 : 0,
             pointUser : 0,
-            player2Hasplayed : 0,
+            player2Hasplayed : 1,
         };
 
         this.idGame = null;
@@ -39,19 +40,11 @@ export default class Game extends Component {
         this.pointUser = 0;
         this.currentSet = 0;
         this.idUser = Math.floor(Math.random() * Math.floor(15000)).toString();
+        this.placePlayerInDatabase= null;
 
     }
 
-    makePlayer2Choice = () => {
-        this.setState({player2Hasplayed : 1});
-
-        // TODO: wait player2 response // for each set
-        //   let subscription = await db.listen("GameInstance", this.idGameCreated, this.startGame )
-        //   subscription.on('update', (game) => { alert(game)  });
-        return 'feuille';
-    }
-
-    updateGame = (result, userChoice, Player2Choice) => {
+    updateGame = (result, userChoice, Player2Choice) => {     //this.placePlayerInDatabase    // P1Point // P2Point
 
         if(this.state.player2Hasplayed == 1){
             this.setState({
@@ -86,8 +79,68 @@ export default class Game extends Component {
         }
     }
 
-    MakeSet = (userChoice) => {
-        //player2indatabase = ( 'player1' || 'player2')
+    makePlayer2Choice = async () => {
+
+        db.listen("GameInstance", this.idGameCreated, () => {
+             //this.setState({ gameFound : 1 });
+             this.setState({player2Hasplayed : 1});
+             console.log('waiting for player 2')
+
+            // wait a Player2 update, and change choice ( other to  this.placePlayerInDatabase   )
+             var query = new Parse.Query('GameInstance');
+             query.equalTo("id", this.idGameCreated);
+             game =  query.first();
+             if(this.placePlayerInDatabase == '1'){
+                console.log(game.P1CurrentChoice);
+             }
+             else if(this.placePlayerInDatabase == '2'){
+                console.log(game.P2CurrentChoice);
+             }
+
+             console.log('Player 2 has played'); 
+             //return 'feuille';
+        } );
+
+        /****TEST MANUAL PLAYER 2 CHOICE IN SET  */
+        return this.ManualPlayer2Choice()
+    }
+
+    /*test function */
+    ManualPlayer2Choice = async () => {
+        var query = new Parse.Query('GameInstance');
+        query.equalTo("id", this.idGameCreated);
+        game = await db.get('GameInstance', this.idGameCreated );
+
+        if(this.placePlayerInDatabase == '1'){
+            game.set('P2CurrentChoice', 'ciseau');
+            this.state.cardToDisplayEnemy = 'ciseau' ; 
+         }
+         else if(this.placePlayerInDatabase == '2'){
+            game.set('P1CurrentChoice', 'ciseau');
+            this.state.cardToDisplayEnemy = 'ciseau' ; 
+         }
+        game.save()
+
+        return 'ciseau';
+    }
+
+    MakeSet = async (userChoice) => {
+        //Push user choice in database 
+
+        var query = new Parse.Query('GameInstance');
+        query.equalTo("id", this.idGameCreated);
+        game = await db.get('GameInstance', this.idGameCreated );
+
+        if(this.placePlayerInDatabase == '1'){
+            game.set('P1CurrentChoice', userChoice);
+         }
+         else if(this.placePlayerInDatabase == '2'){
+            game.set('P2CurrentChoice', userChoice);
+         }
+        game.save()
+
+
+
         let Player2Choice = this.makePlayer2Choice() ;
         // after player 2 make choice
         if(this.state.player2Hasplayed == 1){
@@ -128,14 +181,7 @@ export default class Game extends Component {
     componentDidMount(){
         this.searchOtherPlayerAndStartGame();
     }
-    
     componentWillUnmount(){}
-
-
-    startGame = () => {
-         this.setState({gameFound : 1 });
-         //console.log('startGame');
-    }
 
     searchOtherPlayerAndStartGame = async () => {
 
@@ -143,28 +189,30 @@ export default class Game extends Component {
 
         // join a existing game 
         if( this.idGame != null ){
-            console.log('game found : id = ' + this.idGame);
+            console.log('Game found : id = ' + this.idGame);
             await subscribeInAGame('player2',this.idGame, this.idUser)
+            this.placePlayerInDatabase= '2';
             this.setState({gameFound : 1 });
         }
 
         // if game is not found, create game instance and wait a player2
-        else if( this.idGame === null ||  typeof this.idGame == 'undefined' ) {
+        else{
             await createGameInstance(this.idUser);
             this.idGameCreated = localStorage.getItem("gameId");
-            console.log('game was created : ' + this.idGameCreated);
+            console.log('Game was created : ' + this.idGameCreated);
             //this.startGame();
 
-            await db.listen("GameInstance", this.idGameCreated, this.startGame)
-            .then((success) => {
-                success.on('update', (game) => { console.log(game)  });
-                //console.log(success);
-              }, (error) => {
-                console.log(error.message);
-            });
-        }
+            db.listen("GameInstance", this.idGameCreated, () => { this.setState({ gameFound : 1 }); } ) 
+            this.placePlayerInDatabase= '1';
 
-        // TODO: FUNCTION for comparate a choice  in instanceGame database ( player1,player2,set1,set2,set3,set4,...,result)               
+            /******   TEST MANUAL UPDATE JOINING PLAYER 2  ******/  
+            // TODO: Try tu update database with other device 
+            var query = new Parse.Query('GameInstance');
+            query.equalTo("id", this.idGameCreated);
+            game = await db.get('GameInstance', this.idGameCreated );
+            game.set('player2', '1111111');
+            game.save()
+        }               
 
     }
 
@@ -195,6 +243,7 @@ export default class Game extends Component {
 
                             <View>
                                 <Text style={styles.BattleText}>Manche en cours</Text>
+                                {/*<Button onpress={this.ManualPlayer2Choice()} title="Make Enemy Choice" ><Text>Make Enemy Choice</Text> </Button>*/}
                                 <CircleScore colorSet1={colorSet1} colorSet2={colorSet2} colorSet3={colorSet3} />
                             </View>
 

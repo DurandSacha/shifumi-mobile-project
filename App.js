@@ -23,7 +23,9 @@ Back end (Parse Server) is available and deployed with : https://github.com/Dura
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize("0123456789", "0123456789", "0123456789");
-Parse.serverURL = 'https://shifumi-game-akarah.herokuapp.com/parse/'; 
+Parse.serverURL = 'http://shifumi-game-akarah.herokuapp.com/parse/'; 
+Parse.liveQueryServerURL = 'ws://shifumi-game-akarah.herokuapp.com/parse/';
+
 
 /******* TODO GENERAL  ***************/
 // TODO: Asynchrone wit event subscription ( wait player, wait cardPlayed)
