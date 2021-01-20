@@ -91,17 +91,27 @@ export default class MultiGame extends Component {
 
         //game = db.get('GameInstance', this.idGameCreated );
         // Get Current Choice for enemy with listening database and return choic in this function
-        await db.listenScore("GameInstance", this.idGameCreated, async (game)  => {
+        console.log('-------------------------------- LISTEN SCORE PARTS--------------------------------');
 
-            console.log('-------------------------------- LISTEN SCORE PARTS--------------------------------');
-             //let game = await db.get('GameInstance', this.idGameCreated );
-             console.log(game.P1CurrentChoice);
+         await db.listenScore("GameInstance", this.idGameCreated, async (gameReturn) => {
+
+            console.log('in listen score function');
+
+            await db.get('GameInstance', this.idGameCreated )
+            .then(function(success){
+                console.log(success);
+                console.log(success.P1CurrentChoice);
+                console.log(success.result);
+            })
+
+            //console.log(gameReturn.P1CurrentChoice);
              
             //game = db.get('GameInstance', this.idGameCreated );
-            console.log('attente du choix enemi : ' + game.P1CurrentChoice);
-            console.log(game);
+            console.log('attente du choix enemi : ' + gameReturn.P1CurrentChoice);
+            console.log(gameReturn);
             //game = JSON.parse(game);
-            console.log(game.P1CurrentChoice);
+            console.log(gameReturn.objectId);
+            //console.log(game.P1CurrentChoice);
             console.log('---------------------------------- END LISTEN SCORE-----------------------------------');
              
 
