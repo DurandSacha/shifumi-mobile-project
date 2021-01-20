@@ -89,17 +89,24 @@ export default class MultiGame extends Component {
 
     makePlayer2Choice = async () => {
 
-        await db.listenScore("GameInstance", this.idGameCreated, () => {
+        //game = db.get('GameInstance', this.idGameCreated );
+        // Get Current Choice for enemy with listening database and return choic in this function
+        await db.listenScore("GameInstance", this.idGameCreated, async (game)  => {
 
-             game = db.get('GameInstance', this.idGameCreated );
-             game.then((success) => {
-                console.log('current choice ========================');
-                console.log(success);
-                console.log(game.P2CurrentChoice);
-                console.log(game.P1CurrentChoice);
-                //game.P2CurrentChoice
-            })
+            console.log('-------------------------------- LISTEN SCORE PARTS--------------------------------');
+             //let game = await db.get('GameInstance', this.idGameCreated );
+             console.log(game.P1CurrentChoice);
+             
+            //game = db.get('GameInstance', this.idGameCreated );
+            console.log('attente du choix enemi : ' + game.P1CurrentChoice);
+            console.log(game);
+            //game = JSON.parse(game);
+            console.log(game.P1CurrentChoice);
+            console.log('---------------------------------- END LISTEN SCORE-----------------------------------');
+             
 
+
+             //TODO: return player 2 choice ( with placePlayer )
              /*
              if(this.placePlayerInDatabase == '1'){
                 // TODO: listening + get P1CurrentChoice
@@ -117,13 +124,14 @@ export default class MultiGame extends Component {
         } );
 
         /****TEST MANUAL PLAYER 2 CHOICE IN SET  */
-        return await this.ManualPlayer2Choice();
+        this.ManualPlayer2Choice();
+        return 'ciseau';
     }
 
     /* INSERT CHOICE IN DATABASE FOR OTHER CHOICE SIMULATION */
     ManualPlayer2Choice = async () => {
-        var query = new Parse.Query('GameInstance');
-        query.equalTo("id", this.idGameCreated);
+        //var query = new Parse.Query('GameInstance');
+        //query.equalTo("id", this.idGameCreated);
         game = await db.get('GameInstance', this.idGameCreated );
 
         if(this.placePlayerInDatabase == '1'){
