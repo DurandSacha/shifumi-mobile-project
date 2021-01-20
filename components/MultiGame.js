@@ -44,7 +44,7 @@ export default class MultiGame extends Component {
 
     }
 
-    updateGame = (result, userChoice, Player2Choice) => {     //this.placePlayerInDatabase    // P1Point // P2Point
+    updateGame = async (result, userChoice, Player2Choice) => {     //this.placePlayerInDatabase    // P1Point // P2Point
 
         if(this.state.player2Hasplayed == 1){
             this.setState({
@@ -64,8 +64,8 @@ export default class MultiGame extends Component {
                     else if (result == "Gagné"){
                         //this.pointUser = this.pointUser + 1 ;
 
-                        if(this.placePlayerInDatabase == '1'){incrementPointPlayer1(this.idGameCreated);}
-                        else if(this.placePlayerInDatabase == '2'){incrementPointPlayer2(this.idGameCreated);}
+                        if(this.placePlayerInDatabase == '1'){await incrementPointPlayer1(this.idGameCreated);}
+                        else if(this.placePlayerInDatabase == '2'){await incrementPointPlayer2(this.idGameCreated);}
 
                         if (currentSet == 1) { this.setState({colorSet1 : 'green'}) };
                         if (currentSet == 2) { this.setState({colorSet2 : 'green'}) };
@@ -78,8 +78,8 @@ export default class MultiGame extends Component {
                         if (currentSet == 3) { this.setState({colorSet3 : 'red'}) };
                         //this.pointPlayer2 = this.pointPlayer2 + 1 ;
 
-                        if(this.placePlayerInDatabase == '1'){incrementPointPlayer1(this.idGameCreated);}
-                        else if(this.placePlayerInDatabase == '2'){incrementPointPlayer2(this.idGameCreated);}
+                        if(this.placePlayerInDatabase == '1'){await incrementPointPlayer1(this.idGameCreated);}
+                        else if(this.placePlayerInDatabase == '2'){await incrementPointPlayer2(this.idGameCreated);}
                     }
                 }
             }
@@ -89,31 +89,35 @@ export default class MultiGame extends Component {
 
     makePlayer2Choice = async () => {
 
-        db.listenScore("GameInstance", this.idGameCreated, () => {
-             //this.setState({ gameFound : 1 });
-             this.setState({player2Hasplayed : 1});
-             console.log('waiting for player 2')
+        await db.listenScore("GameInstance", this.idGameCreated, () => {
 
-            // wait a Player2 update, and change choice ( other to  this.placePlayerInDatabase   )
-             var query = new Parse.Query('GameInstance');
-             query.equalTo("id", this.idGameCreated);
-             game = query.first();
-             
+             game = db.get('GameInstance', this.idGameCreated );
+             game.then((success) => {
+                console.log('current choice ========================');
+                console.log(success);
+                console.log(game.P2CurrentChoice);
+                console.log(game.P1CurrentChoice);
+                //game.P2CurrentChoice
+            })
+
+             /*
              if(this.placePlayerInDatabase == '1'){
-                //console.log(game.P1CurrentChoice);
+                // TODO: listening + get P1CurrentChoice
                 return game.P1CurrentChoice;
              }
              else if(this.placePlayerInDatabase == '2'){
-                //console.log(game.P2CurrentChoice);
+                 // TODO: listening + get P2CurrentChoice
+                console.log(game.P2CurrentChoice);
                 return game.P2CurrentChoice;
              }
 
              console.log('Player 2 has played'); 
-             return 'feuille';
+             //return 'feuille';
+             */
         } );
 
         /****TEST MANUAL PLAYER 2 CHOICE IN SET  */
-        return this.ManualPlayer2Choice();
+        return await this.ManualPlayer2Choice();
     }
 
     /* INSERT CHOICE IN DATABASE FOR OTHER CHOICE SIMULATION */
@@ -125,10 +129,12 @@ export default class MultiGame extends Component {
         if(this.placePlayerInDatabase == '1'){
             game.set('P2CurrentChoice', 'ciseau');
             this.state.cardToDisplayEnemy = 'ciseau' ; 
+            //this.state.Player2Choice = 'ciseau';
          }
         else if(this.placePlayerInDatabase == '2'){
             game.set('P1CurrentChoice', 'ciseau');
             this.state.cardToDisplayEnemy = 'ciseau' ; 
+            //this.state.PlayerUserChoice = 'ciseau';
          }
         game.save()
 
@@ -152,14 +158,14 @@ export default class MultiGame extends Component {
 
 
 
-        let Player2Choice = this.makePlayer2Choice() ;
+        let Player2Choice = await this.makePlayer2Choice() ;
         // after player 2 make choice
 
         let result = null;
 
-        console.log('player2Choice : ' + Player2Choice);
+        console.log('player2Choice :');
         console.log(Player2Choice);
-        console.log('user choice : ' + userChoice);
+
 
 
         if (Player2Choice == userChoice){  result = "null";  this.currentSet = this.currentSet -1;}
@@ -180,7 +186,7 @@ export default class MultiGame extends Component {
         
     }
 
-    redirectGame = () => {
+    redirectGame = async () => {
 
         // TODO: Change pointPlayer2 and pointUser for Database data
 

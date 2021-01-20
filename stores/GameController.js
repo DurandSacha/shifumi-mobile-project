@@ -49,7 +49,7 @@ subscribeInAGame = async (place,instanceId,name) => {
   query.equalTo("id", instanceId);
   game = await db.get('GameInstance', instanceId );
   game.set(place, name);
-  game.save()
+  game.save();
 
   return;
 }
@@ -66,8 +66,8 @@ incrementPointPlayer1 = async (instanceId) => {
 
   let point = parseInt( game.P1Point + 1 );
   game.set('P1Point', point.toString()  );         //   place : P1Point
-  
-  game.save()
+  game.save();
+
 }
 
 IncrementPointPlayer2 = async () => {
@@ -78,6 +78,6 @@ IncrementPointPlayer2 = async () => {
 
   let point = parseInt( game.P2Point + 1 );
   game.set('P2Point', point.toString()  );  //   place : P1Point
+  game.save();
 
-  game.save()
 }
