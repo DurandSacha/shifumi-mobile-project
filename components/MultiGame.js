@@ -62,16 +62,24 @@ export default class MultiGame extends Component {
                 if (currentSet == i){
                     if(result == "null"){}
                     else if (result == "Gagné"){
-                        this.pointUser = this.pointUser + 1 ;
+                        //this.pointUser = this.pointUser + 1 ;
+
+                        if(this.placePlayerInDatabase == '1'){incrementPointPlayer1(this.idGameCreated);}
+                        else if(this.placePlayerInDatabase == '2'){incrementPointPlayer2(this.idGameCreated);}
+
                         if (currentSet == 1) { this.setState({colorSet1 : 'green'}) };
                         if (currentSet == 2) { this.setState({colorSet2 : 'green'}) };
                         if (currentSet == 3) { this.setState({colorSet3 : 'green'}) };
                     }
+
                     else{
                         if (currentSet == 1) { this.setState({colorSet1 : 'red'}) };
                         if (currentSet == 2) { this.setState({colorSet2 : 'red'}) };
                         if (currentSet == 3) { this.setState({colorSet3 : 'red'}) };
-                        this.pointPlayer2 = this.pointPlayer2 + 1 ;
+                        //this.pointPlayer2 = this.pointPlayer2 + 1 ;
+
+                        if(this.placePlayerInDatabase == '1'){incrementPointPlayer1(this.idGameCreated);}
+                        else if(this.placePlayerInDatabase == '2'){incrementPointPlayer2(this.idGameCreated);}
                     }
                 }
             }
@@ -81,7 +89,7 @@ export default class MultiGame extends Component {
 
     makePlayer2Choice = async () => {
 
-        db.listen("GameInstance", this.idGameCreated, () => {
+        db.listenScore("GameInstance", this.idGameCreated, () => {
              //this.setState({ gameFound : 1 });
              this.setState({player2Hasplayed : 1});
              console.log('waiting for player 2')
@@ -89,23 +97,26 @@ export default class MultiGame extends Component {
             // wait a Player2 update, and change choice ( other to  this.placePlayerInDatabase   )
              var query = new Parse.Query('GameInstance');
              query.equalTo("id", this.idGameCreated);
-             game =  query.first();
+             game = query.first();
+             
              if(this.placePlayerInDatabase == '1'){
-                console.log(game.P1CurrentChoice);
+                //console.log(game.P1CurrentChoice);
+                return game.P1CurrentChoice;
              }
              else if(this.placePlayerInDatabase == '2'){
-                console.log(game.P2CurrentChoice);
+                //console.log(game.P2CurrentChoice);
+                return game.P2CurrentChoice;
              }
 
              console.log('Player 2 has played'); 
-             //return 'feuille';
+             return 'feuille';
         } );
 
         /****TEST MANUAL PLAYER 2 CHOICE IN SET  */
-        return this.ManualPlayer2Choice()
+        return this.ManualPlayer2Choice();
     }
 
-    /*test function */
+    /* INSERT CHOICE IN DATABASE FOR OTHER CHOICE SIMULATION */
     ManualPlayer2Choice = async () => {
         var query = new Parse.Query('GameInstance');
         query.equalTo("id", this.idGameCreated);
@@ -115,7 +126,7 @@ export default class MultiGame extends Component {
             game.set('P2CurrentChoice', 'ciseau');
             this.state.cardToDisplayEnemy = 'ciseau' ; 
          }
-         else if(this.placePlayerInDatabase == '2'){
+        else if(this.placePlayerInDatabase == '2'){
             game.set('P1CurrentChoice', 'ciseau');
             this.state.cardToDisplayEnemy = 'ciseau' ; 
          }
@@ -143,26 +154,36 @@ export default class MultiGame extends Component {
 
         let Player2Choice = this.makePlayer2Choice() ;
         // after player 2 make choice
-        if(this.state.player2Hasplayed == 1){
-            if (Player2Choice == userChoice){  var result = "null";  this.currentSet = this.currentSet -1;}
-            else if (Player2Choice == "pierre" && userChoice == "feuille"){var result = "Gagné";}
-            else if (Player2Choice == "pierre" && userChoice == "ciseau"){var result = "Perdu";}
-            else if (Player2Choice == "feuille" && userChoice == "ciseau"){var result = "Gagné";}
-            else if (Player2Choice == "feuille" && userChoice == "pierre"){var result = "Perdu";}
-            else if (Player2Choice == "ciseau" && userChoice == "pierre"){var result = "Gagné";}
-            else if (Player2Choice == "ciseau" && userChoice == "feuille"){var result = "Perdu";}
-        }
-        if(this.state.player2Hasplayed == 1){
-            if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
-        }
+
+        let result = null;
+
+        console.log('player2Choice : ' + Player2Choice);
+        console.log(Player2Choice);
+        console.log('user choice : ' + userChoice);
+
+
+        if (Player2Choice == userChoice){  result = "null";  this.currentSet = this.currentSet -1;}
+        else if (Player2Choice == "pierre" && userChoice == "feuille"){ result = "Gagné";}
+        else if (Player2Choice == "pierre" && userChoice == "ciseau"){ result = "Perdu";}
+        else if (Player2Choice == "feuille" && userChoice == "ciseau"){ result = "Gagné";}
+        else if (Player2Choice == "feuille" && userChoice == "pierre"){ result = "Perdu";}
+        else if (Player2Choice == "ciseau" && userChoice == "pierre"){ result = "Gagné";}
+        else if (Player2Choice == "ciseau" && userChoice == "feuille"){ result = "Perdu";}
+            
+        if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
+        //result = "Gagné";
         this.updateGame(result,userChoice,Player2Choice);
+        console.log('resultat de la manche' + result);
         this.forceUpdate();
         this.redirectGame();
-        return ;  
+        return 0 ;  
         
     }
 
     redirectGame = () => {
+
+        // TODO: Change pointPlayer2 and pointUser for Database data
+
         let navigation = this.props.navigation;
         if (this.currentSet >= 3 && this.pointPlayer2 >= 2 ){
             setTimeout(function(){
@@ -183,6 +204,7 @@ export default class MultiGame extends Component {
     }
     componentWillUnmount(){}
 
+
     searchOtherPlayerAndStartGame = async () => {
 
         this.idGame = await searchGameInstanceWithEmptyPlayer2();
@@ -191,8 +213,10 @@ export default class MultiGame extends Component {
         if( this.idGame != null ){
             console.log('Game found : id = ' + this.idGame);
             await subscribeInAGame('player2',this.idGame, this.idUser)
-            this.placePlayerInDatabase= '2';
+            this.placePlayerInDatabase = '2';
             this.setState({gameFound : 1 });
+
+            return;
         }
 
         // if game is not found, create game instance and wait a player2
@@ -202,8 +226,8 @@ export default class MultiGame extends Component {
             console.log('Game was created : ' + this.idGameCreated);
             //this.startGame();
 
-            db.listen("GameInstance", this.idGameCreated, () => { this.setState({ gameFound : 1 }); } ) 
-            this.placePlayerInDatabase= '1';
+            db.listenPlayer("GameInstance", this.idGameCreated, () => { if (this.gameFound != 1){this.setState({ gameFound : 1 });} } ) 
+            this.placePlayerInDatabase = '1';
 
             /******   TEST MANUAL UPDATE JOINING PLAYER 2  ******/  
             // TODO: Try tu update database with other device 
@@ -212,6 +236,8 @@ export default class MultiGame extends Component {
             game = await db.get('GameInstance', this.idGameCreated );
             game.set('player2', '1111111');
             game.save()
+
+            return;
         }               
 
     }

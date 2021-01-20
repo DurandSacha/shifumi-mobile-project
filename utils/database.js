@@ -16,16 +16,51 @@ class Database {
             });
     }
 
-    // use for listening a row in database, and make something if element was update   /notEqualTo  //equalTo
+    // use for listening a row in database
     listen = async (className, id, onUpdate) => {
         let query = new Parse.Query(className);
         query.equalTo("objectId", id);
         let subscription = await query.subscribe();
-        subscription.on('update', onUpdate); // open // update // enter
+        subscription.on('update', onUpdate);
 
         subscription.on('update', function (message) {
-            console.log("database updated from listen in database: ", message); 
+            console.log("database updated :  ", message); 
         });
+        console.log('-------------------------------------------------------------')
+
+        return subscription;
+    }
+
+    // use for listening a row in database
+    listenPlayer = async (className, id, onUpdate) => {
+        let query = new Parse.Query(className);
+        query.equalTo("objectId", id);
+        //query.greaterThan("player2", '0');          //query.greaterThan("like", 1);
+        query.notEqualTo('player2', 0)
+        let subscription = await query.subscribe();
+        subscription.on('update', onUpdate);
+
+        subscription.on('update', function (message) {
+            console.log("Player changed in database :  ", message); 
+        });
+        console.log('-------------------------------------------------------------')
+
+        return subscription;
+    }
+
+    // use for listening a row in database
+    listenScore = async (className, id, onUpdate) => {
+
+        let query = new Parse.Query(className);
+        query.equalTo("objectId", id);
+        //query.equalTo("P1Point", '0');
+        let subscription = await query.subscribe();
+        subscription.on('update', onUpdate);
+
+        subscription.on('update', function (message) {
+            console.log("Score updated in database :  ", message); 
+        });
+        console.log('-------------------------------------------------------------')
 
         return subscription;
     }
