@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Game from "./components/Game";
@@ -14,6 +14,7 @@ import 'localstorage-polyfill';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // or import AsyncStorage from '@react-native-community/async-storage';
 import Parse from 'parse';
+//import Img from '../assets/images/_image';
 
 /*
 Back end (Parse Server) is available and deployed with : https://github.com/DurandSacha/parse-server-example at https://shifumi-game-akarah.herokuapp.com/parse/function/hello
@@ -43,13 +44,17 @@ function HomeScreen({ navigation }) {
     <View style={styles.view}>
       <ImageBackground source={Img.background} style={styles.imageBackground}>
         <View style={styles.header}>
-            <Text style={styles.title}>Shi fu mi</Text>
-            <Text style={styles.littleScore}>Partie effectuée : { terminated }</Text>
+            {/*<Text style={styles.title}>Shi fu mi</Text>*/}
+            <Image
+              style={styles.icon}
+              source={Img.icon}
+            />
+            {/*<Text style={styles.littleScore}>Partie effectuée : { terminated }</Text>*/}
         </View>
         <View style={styles.content}>
-            <Buttons buttonText="Jeu Solo" navigation={navigation} NameRenderView="Game" />
-            <Buttons buttonText="Jeu multijoueur" navigation={navigation} NameRenderView="MultiGame" />
-            <Buttons buttonText="Configuration" navigation={navigation} NameRenderView="Configuration" />
+            <Buttons buttonText="Jeu Solo" navigation={navigation} NameRenderView="Game" texture={Img.bois} />
+            <Buttons buttonText="Jeu multijoueur" navigation={navigation} NameRenderView="MultiGame" texture={Img.bois} />
+            <Buttons buttonText="Configuration" navigation={navigation} NameRenderView="Configuration" texture={Img.bois} />
         </View>
       </ImageBackground>
   </View>
@@ -102,7 +107,12 @@ const styles = StyleSheet.create({
     flex: 4,
     width: '100%',
     height: '100%',
-},
+  },
+  icon: {
+    width: 165,
+    height: 165,
+    marginTop:170,
+  },
   MenuButtonContainer : {
     alignItems: 'center',
     width: 210,

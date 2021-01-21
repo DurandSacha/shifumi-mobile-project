@@ -4,6 +4,7 @@ import 'react-native-gesture-handler';
 import Img from '../assets/images/_image';
 import CircleScore from './Layout/CircleScore';
 import Card from './Layout/Card';
+import CardPlayed from './Layout/CardPlayed';
 import 'localstorage-polyfill';
 
 const br = `\n`;
@@ -128,14 +129,15 @@ export default class Game extends Component {
 
                         <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
                             <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} />
+                            {/*<CardPlayed icon={Img[cardToDisplayUser]} texture={Img.carteBois} ></CardPlayed>*/}
                         </View>
 
                         <Text style={styles.setText}> Coup n°{ this.currentSet } </Text>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
                             
-                            <Card onPress={() => this.MakeSet("ciseau")} icon={Img.ciseau} color="rgba(191,44,44,1)"/>
-                            <Card onPress={() => this.MakeSet("feuille")} icon={Img.feuille} color="rgba(242,203,5,1)"/>
-                            <Card onPress={() => this.MakeSet("pierre")} icon={Img.pierre} color="rgba(74,140,91,1)"/>
+                            <Card onPress={() => this.MakeSet("ciseau")} icon={Img.ciseau} texture={Img.carteBois} color="rgba(191,44,44,1)"/>
+                            <Card onPress={() => this.MakeSet("feuille")} icon={Img.feuille} texture={Img.carteBois} color="rgba(242,203,5,1)"/>
+                            <Card onPress={() => this.MakeSet("pierre")} icon={Img.pierre} texture={Img.carteBois} color="rgba(74,140,91,1)"/>
                         </View>
                     </View>
                 </ImageBackground>

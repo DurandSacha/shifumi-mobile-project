@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image} from 'react-native';
+import { View, StyleSheet, Image, ImageBackground} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default class Card extends Component {
@@ -9,26 +9,31 @@ export default class Card extends Component {
     }
 
     render() {
-        const { icon, color, onPress } = this.props;
+        const { icon, color, onPress, texture } = this.props;
 
         return ( 
-                <TouchableOpacity onPress={onPress} style={[styles.container1, {backgroundColor : color }]}>
+            <ImageBackground style={styles.backgroundImageBois} source={texture}>
+                <TouchableOpacity onPress={onPress} style={[styles.container /*, {backgroundColor : color } */]}> 
                     <View style={styles.rect}>
                         <Image source={icon} resizeMode="contain" style={[styles.image]} />
                     </View>
                 </TouchableOpacity>
+            </ImageBackground>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    backgroundImageBois :{
+        marginBottom:25,
+    },
     view: {
         flex: 1,
     },
-    container1: {
+    container: {
         width: 105,
         height: 140,
-        backgroundColor: 'rgba(191,44,44,1)',
+        //backgroundColor: 'rgba(191,44,44,1)',
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',

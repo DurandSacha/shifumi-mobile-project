@@ -29,7 +29,7 @@ export default class EndGame extends Component {
                             </View>
                         </View>
                         <View style={styles.content}>
-                            <Buttons buttonText="Retour Menu" navigation={navigation} NameRenderView="Home" />
+                            <Buttons buttonText="Retour Menu" navigation={navigation} NameRenderView="Home" texture={Img.bois} />
                         </View>     
                 </ImageBackground>
             </View>
