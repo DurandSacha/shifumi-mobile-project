@@ -116,7 +116,6 @@ export default class MultiGame extends Component {
             game.set('P1CurrentChoice', 'feuille');
             game.save();
          }
-        
 
         return 'feuille';
     }
