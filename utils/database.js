@@ -59,12 +59,12 @@ class Database {
         let subscription = await query.subscribe();
         subscription.on('update', onUpdate);
 
-        /*
+        
         subscription.on('update', function (message) {
             console.log("Score updated in database :  ", message); 
         });
         console.log('-------------------------------------------------------------')
-        */
+        
 
         return subscription;
     }

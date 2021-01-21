@@ -64,8 +64,8 @@ export default class MultiGame extends Component {
                     else if (result == "Gagné"){
                         //this.pointUser = this.pointUser + 1 ;
 
-                        if(this.placePlayerInDatabase == '1'){await incrementPointPlayer1(this.idGameCreated);}
-                        else if(this.placePlayerInDatabase == '2'){await incrementPointPlayer2(this.idGameCreated);}
+                        if(this.placePlayerInDatabase == '1'){incrementPointPlayer1(this.idGameCreated);}
+                        else if(this.placePlayerInDatabase == '2'){incrementPointPlayer2(this.idGameCreated);}
 
                         if (currentSet == 1) { this.setState({colorSet1 : 'green'}) };
                         if (currentSet == 2) { this.setState({colorSet2 : 'green'}) };
@@ -78,8 +78,8 @@ export default class MultiGame extends Component {
                         if (currentSet == 3) { this.setState({colorSet3 : 'red'}) };
                         //this.pointPlayer2 = this.pointPlayer2 + 1 ;
 
-                        if(this.placePlayerInDatabase == '1'){await incrementPointPlayer1(this.idGameCreated);}
-                        else if(this.placePlayerInDatabase == '2'){await incrementPointPlayer2(this.idGameCreated);}
+                        if(this.placePlayerInDatabase == '1'){incrementPointPlayer2(this.idGameCreated);}
+                        else if(this.placePlayerInDatabase == '2'){incrementPointPlayer1(this.idGameCreated);}
                     }
                 }
             }
@@ -89,74 +89,43 @@ export default class MultiGame extends Component {
 
     makePlayer2Choice = async () => {
 
-        //game = db.get('GameInstance', this.idGameCreated );
         // Get Current Choice for enemy with listening database and return choic in this function
         console.log('-------------------------------- LISTEN SCORE PARTS--------------------------------');
 
          await db.listenScore("GameInstance", this.idGameCreated, async (gameReturn) => {
-
-            console.log('in listen score function');
-
-            await db.get('GameInstance', this.idGameCreated )
-            .then(function(success){
-                console.log(success);
-                console.log(success.P1CurrentChoice);
-                console.log(success.result);
-            })
-
-            //console.log(gameReturn.P1CurrentChoice);
              
-            //game = db.get('GameInstance', this.idGameCreated );
-            console.log('attente du choix enemi : ' + gameReturn.P1CurrentChoice);
-            console.log(gameReturn);
-            //game = JSON.parse(game);
-            console.log(gameReturn.objectId);
-            //console.log(game.P1CurrentChoice);
-            console.log('---------------------------------- END LISTEN SCORE-----------------------------------');
-             
-
-
-             //TODO: return player 2 choice ( with placePlayer )
-             /*
              if(this.placePlayerInDatabase == '1'){
-                // TODO: listening + get P1CurrentChoice
-                return game.P1CurrentChoice;
+                console.log('choix enemy :' + gameReturn.attributes.P2CurrentChoice  );
+                this.state.cardToDisplayEnemy = gameReturn.attributes.P2CurrentChoice ;
+                return gameReturn.attributes.P2CurrentChoice;
+                
              }
-             else if(this.placePlayerInDatabase == '2'){
-                 // TODO: listening + get P2CurrentChoice
-                console.log(game.P2CurrentChoice);
-                return game.P2CurrentChoice;
+             else{
+                console.log('choix enemy :' + gameReturn.attributes.P1CurrentChoice  );
+                this.state.cardToDisplayEnemy = gameReturn.attributes.P1CurrentChoice ;
+                return gameReturn.attributes.P1CurrentChoice;
              }
 
-             console.log('Player 2 has played'); 
-             //return 'feuille';
-             */
+            
         } );
-
-        /****TEST MANUAL PLAYER 2 CHOICE IN SET  */
-        this.ManualPlayer2Choice();
-        return 'ciseau';
+        
+        return this.ManualPlayer2Choice();
+        //return this.state.cardToDisplayEnemy;
     }
 
     /* INSERT CHOICE IN DATABASE FOR OTHER CHOICE SIMULATION */
     ManualPlayer2Choice = async () => {
-        //var query = new Parse.Query('GameInstance');
-        //query.equalTo("id", this.idGameCreated);
         game = await db.get('GameInstance', this.idGameCreated );
 
         if(this.placePlayerInDatabase == '1'){
-            game.set('P2CurrentChoice', 'ciseau');
-            this.state.cardToDisplayEnemy = 'ciseau' ; 
-            //this.state.Player2Choice = 'ciseau';
+            game.set('P2CurrentChoice', 'feuille');
          }
         else if(this.placePlayerInDatabase == '2'){
-            game.set('P1CurrentChoice', 'ciseau');
-            this.state.cardToDisplayEnemy = 'ciseau' ; 
-            //this.state.PlayerUserChoice = 'ciseau';
+            game.set('P1CurrentChoice', 'feuille');
          }
         game.save()
 
-        return 'ciseau';
+        return 'feuille';
     }
 
     MakeSet = async (userChoice) => {
@@ -174,17 +143,9 @@ export default class MultiGame extends Component {
          }
         game.save()
 
-
-
         let Player2Choice = await this.makePlayer2Choice() ;
-        // after player 2 make choice
 
         let result = null;
-
-        console.log('player2Choice :');
-        console.log(Player2Choice);
-
-
 
         if (Player2Choice == userChoice){  result = "null";  this.currentSet = this.currentSet -1;}
         else if (Player2Choice == "pierre" && userChoice == "feuille"){ result = "Gagné";}
@@ -195,13 +156,10 @@ export default class MultiGame extends Component {
         else if (Player2Choice == "ciseau" && userChoice == "feuille"){ result = "Perdu";}
             
         if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
-        //result = "Gagné";
         this.updateGame(result,userChoice,Player2Choice);
-        console.log('resultat de la manche' + result);
         this.forceUpdate();
         this.redirectGame();
         return 0 ;  
-        
     }
 
     redirectGame = async () => {
