@@ -89,41 +89,34 @@ export default class MultiGame extends Component {
 
     makePlayer2Choice = async () => {
 
-        // Get Current Choice for enemy with listening database and return choic in this function
-        console.log('-------------------------------- LISTEN SCORE PARTS--------------------------------');
-
          await db.listenScore("GameInstance", this.idGameCreated, async (gameReturn) => {
-             
              if(this.placePlayerInDatabase == '1'){
-                console.log('choix enemy :' + gameReturn.attributes.P2CurrentChoice  );
                 this.state.cardToDisplayEnemy = gameReturn.attributes.P2CurrentChoice ;
-                return gameReturn.attributes.P2CurrentChoice;
-                
+                return gameReturn.attributes.P2CurrentChoice; 
              }
              else{
-                console.log('choix enemy :' + gameReturn.attributes.P1CurrentChoice  );
                 this.state.cardToDisplayEnemy = gameReturn.attributes.P1CurrentChoice ;
                 return gameReturn.attributes.P1CurrentChoice;
-             }
-
-            
-        } );
+             }  
+        });
         
         return this.ManualPlayer2Choice();
-        //return this.state.cardToDisplayEnemy;
     }
 
     /* INSERT CHOICE IN DATABASE FOR OTHER CHOICE SIMULATION */
+    // TODO: Try tu update database with other device
     ManualPlayer2Choice = async () => {
         game = await db.get('GameInstance', this.idGameCreated );
 
         if(this.placePlayerInDatabase == '1'){
             game.set('P2CurrentChoice', 'feuille');
+            game.save();
          }
         else if(this.placePlayerInDatabase == '2'){
             game.set('P1CurrentChoice', 'feuille');
+            game.save();
          }
-        game.save()
+        
 
         return 'feuille';
     }
@@ -137,11 +130,12 @@ export default class MultiGame extends Component {
 
         if(this.placePlayerInDatabase == '1'){
             game.set('P1CurrentChoice', userChoice);
+            game.save();
          }
          else if(this.placePlayerInDatabase == '2'){
             game.set('P2CurrentChoice', userChoice);
+            game.save();
          }
-        game.save()
 
         let Player2Choice = await this.makePlayer2Choice() ;
 
@@ -164,19 +158,27 @@ export default class MultiGame extends Component {
 
     redirectGame = async () => {
 
-        // TODO: Change pointPlayer2 and pointUser for Database data
+        game = await db.get('GameInstance', this.idGameCreated );
+        this.pointPlayer2 = game.attributes.P2Point;
+        this.pointUser = game.attributes.P1Point;
+        
 
         let navigation = this.props.navigation;
         if (this.currentSet >= 3 && this.pointPlayer2 >= 2 ){
             setTimeout(function(){
+                game.set('result', 'Defeat');
+                game.save();
                 navigation.navigate('EndGame',{ result: ['Défaite'] });
-             }, 700);
+             }, 400);
         }
         else if (this.currentSet >= 3 && this.pointUser >= 2){
             setTimeout(function(){
+                game.set('result', 'Victory');
+                game.save();
                 navigation.navigate('EndGame',{ result: ['Victoire'] });
-             }, 700);
+             }, 400);
         }
+        
     }
 
     //TODO: delete game instance if player is not connected
@@ -206,7 +208,6 @@ export default class MultiGame extends Component {
             await createGameInstance(this.idUser);
             this.idGameCreated = localStorage.getItem("gameId");
             console.log('Game was created : ' + this.idGameCreated);
-            //this.startGame();
 
             db.listenPlayer("GameInstance", this.idGameCreated, () => { if (this.gameFound != 1){this.setState({ gameFound : 1 });} } ) 
             this.placePlayerInDatabase = '1';
