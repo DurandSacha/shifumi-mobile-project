@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
         //backgroundColor: 'grey',
         padding: 30,
         //marginTop: 20,
-        borderWidth: 4,
-        borderColor: "#774D3B",
+        //borderWidth: 4,
+        //borderColor: "#774D3B",
         overflow: 'hidden',
       },
 });
