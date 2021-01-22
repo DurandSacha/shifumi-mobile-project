@@ -215,7 +215,7 @@ export default class MultiGame extends Component {
         }      
         
         db.listen("GameInstance", this.idGame, (gameReturn) => {
-            console.log('Listen a game');
+            console.log('Listen a game', gameReturn);
             if (this.state.gameFound != 1){
                 this.setState({ gameFound : 1 });
             } 
@@ -230,7 +230,7 @@ export default class MultiGame extends Component {
                     this.setState({enemyCurrentChoice : gameReturn.attributes.P1CurrentChoice});
                 }  
             }
-        }).then((success) => { console.log("subscribe ok ") }, (error) => { console.log(error.message)});
+        }).then((success) => { console.log("subscribe status ") }, (error) => { console.log(error.message)});
                  
     }
 
