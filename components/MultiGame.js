@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground} from 'react-native';
-import 'react-native-gesture-handler';
+//import 'react-native-gesture-handler';
 import Img from '../assets/images/_image';
 import CircleScore from './Layout/CircleScore';
 import Card from './Layout/Card';
@@ -33,6 +33,7 @@ export default class MultiGame extends Component {
             pointPlayer2 : 0,
             pointUser : 0,
             player2Hasplayed : 1,
+            enemyCurrentChoice : null,
         };
 
         this.idGame = null;
@@ -42,9 +43,19 @@ export default class MultiGame extends Component {
         this.idUser = Math.floor(Math.random() * Math.floor(15000)).toString();
         this.placePlayerInDatabase= null;
 
+        //this.enemyCurrentChoice = 'feuille';
+        this.enemyCurrentChoice = null;
+
+        
+        
+
     }
 
-    updateGame = async (result, userChoice, Player2Choice) => {     //this.placePlayerInDatabase    // P1Point // P2Point
+    componentDidMount(){
+        this.searchOtherPlayerAndInitializeGame();
+    }
+
+    updateGame = async (result, userChoice, Player2Choice) => {
 
         if(this.state.player2Hasplayed == 1){
             this.setState({
@@ -62,10 +73,9 @@ export default class MultiGame extends Component {
                 if (currentSet == i){
                     if(result == "null"){}
                     else if (result == "Gagné"){
-                        //this.pointUser = this.pointUser + 1 ;
 
-                        if(this.placePlayerInDatabase == '1'){incrementPointPlayer1(this.idGameCreated);}
-                        else if(this.placePlayerInDatabase == '2'){incrementPointPlayer2(this.idGameCreated);}
+                        if(this.placePlayerInDatabase == '1'){incrementPointPlayer1(this.idGame);}
+                        else if(this.placePlayerInDatabase == '2'){incrementPointPlayer2(this.idGame);}
 
                         if (currentSet == 1) { this.setState({colorSet1 : 'green'}) };
                         if (currentSet == 2) { this.setState({colorSet2 : 'green'}) };
@@ -76,92 +86,96 @@ export default class MultiGame extends Component {
                         if (currentSet == 1) { this.setState({colorSet1 : 'red'}) };
                         if (currentSet == 2) { this.setState({colorSet2 : 'red'}) };
                         if (currentSet == 3) { this.setState({colorSet3 : 'red'}) };
-                        //this.pointPlayer2 = this.pointPlayer2 + 1 ;
 
-                        if(this.placePlayerInDatabase == '1'){incrementPointPlayer2(this.idGameCreated);}
-                        else if(this.placePlayerInDatabase == '2'){incrementPointPlayer1(this.idGameCreated);}
+                        if(this.placePlayerInDatabase == '1'){incrementPointPlayer2(this.idGame);}
+                        else if(this.placePlayerInDatabase == '2'){incrementPointPlayer1(this.idGame);}
                     }
                 }
             }
-            //this.setState({player2Hasplayed : 0});
         }
     }
 
-    makePlayer2Choice = async () => {
-
-         await db.listenScore("GameInstance", this.idGameCreated, async (gameReturn) => {
-             if(this.placePlayerInDatabase == '1'){
-                this.state.cardToDisplayEnemy = gameReturn.attributes.P2CurrentChoice ;
-                return gameReturn.attributes.P2CurrentChoice; 
-             }
-             else{
-                this.state.cardToDisplayEnemy = gameReturn.attributes.P1CurrentChoice ;
-                return gameReturn.attributes.P1CurrentChoice;
-             }  
-        });
+    // TODO: set a subscription in constructor, and get it after 
+    // TODO: replace code execution in this event ( constructor )
+    /*
+    getPlayer2Choice = async () => {
         
-        return this.ManualPlayer2Choice();
+        let EnemyChoice = null;
+            await db.listenScore("GameInstance", this.idGame, async (gameReturn) => {
+                if(this.placePlayerInDatabase == '1'){
+                    EnemyChoice = gameReturn.attributes.P2CurrentChoice; 
+                }
+                else{
+                    EnemyChoice = gameReturn.attributes.P1CurrentChoice;
+                }  
+            });
+
+        if(EnemyChoice != null){ 
+            this.state.cardToDisplayEnemy = EnemyChoice;
+            return EnemyChoice;
+        }
+        else{
+            console.log('May be enemyChoice is null');
+            let alternativeChoice = 'feuille';
+            this.state.cardToDisplayEnemy = alternativeChoice;
+            return alternativeChoice;
+        }
+       return;
     }
-
-    /* INSERT CHOICE IN DATABASE FOR OTHER CHOICE SIMULATION */
-    // TODO: Try tu update database with other device
-    ManualPlayer2Choice = async () => {
-        game = await db.get('GameInstance', this.idGameCreated );
-
-        if(this.placePlayerInDatabase == '1'){
-            game.set('P2CurrentChoice', 'feuille');
-            game.save();
-         }
-        else if(this.placePlayerInDatabase == '2'){
-            game.set('P1CurrentChoice', 'feuille');
-            game.save();
-         }
-
-        return 'feuille';
-    }
+    */
 
     MakeSet = async (userChoice) => {
         //Push user choice in database 
-
         var query = new Parse.Query('GameInstance');
-        query.equalTo("id", this.idGameCreated);
-        game = await db.get('GameInstance', this.idGameCreated );
+        query.equalTo("id", this.idGame);
+        game = await db.get('GameInstance', this.idGame );
 
-        if(this.placePlayerInDatabase == '1'){
-            game.set('P1CurrentChoice', userChoice);
-            game.save();
-         }
-         else if(this.placePlayerInDatabase == '2'){
-            game.set('P2CurrentChoice', userChoice);
-            game.save();
-         }
 
-        let Player2Choice = await this.makePlayer2Choice() ;
+        console.log("gg", game, userChoice, this.placePlayerInDatabase)
+        if(userChoice != null){
+            if(this.placePlayerInDatabase == '1'){
+                game.set('P1CurrentChoice', userChoice);
+                game.save();
+            }
+            else if(this.placePlayerInDatabase == '2'){
+                game.set('P2CurrentChoice', userChoice);
+                game.save();
+            }
+        }
+        else{
+            console.log('user choice is null');
+        }
+
+        // get player2 choice
+        console.log('choix ennemi ::::: ' + this.state.enemyCurrentChoice );
+        console.log(this.state.enemyCurrentChoice);
+        //let Player2Choice = this.getPlayer2Choice() ;
+        //let Player2Choice = this.enemyCurrentChoice;
+        let Player2Choice = this.state.enemyCurrentChoice;
 
         let result = null;
-
-        if (Player2Choice == userChoice){  result = "null";  this.currentSet = this.currentSet -1;}
-        else if (Player2Choice == "pierre" && userChoice == "feuille"){ result = "Gagné";}
-        else if (Player2Choice == "pierre" && userChoice == "ciseau"){ result = "Perdu";}
-        else if (Player2Choice == "feuille" && userChoice == "ciseau"){ result = "Gagné";}
-        else if (Player2Choice == "feuille" && userChoice == "pierre"){ result = "Perdu";}
-        else if (Player2Choice == "ciseau" && userChoice == "pierre"){ result = "Gagné";}
-        else if (Player2Choice == "ciseau" && userChoice == "feuille"){ result = "Perdu";}
-            
-        if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
-        this.updateGame(result,userChoice,Player2Choice);
-        this.forceUpdate();
-        this.redirectGame();
-        return 0 ;  
+        if(Player2Choice == 'pierre' || Player2Choice == 'ciseau' || Player2Choice == 'feuille' ){
+            if (Player2Choice == userChoice){  result = "null";  this.currentSet = this.currentSet -1;}
+            else if (Player2Choice == "pierre" && userChoice == "feuille"){ result = "Gagné";}
+            else if (Player2Choice == "pierre" && userChoice == "ciseau"){ result = "Perdu";}
+            else if (Player2Choice == "feuille" && userChoice == "ciseau"){ result = "Gagné";}
+            else if (Player2Choice == "feuille" && userChoice == "pierre"){ result = "Perdu";}
+            else if (Player2Choice == "ciseau" && userChoice == "pierre"){ result = "Gagné";}
+            else if (Player2Choice == "ciseau" && userChoice == "feuille"){ result = "Perdu";}
+                
+            if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
+            this.updateGame(result,userChoice,Player2Choice);
+            this.redirectGame();
+            return  ;  
+        }
     }
 
     redirectGame = async () => {
 
-        game = await db.get('GameInstance', this.idGameCreated );
+        game = await db.get('GameInstance', this.idGame );
         this.pointPlayer2 = game.attributes.P2Point;
         this.pointUser = game.attributes.P1Point;
         
-
         let navigation = this.props.navigation;
         if (this.currentSet >= 3 && this.pointPlayer2 >= 2 ){
             setTimeout(function(){
@@ -177,57 +191,51 @@ export default class MultiGame extends Component {
                 navigation.navigate('EndGame',{ result: ['Victoire'] });
              }, 400);
         }
-        
     }
 
     //TODO: delete game instance if player is not connected
 
-    componentDidMount(){
-        this.searchOtherPlayerAndStartGame();
-    }
-    componentWillUnmount(){}
-
-
-    searchOtherPlayerAndStartGame = async () => {
+    searchOtherPlayerAndInitializeGame = async () => {
 
         this.idGame = await searchGameInstanceWithEmptyPlayer2();
-
         // join a existing game 
         if( this.idGame != null ){
             console.log('Game found : id = ' + this.idGame);
             await subscribeInAGame('player2',this.idGame, this.idUser)
             this.placePlayerInDatabase = '2';
-            this.setState({gameFound : 1 });
-
-            return;
         }
-
         // if game is not found, create game instance and wait a player2
         else{
             await createGameInstance(this.idUser);
-            this.idGameCreated = localStorage.getItem("gameId");
-            console.log('Game was created : ' + this.idGameCreated);
-
-            db.listenPlayer("GameInstance", this.idGameCreated, () => { if (this.gameFound != 1){this.setState({ gameFound : 1 });} } ) 
+            this.idGame = localStorage.getItem("gameId");
+            console.log('Game was created : ' + this.idGame);
+            //db.listenPlayer("GameInstance", this.idGame, () => { if (this.state.gameFound != 1){this.setState({ gameFound : 1 });} } ) 
             this.placePlayerInDatabase = '1';
 
-            /******   TEST MANUAL UPDATE JOINING PLAYER 2  ******/  
-            // TODO: Try tu update database with other device 
-            var query = new Parse.Query('GameInstance');
-            query.equalTo("id", this.idGameCreated);
-            game = await db.get('GameInstance', this.idGameCreated );
-            game.set('player2', '1111111');
-            game.save()
-
-            return;
-        }               
-
+        }      
+        
+        db.listen("GameInstance", this.idGame, (gameReturn) => {
+            console.log('Listen a game');
+            if (this.state.gameFound != 1){
+                this.setState({ gameFound : 1 });
+            } 
+            else {
+                console.log('hello');
+                if(this.placePlayerInDatabase == '1'){
+                    this.enemyCurrentChoice = gameReturn.attributes.P2CurrentChoice; 
+                    this.setState({enemyCurrentChoice : gameReturn.attributes.P2CurrentChoice});
+                }
+                else{
+                    this.enemyCurrentChoice = gameReturn.attributes.P1CurrentChoice;
+                    this.setState({enemyCurrentChoice : gameReturn.attributes.P1CurrentChoice});
+                }  
+            }
+        }).then((success) => { console.log("subscribe ok ") }, (error) => { console.log(error.message)});
+                 
     }
 
     render = () => {
-        const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound } = this.state;
-
-        
+        const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound, enemyCurrentChoice } = this.state;
 
         if(gameFound == 0){
             return(
@@ -248,20 +256,17 @@ export default class MultiGame extends Component {
                             <View style={[styles.containerEnemyCardPlayed, { opacity: visibilityEnemyCard   }]}>
                                 <Image source={Img[cardToDisplayEnemy]} resizeMode="contain" style={styles.CardPlayedEnemy} />
                             </View>
-
                             <View>
                                 <Text style={styles.BattleText}>Manche en cours</Text>
                                 {/*<Button onpress={this.ManualPlayer2Choice()} title="Make Enemy Choice" ><Text>Make Enemy Choice</Text> </Button>*/}
                                 <CircleScore colorSet1={colorSet1} colorSet2={colorSet2} colorSet3={colorSet3} />
                             </View>
-
                             <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
                                 <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} />
+                                {/*<CardPlayed icon={Img[cardToDisplayUser]} texture={Img.carteBois} ></CardPlayed>*/}
                             </View>
-
                             <Text style={styles.setText}> Coup n°{ this.currentSet } </Text>
                             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
-                                
                                 <Card onPress={() => this.MakeSet("ciseau")} icon={Img.ciseau} texture={Img.carteBois} color="rgba(191,44,44,1)"/>
                                 <Card onPress={() => this.MakeSet("feuille")} icon={Img.feuille} texture={Img.carteBois} color="rgba(242,203,5,1)"/>
                                 <Card onPress={() => this.MakeSet("pierre")} icon={Img.pierre} texture={Img.carteBois} color="rgba(74,140,91,1)"/>

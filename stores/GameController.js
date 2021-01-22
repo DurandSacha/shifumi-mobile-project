@@ -54,10 +54,6 @@ subscribeInAGame = async (place,instanceId,name) => {
   return;
 }
 
-
-// string to int :  parseInt()   // int to string : .toString
-
-
 incrementPointPlayer1 = async (instanceId) => {
   var query = new Parse.Query('GameInstance');
   query.equalTo("id", instanceId);
