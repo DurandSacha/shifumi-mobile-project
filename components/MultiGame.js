@@ -92,6 +92,7 @@ export default class MultiGame extends Component {
                     }
                 }
             }
+            this.setState({colorSet1 : 'green'})
         }
     }
 
@@ -126,6 +127,15 @@ export default class MultiGame extends Component {
 
     MakeSet = async (userChoice) => {
         //Push user choice in database 
+
+        this.setState({
+            visibilityUserCard: 0,
+            visibilityEnemyCard: 0,
+            //cardToDisplayUser: userChoice,
+            //cardToDisplayEnemy: Player2Choice,
+        });
+
+
         var query = new Parse.Query('GameInstance');
         query.equalTo("id", this.idGame);
         game = await db.get('GameInstance', this.idGame );
@@ -284,13 +294,15 @@ const styles = StyleSheet.create({
         marginTop: 30,
         justifyContent: 'center',
         fontSize: 25,
-        marginLeft:145
+        marginLeft:115,
+        fontWeight: 'bold',
     },
     centerText:{
         marginTop: 300,
         justifyContent: 'center',
         fontSize: 30,
-        marginLeft:45
+        marginLeft:20,
+        fontWeight: 'bold',
     },
     view: {  
         flex: 1,
@@ -397,6 +409,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         marginTop: -45,
         fontWeight: "bold",
+        color: 'white',
     },
     setText:{
         fontSize: 15,

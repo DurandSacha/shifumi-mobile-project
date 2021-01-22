@@ -153,8 +153,8 @@ const styles = StyleSheet.create({
     },
     square : {
         marginBottom:2,
-        marginTop:2,
-        padding: 2,
+        //marginTop:2,
+        //padding: 2,
     },
     imageBackground: {
         flex: 4,
@@ -218,14 +218,14 @@ const styles = StyleSheet.create({
         height: 70,
       },
     enemyCard: {
-        width: 1500,
-        height: 300,
+        width: 1400,
+        height: 280,
     },
     CardPlayedUser: {
         width: 90,
         height: 60,
-        marginTop: 110,
-        marginBottom: 75,
+        marginTop: 70,
+        marginBottom: 10,
     },
     CardPlayedEnemy: {
         width: 80,
@@ -252,6 +252,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         marginTop: -45,
         fontWeight: "bold",
+        marginLeft: 75,
     },
     setText:{
         fontSize: 15,
