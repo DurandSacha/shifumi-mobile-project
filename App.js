@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   icon: {
-    width: 165,
-    height: 165,
+    width: 140,
+    height: 140,
     marginTop:170,
   },
   MenuButtonContainer : {

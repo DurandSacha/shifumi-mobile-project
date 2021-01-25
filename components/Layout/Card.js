@@ -26,8 +26,8 @@ export default class Card extends Component {
 const styles = StyleSheet.create({
     backgroundImageBois :{
         marginBottom:25,
-        borderRadius: 100,
-        width: 90,
+        //borderRadius: 100,
+        width: 85,
         height: 108,
         marginRight: 5,
         marginLeft: 5,
@@ -49,16 +49,16 @@ const styles = StyleSheet.create({
         marginLeft: 5,
     },
     rect: {
-        width: 90,
-        height: 110,
-        borderRadius: 10,
-        borderWidth: 5,
+        width: 89,
+        height: 108,
+        borderRadius: 0,
+        //borderWidth: 1,
         //borderColor: 'rgba(255,255,255,1)',
-        borderColor: 'rgba(70,70,70,1)',
+        borderColor: 'rgba(0,00,00,1)',
         justifyContent: 'center',
         alignItems: 'center',
         marginTop:1,
-        marginLeft: 0,
+        marginLeft: -10,
       },
     image: {
         width: 50,

@@ -82,11 +82,11 @@ const styles = StyleSheet.create({
       },
     TextBasic:{
         marginTop:250,
-        color:'red',
+        color:'white',
         fontSize:25,
     },
     textResult:{
-        color:'red',
+        color:'white',
         fontSize:50,
         fontWeight:'bold',
     }

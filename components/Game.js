@@ -5,6 +5,7 @@ import Img from '../assets/images/_image';
 import CircleScore from './Layout/CircleScore';
 import Card from './Layout/Card';
 import CardPlayed from './Layout/CardPlayed';
+import {widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 import 'localstorage-polyfill';
 
 const br = `\n`;
@@ -115,11 +116,13 @@ export default class Game extends Component {
 
         return (
             <View style={styles.view}>
+                {/*<StatusBar translucent backgroundColor="transparent" /> */}
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
                     <View style={styles.header}>
                         <Image source={Img.dosCarte} resizeMode="contain" style={styles.enemyCard}/>
                         <View style={[styles.containerEnemyCardPlayed, { opacity: visibilityEnemyCard   }]}>
-                            <Image source={Img[cardToDisplayEnemy]} resizeMode="contain" style={styles.CardPlayedEnemy} />
+                            {/*<Image source={Img[cardToDisplayEnemy]} resizeMode="contain" style={styles.CardPlayedEnemy} /> */}
+                            <CardPlayed icon={Img[cardToDisplayEnemy]} texture={Img.carteBois} ></CardPlayed>
                         </View>
 
                         <View>
@@ -128,8 +131,8 @@ export default class Game extends Component {
                         </View>
 
                         <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
-                            <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} />
-                            {/*<CardPlayed icon={Img[cardToDisplayUser]} texture={Img.carteBois} ></CardPlayed>*/}
+                            {/* <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} /> */}
+                            <CardPlayed icon={Img[cardToDisplayUser]} texture={Img.carteBois} ></CardPlayed>
                         </View>
 
                         <Text style={styles.setText}> Coup n°{ this.currentSet } </Text>
@@ -158,8 +161,8 @@ const styles = StyleSheet.create({
     },
     imageBackground: {
         flex: 4,
-        width: '100%',
-        height: '100%',
+        width: widthPercentageToDP('100%'),
+        height : heightPercentageToDP('100%'),
     },
     header: {
         flex: 1,
@@ -206,17 +209,17 @@ const styles = StyleSheet.create({
     rect: {
         width: 105,
         height: 140,
-        borderRadius: 10,
-        borderWidth: 5,
+        borderRadius: 0,
+        borderWidth: 2,
         borderColor: 'rgba(255,255,255,1)',
         justifyContent: 'center',
         alignItems: 'center',
         marginTop:1,
-      },
+    },
     image1: {
         width: 70,
         height: 70,
-      },
+    },
     enemyCard: {
         width: 1400,
         height: 280,
@@ -230,22 +233,22 @@ const styles = StyleSheet.create({
     CardPlayedEnemy: {
         width: 80,
         height: 55,
-        marginTop: -110,
-        marginBottom: 75,
+        marginTop: -0,
+        marginBottom: 20,
 
     },
     containerEnemyCardPlayed: {
         transform: [
             { rotate: "90deg" },
-            { translateX: -130 },
-            { translateY: 100 }
+            { translateX: -90 },
+            { translateY: -1 }
         ],
     },
     containerUserCardPlayed: {
         transform: [
             { rotate: "-90deg" },
             { translateX: 0 },
-            { translateY: -20 }
+            { translateY: 0 }
         ],
     },
     BattleText: {
