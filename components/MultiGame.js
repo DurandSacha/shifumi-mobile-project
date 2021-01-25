@@ -294,14 +294,14 @@ const styles = StyleSheet.create({
         marginTop: 30,
         justifyContent: 'center',
         fontSize: 25,
-        marginLeft:115,
+        marginLeft:150,
         fontWeight: 'bold',
     },
     centerText:{
         marginTop: 300,
         justifyContent: 'center',
         fontSize: 30,
-        marginLeft:20,
+        marginLeft:50,
         fontWeight: 'bold',
     },
     view: {  

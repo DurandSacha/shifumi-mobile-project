@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
   MenuButtonText:{
     color: 'white',
     fontSize : 20,
+    fontFamily: "Cochin",
   },
   view: {
       flex: 1,

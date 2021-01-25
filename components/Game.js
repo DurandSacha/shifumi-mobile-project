@@ -1,5 +1,5 @@
-import React, { PropTypes, Component } from 'react';
-import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground} from 'react-native';
+import React, { PropTypes, Component, useRef, useEffect } from 'react';
+import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground, Animated, Easing} from 'react-native';
 import 'react-native-gesture-handler';
 import Img from '../assets/images/_image';
 import CircleScore from './Layout/CircleScore';
@@ -49,6 +49,15 @@ export default class Game extends Component {
             cardToDisplayUser: userChoice,
             cardToDisplayEnemy: MachineChoice,
         });
+        // TODO: animation here
+
+        /*
+        this.setState({
+            visibilityUserCard: 0,
+            visibilityEnemyCard: 0,
+        });
+        */
+
 
         let currentSet = this.currentSet;
 
@@ -71,6 +80,8 @@ export default class Game extends Component {
                 }
             }
         }
+
+    
     }
 
     MakeSet = (userChoice) => {
@@ -112,6 +123,26 @@ export default class Game extends Component {
 
     render =() => {
 
+        // animation
+        /*
+        let spinValue = new Animated.Value(0);
+
+        Animated.timing(
+            this.spinValue,
+        {
+            toValue: 1,
+            duration: 3000,
+            easing: Easing.linear, // Easing is an additional import from react-native
+            //useNativeDriver: true  // To make use of native driver for performance
+        }
+        ).start();
+        const spin = this.spinValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg', '360deg']
+            })
+        */
+        // end animation
+
         const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3 } = this.state;
 
         return (
@@ -123,6 +154,14 @@ export default class Game extends Component {
                         <View style={[styles.containerEnemyCardPlayed, { opacity: visibilityEnemyCard   }]}>
                             {/*<Image source={Img[cardToDisplayEnemy]} resizeMode="contain" style={styles.CardPlayedEnemy} /> */}
                             <CardPlayed icon={Img[cardToDisplayEnemy]} texture={Img.carteBois} ></CardPlayed>
+
+                            {/*
+                            <Animated.View style={{transform: [{rotate: spin}] }} >
+                                <Animated.Image
+                                    style={{transform: [{rotate: spin}] }}
+                                    source={Img[cardToDisplayEnemy]} />
+                            </Animated.View>
+                            */}
                         </View>
 
                         <View>
