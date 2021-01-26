@@ -54,6 +54,11 @@ export default class MultiGame extends Component {
 
     updateGame = async (result) => {
 
+        this.setState({
+            visibilityUserCard: 1,
+            visibilityEnemyCard: 1,
+        });
+
         if(result == "null"){}
         else if (result == "Gagné"){
             if (this.currentSet == 1) { this.setState({colorSet1 : 'green'}) };
@@ -122,39 +127,32 @@ export default class MultiGame extends Component {
     }
 
     MakeSet = async () => {
-        
-            let result = null;
-            let Player2Choice = null;
 
-            if(this.placePlayerInDatabase == '1'){
-                Player2Choice = this.state.enemyCurrentChoice;
-                userChoice = this.state.userCurrentChoice;
-            }
-            else if (this.placePlayerInDatabase == '2'){
-                Player2Choice = this.state.enemyCurrentChoice;
-                userChoice = this.state.userCurrentChoice;
-            }
+        this.setState({
+            visibilityUserCard: 0,
+            visibilityEnemyCard: 0,
+        });
+        let result = null;
+        console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & player2 choice: ' + this.state.enemyCurrentChoice);
+        console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & user choice: ' + this.state.userCurrentChoice);
 
-            console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & player2 choice: ' + Player2Choice);
-            console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & user choice: ' + userChoice);
+        this.RefreshGameView(this.state.userCurrentChoice,this.state.enemyCurrentChoice);
 
-            this.RefreshGameView(userChoice,Player2Choice);
+        if (this.state.enemyCurrentChoice != null && this.state.userCurrentChoice != null) {
+            if (this.state.enemyCurrentChoice == this.state.userCurrentChoice){  result = "null";  this.currentSet = this.currentSet -1;}
+            else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "feuille"){ result = "Gagné";}
+            else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "ciseau"){ result = "Perdu";}
+            else if (this.state.enemyCurrentChoice == "feuille" && this.state.userCurrentChoice == "ciseau"){ result = "Gagné";}
+            else if (this.state.enemyCurrentChoice == "feuille" && this.state.userCurrentChoice == "pierre"){ result = "Perdu";}
+            else if (this.state.enemyCurrentChoice == "ciseau" && this.state.userCurrentChoice == "pierre"){ result = "Gagné";}
+            else if (this.state.enemyCurrentChoice == "ciseau" && this.state.userCurrentChoice == "feuille"){ result = "Perdu";}
+                
+            if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
 
-            if (Player2Choice != null && userChoice != null) {
-                if (Player2Choice == userChoice){  result = "null";  this.currentSet = this.currentSet -1;}
-                else if (Player2Choice == "pierre" && userChoice == "feuille"){ result = "Gagné";}
-                else if (Player2Choice == "pierre" && userChoice == "ciseau"){ result = "Perdu";}
-                else if (Player2Choice == "feuille" && userChoice == "ciseau"){ result = "Gagné";}
-                else if (Player2Choice == "feuille" && userChoice == "pierre"){ result = "Perdu";}
-                else if (Player2Choice == "ciseau" && userChoice == "pierre"){ result = "Gagné";}
-                else if (Player2Choice == "ciseau" && userChoice == "feuille"){ result = "Perdu";}
-                    
-                if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
-
-                this.updateGame(result);
-                this.redirectGame();
-            } 
-            return ;
+            this.updateGame(result);
+            this.redirectGame();
+        } 
+        return ;
     }
 
     resetDataSet = async () => {
@@ -228,6 +226,7 @@ export default class MultiGame extends Component {
             //console.log('Listen a game', gameReturn); 
 
             this.RefreshGameView(gameReturn.attributes.P1CurrentChoice, gameReturn.attributes.P2CurrentChoice);
+            //this.MakeSet();
 
             if (this.state.gameFound != 1){
                 this.setState({ gameFound : 1 });
