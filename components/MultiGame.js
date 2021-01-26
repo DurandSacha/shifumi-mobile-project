@@ -52,12 +52,7 @@ export default class MultiGame extends Component {
         this.searchOtherPlayerAndInitializeGame();
     }
 
-    updateGame = async (result, userChoice, Player2Choice) => {
-
-        this.setState({
-            cardToDisplayUser: userChoice,
-            cardToDisplayEnemy: Player2Choice,
-        });
+    updateGame = async (result) => {
 
         if(result == "null"){}
         else if (result == "Gagné"){
@@ -99,12 +94,15 @@ export default class MultiGame extends Component {
         }
         
     }
+    RefreshDataFromDatabase = async () => {
+        var query = new Parse.Query('GameInstance');
+        query.equalTo("id", this.idGame);
+        game = await db.get('GameInstance', this.idGame );
 
-    preSet = async () => {
-        return;
+        return game.attributes.P1CurrentChoice;
     }
 
-    MakeSet = async (userChoice) => {
+    preSet = async (userChoice) => {
         // push user choice in databas 
         var query = new Parse.Query('GameInstance');
         query.equalTo("id", this.idGame);
@@ -118,17 +116,23 @@ export default class MultiGame extends Component {
             game.set('P2CurrentChoice', userChoice);
             await game.save();
         }
+        await this.MakeSet();
 
-        // wait 2 player choice
-        if (this.state.enemyCurrentChoice != 'pierre' || this.state.enemyCurrentChoice != 'feuille' || this.state.enemyCurrentChoice != 'ciseau'){
+        //this.resetDataSet();
+    }
+
+    MakeSet = async () => {
+        
             let result = null;
             let Player2Choice = null;
 
             if(this.placePlayerInDatabase == '1'){
                 Player2Choice = this.state.enemyCurrentChoice;
+                userChoice = this.state.userCurrentChoice;
             }
             else if (this.placePlayerInDatabase == '2'){
                 Player2Choice = this.state.enemyCurrentChoice;
+                userChoice = this.state.userCurrentChoice;
             }
 
             console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & player2 choice: ' + Player2Choice);
@@ -147,11 +151,23 @@ export default class MultiGame extends Component {
                     
                 if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
 
-                this.updateGame(result,userChoice,Player2Choice);
+                this.updateGame(result);
                 this.redirectGame();
-            }
-        }    
-        return ;
+            } 
+            return ;
+    }
+
+    resetDataSet = async () => {
+        this.setState({
+            visibilityUserCard: 0,
+            visibilityEnemyCard: 0,
+            cardToDisplayUser: null,
+            cardToDisplayEnemy: null,
+        });
+        game = await db.get('GameInstance', this.idGame );
+        game.set('P2CurrentChoice', null);
+        game.set('P1CurrentChoice', null);
+        await game.save();
     }
 
     redirectGame = async () => {
@@ -164,36 +180,26 @@ export default class MultiGame extends Component {
 
         if(this.placePlayerInDatabase == '1'){
             if (this.currentSet >= 3 && this.pointPlayer2 >= 2 ){
-                
-                //setTimeout(function(){
                     game.set('result', 'Defeat');
                     await game.save();
                     navigation.navigate('EndGame',{ result: ['Défaite'] });
-                //}, 400);
             }
             else if (this.currentSet >= 3 && this.pointUser >= 2){
-                //setTimeout(function(){
                     game.set('result', 'Victory');
                     await game.save();
                     navigation.navigate('EndGame',{ result: ['Victoire'] });
-                //}, 400);
             }
         }
         else if(this.placePlayerInDatabase == '2'){
             if (this.currentSet >= 3 && this.pointUser >= 2 ){
-                
-                //setTimeout(function(){
                     game.set('result', 'Defeat');
                     await game.save();
                     navigation.navigate('EndGame',{ result: ['Défaite'] });
-                //}, 400);
             }
             else if (this.currentSet >= 3 && this.pointPlayer2 >= 2){
-                //setTimeout(function(){
                     game.set('result', 'Victory');
                     await game.save();
                     navigation.navigate('EndGame',{ result: ['Victoire'] });
-                //}, 400);
             }
         }
     }
@@ -219,29 +225,9 @@ export default class MultiGame extends Component {
         }      
         
         db.listen("GameInstance", this.idGame, (gameReturn) => {
-            console.log('Listen a game', gameReturn);
-            // Send information P1Choice & P2choice 
-            // make a set 
+            //console.log('Listen a game', gameReturn); 
 
             this.RefreshGameView(gameReturn.attributes.P1CurrentChoice, gameReturn.attributes.P2CurrentChoice);
-            /*
-            if(this.placePlayerInDatabase == '1'){
-                this.MakeSet(gameReturn.attributes.P1CurrentChoice);
-            }
-            else if (this.placePlayerInDatabase == '2') {
-                this.MakeSet(gameReturn.attributes.P2CurrentChoice);
-            } 
-            */
-
-            //this.MakeSet();
-
-            if(this.placePlayerInDatabase == '1'){
-                this.setState({enemyCurrentChoice : gameReturn.attributes.P2CurrentChoice});
-            }
-            else{
-                this.setState({enemyCurrentChoice : gameReturn.attributes.P1CurrentChoice});
-            } 
-        
 
             if (this.state.gameFound != 1){
                 this.setState({ gameFound : 1 });
@@ -249,13 +235,14 @@ export default class MultiGame extends Component {
             else {
                 if(this.placePlayerInDatabase == '1'){
                     this.setState({enemyCurrentChoice : gameReturn.attributes.P2CurrentChoice});
+                    this.setState({userCurrentChoice : gameReturn.attributes.P1CurrentChoice});
                 }
                 else{
                     this.setState({enemyCurrentChoice : gameReturn.attributes.P1CurrentChoice});
+                    this.setState({userCurrentChoice : gameReturn.attributes.P2CurrentChoice});
                 }  
             }
-        }).then((success) => { console.log("subscribe status ") }, (error) => { console.log(error.message)});
-                 
+        }).then((success) => { console.log("subscribe status ") }, (error) => { console.log(error.message)});      
     }
 
     render = () => {
@@ -291,9 +278,9 @@ export default class MultiGame extends Component {
                             </View>
                             <Text style={styles.setText}> Coup n°{ this.currentSet } </Text>
                             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
-                                <Card onPress={() => this.MakeSet("ciseau")} icon={Img.ciseau} texture={Img.carteBois} color="rgba(191,44,44,1)"/>
-                                <Card onPress={() => this.MakeSet("feuille")} icon={Img.feuille} texture={Img.carteBois} color="rgba(242,203,5,1)"/>
-                                <Card onPress={() => this.MakeSet("pierre")} icon={Img.pierre} texture={Img.carteBois} color="rgba(74,140,91,1)"/>
+                                <Card onPress={() => this.preSet("ciseau")} icon={Img.ciseau} texture={Img.carteBois} color="rgba(191,44,44,1)"/>
+                                <Card onPress={() => this.preSet("feuille")} icon={Img.feuille} texture={Img.carteBois} color="rgba(242,203,5,1)"/>
+                                <Card onPress={() => this.preSet("pierre")} icon={Img.pierre} texture={Img.carteBois} color="rgba(74,140,91,1)"/>
                             </View>
                         </View>
                     </ImageBackground>
