@@ -58,10 +58,10 @@ incrementPointPlayer1 = async (instanceId) => {
   var query = new Parse.Query('GameInstance');
   query.equalTo("id", instanceId);
   game = await db.get('GameInstance', instanceId );
-  console.log('P1 point in increment function : ' + game.attributes.P1Point);
 
   let point = parseInt( game.attributes.P1Point ) + 1;
   game.set('P1Point', point.toString()  );         //   place : P1Point
+  console.log('P1 point ( increment function ) : ' + game.attributes.P1Point);
   game.save();
 
 }
@@ -70,10 +70,10 @@ incrementPointPlayer2 = async (instanceId) => {
   var query = new Parse.Query('GameInstance');
   query.equalTo("id", instanceId);
   game = await db.get('GameInstance', instanceId );
-  console.log('P2 point in increment function : ' + game.attributes.P2Point);
 
   let point = parseInt( game.attributes.P2Point ) + 1;
   game.set('P2Point', point.toString()  );  //   place : P1Point
+  console.log('P2 point (increment function)  : ' + game.attributes.P2Point);
   game.save();
 
 }
