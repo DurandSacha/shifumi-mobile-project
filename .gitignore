@@ -10,7 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 ansible/hosts.ini
-
+android/app/*
 
 # macOS
 .DS_Store
