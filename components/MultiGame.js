@@ -80,75 +80,77 @@ export default class MultiGame extends Component {
         //}
     }
 
-    MakeSet = async (userChoice) => {
-  
-        this.setState({
-            visibilityUserCard: 0,
-            visibilityEnemyCard: 0,
-            cardToDisplayUser: null,
-            cardToDisplayEnemy: null,
-        });
+    RefreshGameView = (P1Choice,P2Choice) => {
+        if(this.placePlayerInDatabase == '1'){
+            this.setState({
+                visibilityUserCard: 1,
+                visibilityEnemyCard: 1,
+                cardToDisplayUser: P1Choice,
+                cardToDisplayEnemy: P2Choice,
+            });
+        }
+        if(this.placePlayerInDatabase == '2'){
+            this.setState({
+                visibilityUserCard: 1,
+                visibilityEnemyCard: 1,
+                cardToDisplayUser: P2Choice,
+                cardToDisplayEnemy: P1Choice,
+            });
+        }
         
+    }
+
+    preSet = async () => {
+        return;
+    }
+
+    MakeSet = async (userChoice) => {
         // push user choice in databas 
         var query = new Parse.Query('GameInstance');
         query.equalTo("id", this.idGame);
         game = await db.get('GameInstance', this.idGame );
 
         if(this.placePlayerInDatabase == '1'){
-            await game.set('P1CurrentChoice', userChoice);
-            game.save();
+            game.set('P1CurrentChoice', userChoice);
+            await game.save();
         }
         else if(this.placePlayerInDatabase == '2'){
-            await game.set('P2CurrentChoice', userChoice);
-            game.save();
+            game.set('P2CurrentChoice', userChoice);
+            await game.save();
         }
 
         // wait 2 player choice
-        let result = null;
-        let Player2Choice = null;
+        if (this.state.enemyCurrentChoice != 'pierre' || this.state.enemyCurrentChoice != 'feuille' || this.state.enemyCurrentChoice != 'ciseau'){
+            let result = null;
+            let Player2Choice = null;
 
-        if(this.placePlayerInDatabase == '1'){
-            //this.setState({enemyCurrentChoice: game.attributes.P2CurrentChoice, userCurrentChoice :game.attributes.P1CurrentChoice });
-            Player2Choice = this.state.enemyCurrentChoice;
-            //userChoice = this.state.userCurrentChoice;
-        }
-        else if (this.placePlayerInDatabase == '2'){
-            //this.setState({enemyCurrentChoice: game.attributes.P1CurrentChoice, userCurrentChoice :game.attributes.P2CurrentChoice })
-            Player2Choice = this.state.enemyCurrentChoice;
-            //userChoice = this.state.userCurrentChoice;
-        }
+            if(this.placePlayerInDatabase == '1'){
+                Player2Choice = this.state.enemyCurrentChoice;
+            }
+            else if (this.placePlayerInDatabase == '2'){
+                Player2Choice = this.state.enemyCurrentChoice;
+            }
 
-        console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & player2 choice: ' + Player2Choice);
-        console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & user choice: ' + userChoice);
+            console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & player2 choice: ' + Player2Choice);
+            console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & user choice: ' + userChoice);
 
-        this.setState({
-            visibilityUserCard: 1,
-            visibilityEnemyCard: 1,
-            cardToDisplayUser: userChoice,
-            cardToDisplayEnemy: Player2Choice,
-        });
+            this.RefreshGameView(userChoice,Player2Choice);
 
-        if (Player2Choice != null && userChoice != null) {
-            if (Player2Choice == userChoice){  result = "null";  this.currentSet = this.currentSet -1;}
-            else if (Player2Choice == "pierre" && userChoice == "feuille"){ result = "Gagné";}
-            else if (Player2Choice == "pierre" && userChoice == "ciseau"){ result = "Perdu";}
-            else if (Player2Choice == "feuille" && userChoice == "ciseau"){ result = "Gagné";}
-            else if (Player2Choice == "feuille" && userChoice == "pierre"){ result = "Perdu";}
-            else if (Player2Choice == "ciseau" && userChoice == "pierre"){ result = "Gagné";}
-            else if (Player2Choice == "ciseau" && userChoice == "feuille"){ result = "Perdu";}
-                
-            if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
+            if (Player2Choice != null && userChoice != null) {
+                if (Player2Choice == userChoice){  result = "null";  this.currentSet = this.currentSet -1;}
+                else if (Player2Choice == "pierre" && userChoice == "feuille"){ result = "Gagné";}
+                else if (Player2Choice == "pierre" && userChoice == "ciseau"){ result = "Perdu";}
+                else if (Player2Choice == "feuille" && userChoice == "ciseau"){ result = "Gagné";}
+                else if (Player2Choice == "feuille" && userChoice == "pierre"){ result = "Perdu";}
+                else if (Player2Choice == "ciseau" && userChoice == "pierre"){ result = "Gagné";}
+                else if (Player2Choice == "ciseau" && userChoice == "feuille"){ result = "Perdu";}
+                    
+                if (this.currentSet <= 3){ this.currentSet = this.currentSet + 1; }
 
-            this.updateGame(result,userChoice,Player2Choice);
-            this.redirectGame();
-        }
-        
-        //this.setState({choicesIsFinished : 0 });
-        //game.set('P1CurrentChoice', null);
-        //game.set('P2CurrentChoice', null);
-        //game.save();
-        //}
-        
+                this.updateGame(result,userChoice,Player2Choice);
+                this.redirectGame();
+            }
+        }    
         return ;
     }
 
@@ -163,35 +165,35 @@ export default class MultiGame extends Component {
         if(this.placePlayerInDatabase == '1'){
             if (this.currentSet >= 3 && this.pointPlayer2 >= 2 ){
                 
-                setTimeout(function(){
+                //setTimeout(function(){
                     game.set('result', 'Defeat');
-                    game.save();
+                    await game.save();
                     navigation.navigate('EndGame',{ result: ['Défaite'] });
-                }, 400);
+                //}, 400);
             }
             else if (this.currentSet >= 3 && this.pointUser >= 2){
-                setTimeout(function(){
+                //setTimeout(function(){
                     game.set('result', 'Victory');
-                    game.save();
+                    await game.save();
                     navigation.navigate('EndGame',{ result: ['Victoire'] });
-                }, 400);
+                //}, 400);
             }
         }
         else if(this.placePlayerInDatabase == '2'){
             if (this.currentSet >= 3 && this.pointUser >= 2 ){
                 
-                setTimeout(function(){
+                //setTimeout(function(){
                     game.set('result', 'Defeat');
-                    game.save();
+                    await game.save();
                     navigation.navigate('EndGame',{ result: ['Défaite'] });
-                }, 400);
+                //}, 400);
             }
             else if (this.currentSet >= 3 && this.pointPlayer2 >= 2){
-                setTimeout(function(){
+                //setTimeout(function(){
                     game.set('result', 'Victory');
-                    game.save();
+                    await game.save();
                     navigation.navigate('EndGame',{ result: ['Victoire'] });
-                }, 400);
+                //}, 400);
             }
         }
     }
@@ -212,13 +214,35 @@ export default class MultiGame extends Component {
             await createGameInstance(this.idUser);
             this.idGame = localStorage.getItem("gameId");
             console.log('Game was created : ' + this.idGame);
-            //db.listenPlayer("GameInstance", this.idGame, () => { if (this.state.gameFound != 1){this.setState({ gameFound : 1 });} } ) 
             this.placePlayerInDatabase = '1';
 
         }      
         
         db.listen("GameInstance", this.idGame, (gameReturn) => {
-            //console.log('Listen a game', gameReturn);
+            console.log('Listen a game', gameReturn);
+            // Send information P1Choice & P2choice 
+            // make a set 
+
+            this.RefreshGameView(gameReturn.attributes.P1CurrentChoice, gameReturn.attributes.P2CurrentChoice);
+            /*
+            if(this.placePlayerInDatabase == '1'){
+                this.MakeSet(gameReturn.attributes.P1CurrentChoice);
+            }
+            else if (this.placePlayerInDatabase == '2') {
+                this.MakeSet(gameReturn.attributes.P2CurrentChoice);
+            } 
+            */
+
+            //this.MakeSet();
+
+            if(this.placePlayerInDatabase == '1'){
+                this.setState({enemyCurrentChoice : gameReturn.attributes.P2CurrentChoice});
+            }
+            else{
+                this.setState({enemyCurrentChoice : gameReturn.attributes.P1CurrentChoice});
+            } 
+        
+
             if (this.state.gameFound != 1){
                 this.setState({ gameFound : 1 });
             } 

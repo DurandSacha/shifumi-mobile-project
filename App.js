@@ -54,7 +54,7 @@ function HomeScreen({ navigation }) {
         <View style={styles.content}>
             <Buttons buttonText="Jeu Solo" navigation={navigation} NameRenderView="Game" texture={Img.bois} />
             <Buttons buttonText="Jeu multijoueur" navigation={navigation} NameRenderView="MultiGame" texture={Img.bois} />
-            <Buttons buttonText="Configuration" navigation={navigation} NameRenderView="Configuration" texture={Img.bois} />
+            {/*<Buttons buttonText="Configuration" navigation={navigation} NameRenderView="Configuration" texture={Img.bois} />*/}
         </View>
       </ImageBackground>
   </View>
