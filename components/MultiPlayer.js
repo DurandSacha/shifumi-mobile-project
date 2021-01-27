@@ -37,6 +37,7 @@ export default class MultiPlayer extends Component {
             enemyCurrentChoice : null,
             userCurrentChoice : null,
             choicesIsFinished : 0,
+            visibilityCards : 1
         };
 
         this.idGame = null;
@@ -79,8 +80,10 @@ export default class MultiPlayer extends Component {
             } 
             else {
                 // in game 
-
-                this.majView(gameReturn);
+                if (gameReturn.attributes.P1CurrentChoice != null && gameReturn.attributes.P2CurrentChoice != null){
+                    this.majView(gameReturn);
+                }
+                
                 //let result = this.MakeSet();
                 //this.updateGame(result);
                 //this.redirectGame();
@@ -125,18 +128,21 @@ export default class MultiPlayer extends Component {
             visibilityEnemyCard : visibilityEnemyCard,
             visibilityUserCard : visibilityUserCard,
             visibilityNextSetButton : 1,
+
         });
 
         
+        // IF all players has played
         if(enemyCurrentChoice != '0' && userCurrentChoice != '0' ){
             console.log('makeSet in progress');
             this.MakeSet();
-
+            this.setState({
+                visibilityCards : 0,
+                visibilityNextSetButton : 1,
+            });
             // this.currentSet = this.currentSet + 1;
             //this.updateGame(result);
             //this.currentSet = this.currentSet + 1;
-
-            
         }
 
         return ; 
@@ -203,27 +209,34 @@ export default class MultiPlayer extends Component {
             //if(this.placePlayerInDatabase == '1'){incrementPointPlayer2(this.idGame);}
             //else if(this.placePlayerInDatabase == '2'){incrementPointPlayer1(this.idGame);}
         }
-        this.setState({visibilityUserCard : 1});
+        this.setState({
+            visibilityUserCard : 1,
+            //visibilityCards : 0
+        });
     }
 
     nextSet = async () => {
+
+        this.currentSet = this.currentSet + 1;
+
         this.setState({
             visibilityUserCard: 0,
             visibilityEnemyCard: 0,
             cardToDisplayUser: null,
             cardToDisplayEnemy: null,
             enemyCurrentChoice : null,
-            userCurrentChoice : null
+            userCurrentChoice : null,
+            visibilityUserCard : 0,
+
+            visibilityCards : 1,
+            visibilityNextSetButton : 0,
         });
+
         game = await db.get('GameInstance', this.idGame );
         game.set('P2CurrentChoice', null);
         game.set('P1CurrentChoice', null);
-
-        this.currentSet = this.currentSet + 1;
-
         await game.save();
     }
-
 
     redirectGame = async () => {
 
@@ -259,7 +272,7 @@ export default class MultiPlayer extends Component {
         }
     }
     render = () => {
-        const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound, visibilityNextSetButton } = this.state;
+        const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound, visibilityNextSetButton, visibilityCards } = this.state;
 
         if(gameFound == 0){
             return(
@@ -282,13 +295,6 @@ export default class MultiPlayer extends Component {
                             </View>
                             <View>
                                 <Text style={styles.BattleText}>Manche en cours</Text>
-
-
-                                <TouchableOpacity style={[styles.nextSet, { opacity: visibilityNextSetButton } ]} onPress={() => this.nextSet()} >
-                                    <Text> Manche suivante </Text>
-                                </TouchableOpacity>
-
-
                                 {/*<Button onpress={this.ManualPlayer2Choice()} title="Make Enemy Choice" ><Text>Make Enemy Choice</Text> </Button>*/}
                                 <CircleScore colorSet1={colorSet1} colorSet2={colorSet2} colorSet3={colorSet3} />
                             </View>
@@ -296,8 +302,15 @@ export default class MultiPlayer extends Component {
                                 <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} />
                                 {/*<CardPlayed icon={Img[cardToDisplayUser]} texture={Img.carteBois} ></CardPlayed>*/}
                             </View>
+
+                            <View style={[styles.nextSet, { opacity: visibilityNextSetButton } ]}>
+                                <TouchableOpacity onPress={() => this.nextSet()} >
+                                    <Text> Passer a la manche suivante </Text>
+                                </TouchableOpacity>
+                            </View>
+
                             <Text style={styles.setText}> Coup n°{ this.currentSet } </Text>
-                            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
+                            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch', opacity: visibilityCards }}>
                                 <Card onPress={() => this.selectCard("ciseau")} icon={Img.ciseau} texture={Img.carteBois} color="rgba(191,44,44,1)"/>
                                 <Card onPress={() => this.selectCard("feuille")} icon={Img.feuille} texture={Img.carteBois} color="rgba(242,203,5,1)"/>
                                 <Card onPress={() => this.selectCard("pierre")} icon={Img.pierre} texture={Img.carteBois} color="rgba(74,140,91,1)"/>
@@ -312,8 +325,10 @@ export default class MultiPlayer extends Component {
 
 const styles = StyleSheet.create({
     nextSet:{
-        backgroundColor: 'green',
-        padding: 2,
+        backgroundColor: 'yellow',
+        padding: 9,
+        fontSize:9,
+        margin: 5,
     },
     centerTextMin:{
         marginTop: 30,
