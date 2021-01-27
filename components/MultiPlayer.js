@@ -106,7 +106,7 @@ export default class MultiPlayer extends Component {
             userCurrentChoice = gameReturn.attributes.P1CurrentChoice;
             cardToDisplayEnemy = gameReturn.attributes.P2CurrentChoice;
             cardToDisplayUser = gameReturn.attributes.P1CurrentChoice;
-            visibilityEnemyCard = 1;
+            visibilityEnemyCard = 0;
             visibilityUserCard = 1;
             //visibilityNextSetButton = 0;
         }
@@ -115,7 +115,7 @@ export default class MultiPlayer extends Component {
             userCurrentChoice = gameReturn.attributes.P2CurrentChoice;
             cardToDisplayEnemy = gameReturn.attributes.P1CurrentChoice;
             cardToDisplayUser = gameReturn.attributes.P2CurrentChoice;
-            visibilityEnemyCard = 1;
+            visibilityEnemyCard = 0;
             visibilityUserCard = 1;
             //visibilityNextSetButton = 0;
         }
@@ -127,7 +127,7 @@ export default class MultiPlayer extends Component {
             cardToDisplayUser : cardToDisplayUser,
             visibilityEnemyCard : visibilityEnemyCard,
             visibilityUserCard : visibilityUserCard,
-            visibilityNextSetButton : 1,
+            visibilityNextSetButton : 0,
 
         });
 
@@ -139,6 +139,8 @@ export default class MultiPlayer extends Component {
             this.setState({
                 visibilityCards : 0,
                 visibilityNextSetButton : 1,
+                visibilityEnemyCard : 1,
+                visibilityUserCard : 1,
             });
             // for endGame 
             this.redirectGame();
@@ -168,8 +170,7 @@ export default class MultiPlayer extends Component {
         console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & player2 choice: ' + this.state.enemyCurrentChoice);
         console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & user choice: ' + this.state.userCurrentChoice);
 
-        //if (this.state.enemyCurrentChoice != null && this.state.userCurrentChoice != null) {
-            if (this.state.enemyCurrentChoice == this.state.userCurrentChoice){  result = "null"; /* this.currentSet = this.currentSet -1; */}
+            if (this.state.enemyCurrentChoice == this.state.userCurrentChoice){  result = "null";  this.currentSet = this.currentSet -1; }
             else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "feuille"){ result = "Gagné";}
             else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "ciseau"){ result = "Perdu";}
             else if (this.state.enemyCurrentChoice == "feuille" && this.state.userCurrentChoice == "ciseau"){ result = "Gagné";}
@@ -189,27 +190,16 @@ export default class MultiPlayer extends Component {
             visibilityEnemyCard: 1,
         });
 
-        /*
-        this.pointPlayer2
-        this.pointUser
-        */
-
         if(result == "null"){}
         else if (result == "Gagné"){
             if (this.currentSet == 1) { this.setState({colorSet1 : 'green'}); this.pointUser = this.pointUser + 1; };
             if (this.currentSet == 2) { this.setState({colorSet2 : 'green'}); this.pointUser = this.pointUser + 1; };
             if (this.currentSet == 3) { this.setState({colorSet3 : 'green'}); this.pointUser = this.pointUser + 1; };
-
-            //if(this.placePlayerInDatabase == '1'){incrementPointPlayer1(this.idGame);}
-            //else if(this.placePlayerInDatabase == '2'){incrementPointPlayer2(this.idGame);}
         }
         else if (result == "Perdu"){
             if (this.currentSet == 1) { this.setState({colorSet1 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1; };
             if (this.currentSet == 2) { this.setState({colorSet2 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1;};
             if (this.currentSet == 3) { this.setState({colorSet3 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1;};
-
-            //if(this.placePlayerInDatabase == '1'){incrementPointPlayer2(this.idGame);}
-            //else if(this.placePlayerInDatabase == '2'){incrementPointPlayer1(this.idGame);}
         }
         this.setState({
             visibilityUserCard : 1,
@@ -240,34 +230,21 @@ export default class MultiPlayer extends Component {
     }
 
     redirectGame =  () => {
-
-        //game = await db.get('GameInstance', this.idGame );
-        //this.pointPlayer2 = game.attributes.P2Point;
-        //this.pointUser = game.attributes.P1Point;
-        
         let navigation = this.props.navigation;
 
         if(this.placePlayerInDatabase == '1'){
             if (this.currentSet >= 3 && this.pointPlayer2 >= 2 ){
-                    //game.set('result', 'Defeat');
-                    //await game.save();
                     navigation.navigate('EndGame',{ result: ['Défaite'] });
             }
             else if (this.currentSet >= 3 && this.pointUser >= 2){
-                    //game.set('result', 'Victory');
-                    //await game.save();
                     navigation.navigate('EndGame',{ result: ['Victoire'] });
             }
         }
         else if(this.placePlayerInDatabase == '2'){
             if (this.currentSet >= 3 && this.pointUser >= 2 ){
-                    //game.set('result', 'Defeat');
-                    //await game.save();
                     navigation.navigate('EndGame',{ result: ['Victoire'] });
             }
             else if (this.currentSet >= 3 && this.pointPlayer2 >= 2){
-                    //game.set('result', 'Victory');
-                    //await game.save();
                     navigation.navigate('EndGame',{ result: ['Défaite'] });
             }
         }

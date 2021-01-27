@@ -4,7 +4,6 @@ import { View, Text, StyleSheet, ImageBackground, Image } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Game from "./components/Game";
-import MultiGame from "./components/MultiGame";
 import MultiPlayer from "./components/MultiPlayer";
 import EndGame from "./components/EndGame";
 import Configuration from "./components/Configuration";
@@ -13,9 +12,7 @@ import Img from './assets/images/_image';
 import Buttons from './components/Layout/Buttons';
 import 'localstorage-polyfill';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// or import AsyncStorage from '@react-native-community/async-storage';
 import Parse from 'parse';
-//import Img from '../assets/images/_image';
 
 /*
 Back end (Parse Server) is available and deployed with : https://github.com/DurandSacha/parse-server-example at https://shifumi-game-akarah.herokuapp.com/parse/function/hello
@@ -30,7 +27,6 @@ Parse.liveQueryServerURL = 'ws://shifumi-game-akarah.herokuapp.com/parse/';
 
 
 /******* TODO GENERAL  ***************/
-// TODO: Asynchrone wit event subscription ( wait player, wait cardPlayed)
 // TODO: if player quit a matchmaking, delete his server
 
 
@@ -45,12 +41,10 @@ function HomeScreen({ navigation }) {
     <View style={styles.view}>
       <ImageBackground source={Img.background} style={styles.imageBackground}>
         <View style={styles.header}>
-            {/*<Text style={styles.title}>Shi fu mi</Text>*/}
             <Image
               style={styles.icon}
               source={Img.icon}
             />
-            {/*<Text style={styles.littleScore}>Partie effectuée : { terminated }</Text>*/}
         </View>
         <View style={styles.content}>
             <Buttons buttonText="Jeu Solo" navigation={navigation} NameRenderView="Game" texture={Img.bois} />
