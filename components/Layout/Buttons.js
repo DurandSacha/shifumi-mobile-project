@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         marginBottom:15,
     },
     MenuButtonText:{
-        color: 'black',
+        color: 'white',
         fontWeight: 'bold',
         fontSize : 20,
       },

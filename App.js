@@ -5,6 +5,7 @@ import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Game from "./components/Game";
 import MultiGame from "./components/MultiGame";
+import MultiPlayer from "./components/MultiPlayer";
 import EndGame from "./components/EndGame";
 import Configuration from "./components/Configuration";
 import 'react-native-gesture-handler';
@@ -75,7 +76,7 @@ function GameScreen({ navigation }) {
 
 /* Function for routing */ 
 function MultiGameScreen({ navigation }) {
-  return ( <MultiGame navigation={navigation}/> );
+  return ( <MultiPlayer navigation={navigation}/> );
 }
 
 /* Function for routing */

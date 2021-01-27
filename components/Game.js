@@ -295,9 +295,11 @@ const styles = StyleSheet.create({
         marginTop: -45,
         fontWeight: "bold",
         marginLeft: 75,
+        color:'white',
     },
     setText:{
         fontSize: 15,
         marginBottom: 10,
+        color:'white',
     }
 });

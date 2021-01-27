@@ -13,6 +13,8 @@ createGameInstance = async (namePlayer1) => {
   game.set("P1CurrentChoice", '0');
   game.set("P2CurrentChoice", '0');
 
+  game.set("set", '1');
+
   game.set("P1Point", '0');    // string to int :  parseInt()   // int to string : .toString
   game.set("P2Point", '0');
   game.set("result", null);
