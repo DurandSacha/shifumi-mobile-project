@@ -228,18 +228,18 @@ export default class MultiPlayer extends Component {
 
         if(this.placePlayerInDatabase == '1'){
             if (this.currentSet >= 3 && this.pointPlayer2 >= 2 ){
-                    navigation.navigate('EndGame',{ result: ['Défaite'] });
+                setTimeout(function(){navigation.navigate('EndGame',{ result: ['Défaite'] })}, 700);
             }
             else if (this.currentSet >= 3 && this.pointUser >= 2){
-                    navigation.navigate('EndGame',{ result: ['Victoire'] });
+                setTimeout(function(){navigation.navigate('EndGame',{ result: ['Victoire'] })}, 700);
             }
         }
         else if(this.placePlayerInDatabase == '2'){
             if (this.currentSet >= 3 && this.pointUser >= 2 ){
-                    navigation.navigate('EndGame',{ result: ['Victoire'] });
+                setTimeout(function(){navigation.navigate('EndGame',{ result: ['Victoire'] })}, 700);
             }
             else if (this.currentSet >= 3 && this.pointPlayer2 >= 2){
-                    navigation.navigate('EndGame',{ result: ['Défaite'] });
+                setTimeout(function(){navigation.navigate('EndGame',{ result: ['Défaite'] })}, 700);
             }
         }
     }
