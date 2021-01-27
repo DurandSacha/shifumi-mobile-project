@@ -83,7 +83,7 @@ export default class MultiPlayer extends Component {
                 if (gameReturn.attributes.P1CurrentChoice != null && gameReturn.attributes.P2CurrentChoice != null){
                     this.majView(gameReturn);
                 }
-                
+
                 //let result = this.MakeSet();
                 //this.updateGame(result);
                 //this.redirectGame();
@@ -140,9 +140,8 @@ export default class MultiPlayer extends Component {
                 visibilityCards : 0,
                 visibilityNextSetButton : 1,
             });
-            // this.currentSet = this.currentSet + 1;
-            //this.updateGame(result);
-            //this.currentSet = this.currentSet + 1;
+            // for endGame 
+            this.redirectGame();
         }
 
         return ; 
@@ -190,28 +189,30 @@ export default class MultiPlayer extends Component {
             visibilityEnemyCard: 1,
         });
 
-        //this.currentSet = 1;
+        /*
+        this.pointPlayer2
+        this.pointUser
+        */
 
         if(result == "null"){}
         else if (result == "Gagné"){
-            if (this.currentSet == 1) { this.setState({colorSet1 : 'green'}) };
-            if (this.currentSet == 2) { this.setState({colorSet2 : 'green'}) };
-            if (this.currentSet == 3) { this.setState({colorSet3 : 'green'}) };
+            if (this.currentSet == 1) { this.setState({colorSet1 : 'green'}); this.pointUser = this.pointUser + 1; };
+            if (this.currentSet == 2) { this.setState({colorSet2 : 'green'}); this.pointUser = this.pointUser + 1; };
+            if (this.currentSet == 3) { this.setState({colorSet3 : 'green'}); this.pointUser = this.pointUser + 1; };
 
             //if(this.placePlayerInDatabase == '1'){incrementPointPlayer1(this.idGame);}
             //else if(this.placePlayerInDatabase == '2'){incrementPointPlayer2(this.idGame);}
         }
         else if (result == "Perdu"){
-            if (this.currentSet == 1) { this.setState({colorSet1 : 'red'}) };
-            if (this.currentSet == 2) { this.setState({colorSet2 : 'red'}) };
-            if (this.currentSet == 3) { this.setState({colorSet3 : 'red'}) };
+            if (this.currentSet == 1) { this.setState({colorSet1 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1; };
+            if (this.currentSet == 2) { this.setState({colorSet2 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1;};
+            if (this.currentSet == 3) { this.setState({colorSet3 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1;};
 
             //if(this.placePlayerInDatabase == '1'){incrementPointPlayer2(this.idGame);}
             //else if(this.placePlayerInDatabase == '2'){incrementPointPlayer1(this.idGame);}
         }
         this.setState({
             visibilityUserCard : 1,
-            //visibilityCards : 0
         });
     }
 
@@ -238,36 +239,36 @@ export default class MultiPlayer extends Component {
         await game.save();
     }
 
-    redirectGame = async () => {
+    redirectGame =  () => {
 
-        game = await db.get('GameInstance', this.idGame );
-        this.pointPlayer2 = game.attributes.P2Point;
-        this.pointUser = game.attributes.P1Point;
+        //game = await db.get('GameInstance', this.idGame );
+        //this.pointPlayer2 = game.attributes.P2Point;
+        //this.pointUser = game.attributes.P1Point;
         
         let navigation = this.props.navigation;
 
         if(this.placePlayerInDatabase == '1'){
             if (this.currentSet >= 3 && this.pointPlayer2 >= 2 ){
-                    game.set('result', 'Defeat');
-                    await game.save();
+                    //game.set('result', 'Defeat');
+                    //await game.save();
                     navigation.navigate('EndGame',{ result: ['Défaite'] });
             }
             else if (this.currentSet >= 3 && this.pointUser >= 2){
-                    game.set('result', 'Victory');
-                    await game.save();
+                    //game.set('result', 'Victory');
+                    //await game.save();
                     navigation.navigate('EndGame',{ result: ['Victoire'] });
             }
         }
         else if(this.placePlayerInDatabase == '2'){
             if (this.currentSet >= 3 && this.pointUser >= 2 ){
-                    game.set('result', 'Defeat');
-                    await game.save();
-                    navigation.navigate('EndGame',{ result: ['Défaite'] });
+                    //game.set('result', 'Defeat');
+                    //await game.save();
+                    navigation.navigate('EndGame',{ result: ['Victoire'] });
             }
             else if (this.currentSet >= 3 && this.pointPlayer2 >= 2){
-                    game.set('result', 'Victory');
-                    await game.save();
-                    navigation.navigate('EndGame',{ result: ['Victoire'] });
+                    //game.set('result', 'Victory');
+                    //await game.save();
+                    navigation.navigate('EndGame',{ result: ['Défaite'] });
             }
         }
     }
