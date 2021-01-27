@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import { View, Text, StyleSheet, ImageBackground, Image } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -24,11 +23,6 @@ Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize("0123456789", "0123456789", "0123456789");
 Parse.serverURL = 'http://shifumi-game-akarah.herokuapp.com/parse/'; 
 Parse.liveQueryServerURL = 'ws://shifumi-game-akarah.herokuapp.com/parse/';
-
-
-/******* TODO GENERAL  ***************/
-// TODO: if player quit a matchmaking, delete his server
-
 
 // This file init the projet, and displaying the home menu with navigation
 function HomeScreen({ navigation }) {

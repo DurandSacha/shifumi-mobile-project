@@ -1,5 +1,5 @@
-import React, { PropTypes, Component, useRef, useEffect } from 'react';
-import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground, Animated, Easing} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet , Image, ImageBackground } from 'react-native';
 import 'react-native-gesture-handler';
 import Img from '../assets/images/_image';
 import CircleScore from './Layout/CircleScore';

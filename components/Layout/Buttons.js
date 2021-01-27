@@ -1,28 +1,21 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
-//import ViewOverflow from 'react-native-view-overflow';
-
-//import Img from 'assets/images/_image';
 
 export default class Buttons extends Component {
 
     constructor(props) {
         super(props);
-
     }
 
     render() {
         let {navigation, buttonText, NameRenderView, texture} = this.props
 
         return ( 
-            
                 <ImageBackground style={styles.backgroundImageBois} source={texture}>
                     <TouchableOpacity style={styles.MenuButtonContainer} onPress={() => navigation.push(NameRenderView)} color="#138a72">
                             <Text style={styles.MenuButtonText} >{buttonText}</Text>
                     </TouchableOpacity>
                 </ImageBackground>
-            
-            
         );
     }
 }

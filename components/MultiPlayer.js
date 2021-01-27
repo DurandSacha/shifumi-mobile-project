@@ -1,13 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground} from 'react-native';
-//import 'react-native-gesture-handler';
 import Img from '../assets/images/_image';
 import CircleScore from './Layout/CircleScore';
 import Card from './Layout/Card';
 import '../stores/GameController';
 import '../stores/UserController';
 import 'localstorage-polyfill';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Parse from 'parse';
 import db from '../utils/database';
 
@@ -95,26 +93,28 @@ export default class MultiPlayer extends Component {
 
     // Refresh all states in a game  // executed in a listen function
     majView = (gameReturn) => {
-        let { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy,textSet, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound, enemyCurrentChoice, userCurrentChoice, visibilityNextSetButton } = this.state;
+
+        let { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy,textSet, cardToDisplayUser, visibilityNextSetButton, 
+            colorSet1, colorSet2, colorSet3, gameFound, enemyCurrentChoice, userCurrentChoice 
+        } = this.state;
 
         if(this.placePlayerInDatabase == '1'){
             enemyCurrentChoice = gameReturn.attributes.P2CurrentChoice;
             userCurrentChoice = gameReturn.attributes.P1CurrentChoice;
             cardToDisplayEnemy = gameReturn.attributes.P2CurrentChoice;
             cardToDisplayUser = gameReturn.attributes.P1CurrentChoice;
-            visibilityEnemyCard = 0;
-            visibilityUserCard = 1;
-            textSet = 'Manche en cours';
         }
         else{
             enemyCurrentChoice = gameReturn.attributes.P1CurrentChoice;
             userCurrentChoice = gameReturn.attributes.P2CurrentChoice;
             cardToDisplayEnemy = gameReturn.attributes.P1CurrentChoice;
             cardToDisplayUser = gameReturn.attributes.P2CurrentChoice;
-            visibilityEnemyCard = 0;
-            visibilityUserCard = 1;
-            textSet = 'Manche en cours';
         }
+
+        visibilityEnemyCard = 0;
+        visibilityUserCard = 1;
+        visibilityNextSetButton = 0;
+        textSet = 'Manche en cours';
 
         this.setState({
             enemyCurrentChoice : enemyCurrentChoice,
@@ -123,8 +123,8 @@ export default class MultiPlayer extends Component {
             cardToDisplayUser : cardToDisplayUser,
             visibilityEnemyCard : visibilityEnemyCard,
             visibilityUserCard : visibilityUserCard,
-            visibilityNextSetButton : 0,
-            textSet : 'Manche en cours' ,
+            visibilityNextSetButton : visibilityNextSetButton,
+            textSet : textSet ,
 
         });
         
@@ -267,7 +267,6 @@ export default class MultiPlayer extends Component {
                             </View>
                             <View>
                                 <Text style={styles.BattleText}>{textSet}</Text>
-                                {/*<Button onpress={this.ManualPlayer2Choice()} title="Make Enemy Choice" ><Text>Make Enemy Choice</Text> </Button>*/}
                                 <CircleScore colorSet1={colorSet1} colorSet2={colorSet2} colorSet3={colorSet3} />
                             </View>
                             <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
