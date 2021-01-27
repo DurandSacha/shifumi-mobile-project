@@ -51,6 +51,11 @@ export default class MultiPlayer extends Component {
 
     }
 
+    async componentWillUnmount(){
+            game =  await db.get('GameInstance', this.idGame );
+            game.destroy().then((object) => { console.log('Clean Database ( ComponentWillUnmount ) '); }, (error) => {console.log(error.message);});
+    }
+
     componentDidMount(){
         this.searchOtherPlayerAndInitializeGame();
     }
