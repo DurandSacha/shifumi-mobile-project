@@ -37,7 +37,8 @@ export default class MultiPlayer extends Component {
             enemyCurrentChoice : null,
             userCurrentChoice : null,
             choicesIsFinished : 0,
-            visibilityCards : 1
+            visibilityCards : 1,
+            textSet : 'Manche en cours',
         };
 
         this.idGame = null;
@@ -94,12 +95,7 @@ export default class MultiPlayer extends Component {
 
     // Refresh all states in a game  // executed in a listen function
     majView = (gameReturn) => {
-        let { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound, enemyCurrentChoice, userCurrentChoice, visibilityNextSetButton } = this.state;
-
-        //visibilityEnemyCard = 1;
-        
-        //if player1 has played -> set opacity player 2 : 1
-        //if player2 has played -> set opacity player 1 : 1 
+        let { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy,textSet, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound, enemyCurrentChoice, userCurrentChoice, visibilityNextSetButton } = this.state;
 
         if(this.placePlayerInDatabase == '1'){
             enemyCurrentChoice = gameReturn.attributes.P2CurrentChoice;
@@ -108,6 +104,7 @@ export default class MultiPlayer extends Component {
             cardToDisplayUser = gameReturn.attributes.P1CurrentChoice;
             visibilityEnemyCard = 0;
             visibilityUserCard = 1;
+            textSet = 'Manche en cours';
             //visibilityNextSetButton = 0;
         }
         else{
@@ -117,6 +114,7 @@ export default class MultiPlayer extends Component {
             cardToDisplayUser = gameReturn.attributes.P2CurrentChoice;
             visibilityEnemyCard = 0;
             visibilityUserCard = 1;
+            textSet = 'Manche en cours';
             //visibilityNextSetButton = 0;
         }
 
@@ -128,6 +126,7 @@ export default class MultiPlayer extends Component {
             visibilityEnemyCard : visibilityEnemyCard,
             visibilityUserCard : visibilityUserCard,
             visibilityNextSetButton : 0,
+            textSet : 'Manche en cours' ,
 
         });
 
@@ -141,6 +140,7 @@ export default class MultiPlayer extends Component {
                 visibilityNextSetButton : 1,
                 visibilityEnemyCard : 1,
                 visibilityUserCard : 1,
+                textSet : 'Manche terminée',
             });
             // for endGame 
             this.redirectGame();
@@ -221,6 +221,7 @@ export default class MultiPlayer extends Component {
 
             visibilityCards : 1,
             visibilityNextSetButton : 0,
+            textSet : 'Manche en cours' ,
         });
 
         game = await db.get('GameInstance', this.idGame );
@@ -250,7 +251,7 @@ export default class MultiPlayer extends Component {
         }
     }
     render = () => {
-        const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound, visibilityNextSetButton, visibilityCards } = this.state;
+        const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound, textSet, visibilityNextSetButton, visibilityCards } = this.state;
 
         if(gameFound == 0){
             return(
@@ -272,7 +273,7 @@ export default class MultiPlayer extends Component {
                                 <Image source={Img[cardToDisplayEnemy]} resizeMode="contain" style={styles.CardPlayedEnemy} />
                             </View>
                             <View>
-                                <Text style={styles.BattleText}>Manche en cours</Text>
+                                <Text style={styles.BattleText}>{textSet}</Text>
                                 {/*<Button onpress={this.ManualPlayer2Choice()} title="Make Enemy Choice" ><Text>Make Enemy Choice</Text> </Button>*/}
                                 <CircleScore colorSet1={colorSet1} colorSet2={colorSet2} colorSet3={colorSet3} />
                             </View>
@@ -304,9 +305,9 @@ export default class MultiPlayer extends Component {
 const styles = StyleSheet.create({
     nextSet:{
         backgroundColor: 'yellow',
-        padding: 9,
+        padding: 12,
         fontSize:9,
-        margin: 5,
+        margin: 6,
     },
     centerTextMin:{
         marginTop: 30,
@@ -316,7 +317,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     centerText:{
-        marginTop: 300,
+        marginTop: 240,
         justifyContent: 'center',
         fontSize: 30,
         marginLeft:50,
@@ -400,13 +401,13 @@ const styles = StyleSheet.create({
         width: 90,
         height: 60,
         marginTop: 110,
-        marginBottom: 5,
+        marginBottom: 0,
     },
     CardPlayedEnemy: {
         width: 80,
         height: 55,
         marginTop: -110,
-        marginBottom: 75,
+        marginBottom: 60,
 
     },
     containerEnemyCardPlayed: {
@@ -420,7 +421,7 @@ const styles = StyleSheet.create({
         transform: [
             { rotate: "-90deg" },
             { translateX: 0 },
-            { translateY: -20 }
+            { translateY: -65 }
         ],
     },
     BattleText: {
@@ -431,6 +432,6 @@ const styles = StyleSheet.create({
     },
     setText:{
         fontSize: 15,
-        marginBottom: 10,
+        marginBottom: 5,
     }
 });

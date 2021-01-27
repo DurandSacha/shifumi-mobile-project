@@ -12,18 +12,23 @@ export default class Card extends Component {
         const { icon, color, onPress, texture } = this.props;
 
         return ( 
-            <ImageBackground style={styles.backgroundImageBois} source={texture}>
-                <TouchableOpacity onPress={onPress} style={[styles.container /*, {backgroundColor : color } */]}> 
-                    <View style={styles.rect}>
-                        <Image source={icon} resizeMode="contain" style={[styles.image]} />
-                    </View>
-                </TouchableOpacity>
-            </ImageBackground>
+            <View style={styles.ViewCard}>
+                <ImageBackground style={styles.backgroundImageBois} source={texture}>
+                    <TouchableOpacity onPress={onPress} style={[styles.container /*, {backgroundColor : color } */]}> 
+                        <View style={styles.rect}>
+                            <Image source={icon} resizeMode="contain" style={[styles.image]} />
+                        </View>
+                    </TouchableOpacity>
+                </ImageBackground>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    ViewCard: {
+        marginBottom:50,
+    },
     backgroundImageBois :{
         marginBottom:25,
         //borderRadius: 100,
