@@ -84,11 +84,6 @@ export default class MultiPlayer extends Component {
                 if (gameReturn.attributes.P1CurrentChoice != null && gameReturn.attributes.P2CurrentChoice != null){
                     this.majView(gameReturn);
                 }
-
-                //let result = this.MakeSet();
-                //this.updateGame(result);
-                //this.redirectGame();
-
             }
         }).then((success) => { console.log("subscribe status ") }, (error) => { console.log(error.message)});      
     }
@@ -105,7 +100,6 @@ export default class MultiPlayer extends Component {
             visibilityEnemyCard = 0;
             visibilityUserCard = 1;
             textSet = 'Manche en cours';
-            //visibilityNextSetButton = 0;
         }
         else{
             enemyCurrentChoice = gameReturn.attributes.P1CurrentChoice;
@@ -115,7 +109,6 @@ export default class MultiPlayer extends Component {
             visibilityEnemyCard = 0;
             visibilityUserCard = 1;
             textSet = 'Manche en cours';
-            //visibilityNextSetButton = 0;
         }
 
         this.setState({
@@ -129,7 +122,6 @@ export default class MultiPlayer extends Component {
             textSet : 'Manche en cours' ,
 
         });
-
         
         // IF all players has played
         if(enemyCurrentChoice != '0' && userCurrentChoice != '0' ){
@@ -142,10 +134,8 @@ export default class MultiPlayer extends Component {
                 visibilityUserCard : 1,
                 textSet : 'Manche terminée',
             });
-            // for endGame 
             this.redirectGame();
         }
-
         return ; 
     }
 
@@ -170,16 +160,14 @@ export default class MultiPlayer extends Component {
         console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & player2 choice: ' + this.state.enemyCurrentChoice);
         console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & user choice: ' + this.state.userCurrentChoice);
 
-            if (this.state.enemyCurrentChoice == this.state.userCurrentChoice){  result = "null";  this.currentSet = this.currentSet -1; }
-            else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "feuille"){ result = "Gagné";}
-            else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "ciseau"){ result = "Perdu";}
-            else if (this.state.enemyCurrentChoice == "feuille" && this.state.userCurrentChoice == "ciseau"){ result = "Gagné";}
-            else if (this.state.enemyCurrentChoice == "feuille" && this.state.userCurrentChoice == "pierre"){ result = "Perdu";}
-            else if (this.state.enemyCurrentChoice == "ciseau" && this.state.userCurrentChoice == "pierre"){ result = "Gagné";}
-            else if (this.state.enemyCurrentChoice == "ciseau" && this.state.userCurrentChoice == "feuille"){ result = "Perdu";}
-        //} 
-        console.log('result : ' + result);
-        console.log(result);
+        if (this.state.enemyCurrentChoice == this.state.userCurrentChoice){  result = "null";  this.currentSet = this.currentSet -1; }
+        else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "feuille"){ result = "Gagné"; }
+        else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "ciseau"){ result = "Perdu"; }
+        else if (this.state.enemyCurrentChoice == "feuille" && this.state.userCurrentChoice == "ciseau"){ result = "Gagné"; }
+        else if (this.state.enemyCurrentChoice == "feuille" && this.state.userCurrentChoice == "pierre"){ result = "Perdu"; }
+        else if (this.state.enemyCurrentChoice == "ciseau" && this.state.userCurrentChoice == "pierre"){ result = "Gagné"; }
+        else if (this.state.enemyCurrentChoice == "ciseau" && this.state.userCurrentChoice == "feuille"){ result = "Perdu"; }
+
         this.updateGame(result) ;
     }
 
@@ -198,8 +186,8 @@ export default class MultiPlayer extends Component {
         }
         else if (result == "Perdu"){
             if (this.currentSet == 1) { this.setState({colorSet1 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1; };
-            if (this.currentSet == 2) { this.setState({colorSet2 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1;};
-            if (this.currentSet == 3) { this.setState({colorSet3 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1;};
+            if (this.currentSet == 2) { this.setState({colorSet2 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1; };
+            if (this.currentSet == 3) { this.setState({colorSet3 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1; };
         }
         this.setState({
             visibilityUserCard : 1,
