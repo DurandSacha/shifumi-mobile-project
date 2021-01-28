@@ -41,7 +41,7 @@ export default class MultiPlayer extends Component {
             choicesIsFinished : 0,
             visibilityCards : 1,
             textSet : 'Manche en cours',
-            timeoutSearchGame : 10
+            timeoutSearchGame : 45
         };
 
         this.idGame = null;
