@@ -43,6 +43,7 @@ export default class MultiPlayer extends Component {
         this.pointPlayer2 = 0;
         this.pointUser = 0;
         this.currentSet = 1;
+        this.result = '0';
         this.idUser = Math.floor(Math.random() * Math.floor(15000)).toString();
         this.placePlayerInDatabase= null;
 
@@ -165,7 +166,7 @@ export default class MultiPlayer extends Component {
         console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & player2 choice: ' + this.state.enemyCurrentChoice);
         console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & user choice: ' + this.state.userCurrentChoice);
 
-        if (this.state.enemyCurrentChoice == this.state.userCurrentChoice){  result = "null";  this.currentSet = this.currentSet -1; }
+        if (this.state.enemyCurrentChoice == this.state.userCurrentChoice){  result = "null";}
         else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "feuille"){ result = "Gagné"; }
         else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "ciseau"){ result = "Perdu"; }
         else if (this.state.enemyCurrentChoice == "feuille" && this.state.userCurrentChoice == "ciseau"){ result = "Gagné"; }
@@ -183,7 +184,12 @@ export default class MultiPlayer extends Component {
             visibilityEnemyCard: 1,
         });
 
-        if(result == "null"){}
+        this.result = '0';
+        
+        if(result == "null"){
+            //this.currentSet = this.currentSet - 1;
+            this.result = 'null';
+        }
         else if (result == "Gagné"){
             if (this.currentSet == 1) { this.setState({colorSet1 : 'green'}); this.pointUser = this.pointUser + 1; };
             if (this.currentSet == 2) { this.setState({colorSet2 : 'green'}); this.pointUser = this.pointUser + 1; };
@@ -201,7 +207,9 @@ export default class MultiPlayer extends Component {
 
     nextSet = async () => {
 
-        this.currentSet = this.currentSet + 1;
+        if(this.result != 'null'){
+            this.currentSet = this.currentSet + 1;
+        }
 
         this.setState({
             visibilityUserCard: 0,
