@@ -21,9 +21,9 @@ export default class MultiPlayer extends Component {
             maxSet : 3,
             PlayerUserChoice: '',
             Player2Choice: '',
-            colorSet1: 'grey',
-            colorSet2: 'grey',
-            colorSet3: 'grey',
+            colorSet1: 'rgb(165,165,165)',
+            colorSet2: 'rgb(165,165,165)',
+            colorSet3: 'rgb(165,165,165)',
             visibilityEnemyCard : 0,
             visibilityUserCard : 0,
             visibilityNextSetButton : 0,
@@ -163,9 +163,6 @@ export default class MultiPlayer extends Component {
     MakeSet = () => {
 
         let result = null;
-        console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & player2 choice: ' + this.state.enemyCurrentChoice);
-        console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & user choice: ' + this.state.userCurrentChoice);
-
         this.result = '0';
         if (this.state.enemyCurrentChoice == this.state.userCurrentChoice){  result = "null"; this.result = 'null'; }
         else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "feuille"){ result = "Gagné"; }
@@ -257,10 +254,17 @@ export default class MultiPlayer extends Component {
 
         if(gameFound == 0){
             return(
-                <View style={styles.view}>
+                <View style={{flex:1}}>
                      <ImageBackground source={Img.background} style={styles.imageBackground}>
+                    
+                     <View style={{flex:3, justifyContent: 'center', flexDirection: 'column', alignItems: 'center',}}>
                         <Text style={styles.centerText}>Recherche d'adversaire</Text>
-                        <Text style={styles.centerTextMin}>Patientez...</Text>
+                    </View>
+                    <View style={{flex:3, justifyContent: 'center', flexDirection: 'column', alignItems: 'center',}}>
+                        <Text style={[{}, styles.centerTextMin]}>Patientez...</Text>
+                    </View>
+                    <View style={{flex:4, justifyContent: 'center', flexDirection: 'column', alignItems: 'center',}}>
+                    </View>
                     </ImageBackground>
                 </View>
             )
@@ -269,31 +273,44 @@ export default class MultiPlayer extends Component {
             return (
                 <View style={styles.view}>
                     <ImageBackground source={Img.background} style={styles.imageBackground}>
-                        <View style={styles.header}>
-                            <Image source={Img.dosCarte} resizeMode="contain" style={styles.enemyCard}/>
-                            <View style={[styles.containerEnemyCardPlayed, { opacity: visibilityEnemyCard   }]}>
+                        <View style={[{flex:1 ,justifyContent:'center'}, styles.header]}>
+
+
+                            <View style={{flex:3}}>
+                                <Image source={Img.dosCarte} resizeMode="contain" style={styles.enemyCard}/>
+                            </View>
+
+
+                            <View style={[styles.containerEnemyCardPlayed, { opacity: visibilityEnemyCard, flex:4  }]}>
                                 <Image source={Img[cardToDisplayEnemy]} resizeMode="contain" style={styles.CardPlayedEnemy} />
                             </View>
-                            <View>
+
+                            <View style={{flex:3 ,justifyContent:'center'}}>
                                 <Text style={styles.BattleText}>{textSet}</Text>
                                 <CircleScore colorSet1={colorSet1} colorSet2={colorSet2} colorSet3={colorSet3} />
                             </View>
-                            <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
+
+                            <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard, flex:4 ,justifyContent:'center' } ]}>
                                 <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} />
                                 {/*<CardPlayed icon={Img[cardToDisplayUser]} texture={Img.carteBois} ></CardPlayed>*/}
                             </View>
 
-                            <View style={[styles.nextSet, { opacity: visibilityNextSetButton } ]}>
+                            <View style={[styles.nextSet, { flex:1 , opacity: visibilityNextSetButton} ]}>
                                 <TouchableOpacity onPress={() => this.nextSet()} >
                                     <Text> Passer a la manche suivante </Text>
                                 </TouchableOpacity>
                             </View>
 
-                            <Text style={styles.setText}> Coup n°{ this.currentSet } </Text>
-                            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch', opacity: visibilityCards }}>
-                                <Card onPress={() => this.selectCard("ciseau")} icon={Img.ciseau} texture={Img.carteBois} color="rgba(191,44,44,1)"/>
-                                <Card onPress={() => this.selectCard("feuille")} icon={Img.feuille} texture={Img.carteBois} color="rgba(242,203,5,1)"/>
-                                <Card onPress={() => this.selectCard("pierre")} icon={Img.pierre} texture={Img.carteBois} color="rgba(74,140,91,1)"/>
+                            <View style={{flex:1, justifyContent: 'center'}}>
+                                <Text style={styles.setText}> Coup n°{ this.currentSet } </Text>
+                            </View>
+
+                            <View style={{flex:5, justifyContent: 'center'}}>
+                                <View style={[styles.ContainerChoiceUserCards , {flex: 2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch', opacity: visibilityCards }]}>
+                                    <Card onPress={() => this.selectCard("ciseau")} icon={Img.ciseau} texture={Img.carteBois} color="rgba(191,44,44,1)"/>
+                                    <Card onPress={() => this.selectCard("feuille")} icon={Img.feuille} texture={Img.carteBois} color="rgba(242,203,5,1)"/>
+                                    <Card onPress={() => this.selectCard("pierre")} icon={Img.pierre} texture={Img.carteBois} color="rgba(74,140,91,1)"/>
+                                </View>
                             </View>
                         </View>
                     </ImageBackground>
@@ -304,25 +321,31 @@ export default class MultiPlayer extends Component {
 }
 
 const styles = StyleSheet.create({
+    ContainerChoiceUserCards:{
+        //marginBottom: 220,
+    },
     nextSet:{
         backgroundColor: 'yellow',
-        padding: 12,
+        padding: 8,
         fontSize:9,
         margin: 6,
+        alignItems: 'center',
     },
     centerTextMin:{
         marginTop: 30,
-        justifyContent: 'center',
-        fontSize: 25,
-        marginLeft:150,
+        //justifyContent: 'center',
+        fontSize: 20,
+        //marginLeft:150,
         fontWeight: 'bold',
+        color:'white',
     },
     centerText:{
         marginTop: 240,
-        justifyContent: 'center',
-        fontSize: 30,
-        marginLeft:50,
+        //justifyContent: 'center',
+        fontSize: 25,
+        //marginLeft:50,
         fontWeight: 'bold',
+        color:'white',
     },
     view: {  
         flex: 1,
@@ -401,38 +424,39 @@ const styles = StyleSheet.create({
     CardPlayedUser: {
         width: 90,
         height: 60,
-        marginTop: 110,
-        marginBottom: 0,
+        //marginTop: 150,
+        //marginBottom: 0,
     },
     CardPlayedEnemy: {
-        width: 80,
-        height: 55,
-        marginTop: -110,
-        marginBottom: 60,
+        width: 90,
+        height: 60,
+        //marginTop: -110,
+        //marginBottom: 60,
 
     },
     containerEnemyCardPlayed: {
         transform: [
             { rotate: "90deg" },
-            { translateX: -130 },
-            { translateY: 100 }
+            //{ translateX: -130 },
+            { translateY: 45 }
         ],
     },
     containerUserCardPlayed: {
         transform: [
             { rotate: "-90deg" },
-            { translateX: 0 },
-            { translateY: -65 }
+            //{ translateX: 0 },
+            //{ translateY: -75 }
         ],
     },
     BattleText: {
         fontSize: 17,
-        marginTop: -45,
+        marginTop: 0,
         fontWeight: "bold",
         color: 'white',
     },
     setText:{
         fontSize: 15,
-        marginBottom: 5,
+        marginBottom:15,
+        color: 'rgb(50,50,50)',  
     }
 });

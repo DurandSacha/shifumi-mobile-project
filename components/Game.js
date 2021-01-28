@@ -18,9 +18,9 @@ export default class Game extends Component {
         this.state = {
             maxSet : 3,
             MachineChoice: '',
-            colorSet1: 'grey',
-            colorSet2: 'grey',
-            colorSet3: 'grey',
+            colorSet1: 'rgb(165,165,165)',
+            colorSet2: 'rgb(165,165,165)',
+            colorSet3: 'rgb(165,165,165)',
             visibilityEnemyCard : 0,
             visibilityUserCard : 0,
             cardToDisplayUser : 'feuille',
