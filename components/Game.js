@@ -49,15 +49,6 @@ export default class Game extends Component {
             cardToDisplayUser: userChoice,
             cardToDisplayEnemy: MachineChoice,
         });
-        // TODO: animation here
-
-        /*
-        this.setState({
-            visibilityUserCard: 0,
-            visibilityEnemyCard: 0,
-        });
-        */
-
 
         let currentSet = this.currentSet;
 

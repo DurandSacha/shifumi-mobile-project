@@ -1,13 +1,17 @@
 import React, { PropTypes, Component } from 'react';
 import { View, Text,  Button, Alert, StyleSheet , Image, TouchableOpacity, ImageBackground} from 'react-native';
+import { NavigationContainer, useRoute } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Img from '../assets/images/_image';
 import CircleScore from './Layout/CircleScore';
 import Card from './Layout/Card';
+import Buttons from './Layout/Buttons';
 import '../stores/GameController';
 import '../stores/UserController';
 import 'localstorage-polyfill';
 import Parse from 'parse';
 import db from '../utils/database';
+
 
 const br = `\n`;
 
@@ -37,6 +41,7 @@ export default class MultiPlayer extends Component {
             choicesIsFinished : 0,
             visibilityCards : 1,
             textSet : 'Manche en cours',
+            timeoutSearchGame : 10
         };
 
         this.idGame = null;
@@ -47,15 +52,28 @@ export default class MultiPlayer extends Component {
         this.idUser = Math.floor(Math.random() * Math.floor(15000)).toString();
         this.placePlayerInDatabase= null;
 
+        //this.timeoutForSearchGame();
+
     }
 
     async componentWillUnmount(){
             game =  await db.get('GameInstance', this.idGame );
             game.destroy().then((object) => { console.log('Clean Database ( ComponentWillUnmount ) '); }, (error) => {/*console.log(error.message); */ });
+
+            // clean interval
+            clearInterval(this.clockCall);
     }
 
     componentDidMount(){
+        //Search Other Game 
         this.searchOtherPlayerAndInitializeGame();
+
+        //Set interval for maximum time of search game 
+        this.clockCall = setInterval(() => {
+            this.setState((prevstate) => ({ timeoutSearchGame : prevstate.timeoutSearchGame-1 }));
+        }, 1000);
+        
+        
     }
 
     // SearchGame // create Game // listen database 
@@ -75,6 +93,7 @@ export default class MultiPlayer extends Component {
             await createGameInstance(this.idUser);
             this.idGame = localStorage.getItem("gameId");
             console.log('Game was created : ' + this.idGame);
+            //this.timeoutForSearchGame();
             // host
             this.placePlayerInDatabase = '1';
         }      
@@ -248,9 +267,12 @@ export default class MultiPlayer extends Component {
         }
     }
     render = () => {
-        const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound, textSet, visibilityNextSetButton, visibilityCards } = this.state;
+        const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3, gameFound, textSet, 
+            visibilityNextSetButton, visibilityCards, timeoutSearchGame } = this.state;
 
-        if(gameFound == 0){
+        //this.timeoutForSearchGame();
+
+        if(gameFound == 0 && timeoutSearchGame > 0){
             return(
                 <View style={{flex:1}}>
                      <ImageBackground source={Img.background} style={styles.imageBackground}>
@@ -262,11 +284,30 @@ export default class MultiPlayer extends Component {
                         <Text style={[{}, styles.centerTextMin]}>Patientez...</Text>
                     </View>
                     <View style={{flex:4, justifyContent: 'center', flexDirection: 'column', alignItems: 'center',}}>
+                    <Text style={[{}, styles.centerTextTimeout]}> Temps restant : {timeoutSearchGame} secondes</Text>
                     </View>
                     </ImageBackground>
                 </View>
             )
-        }    
+        }   
+        else if (gameFound == 0 && timeoutSearchGame <= 0){
+            return(
+                <View style={{flex:1}}>
+                    <ImageBackground source={Img.background} style={styles.imageBackground}>
+                        <View style={{flex:3, justifyContent: 'center', flexDirection: 'column', alignItems: 'center',}}>
+                            <Text style={styles.centerText}>Recherche d'adversaire terminé</Text>
+                        </View>
+                        <View style={{flex:4, justifyContent: 'center', flexDirection: 'column', alignItems: 'center',}}>
+                            <Text style={[{}, styles.centerTextTimeout]}> Malheureusement, nous ne trouvons pas de joueur, veuillez essayez plus tard </Text>
+                        </View>
+
+                        <View style={{flex:4, justifyContent: 'center', flexDirection: 'column', alignItems: 'center',}}>
+                            <Buttons buttonText="Menu" navigation={this.props.navigation} NameRenderView="Home" texture={Img.bois} />
+                        </View>
+                    </ImageBackground>
+                </View>
+           )
+        }
         else if(gameFound == 1){
             return (
                 <View style={styles.view}>
@@ -290,7 +331,6 @@ export default class MultiPlayer extends Component {
 
                             <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard, flex:4 ,justifyContent:'center' } ]}>
                                 <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} />
-                                {/*<CardPlayed icon={Img[cardToDisplayUser]} texture={Img.carteBois} ></CardPlayed>*/}
                             </View>
 
                             <View style={[styles.nextSet, { flex:1 , opacity: visibilityNextSetButton} ]}>
@@ -319,6 +359,12 @@ export default class MultiPlayer extends Component {
 }
 
 const styles = StyleSheet.create({
+    centerTextTimeout :{
+        fontSize:15,
+        color: 'rgb(240,240,240)',
+        paddingLeft: 60,
+        paddingRight: 60,
+    },
     ContainerChoiceUserCards:{
         //marginBottom: 220,
     },
