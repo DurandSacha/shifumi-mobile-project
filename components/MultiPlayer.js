@@ -86,6 +86,7 @@ export default class MultiPlayer extends Component {
             await subscribeInAGame('player2',this.idGame, this.idUser)
             // joiner 
             this.setState({ gameFound : 1 });
+            clearInterval(this.clockCall);
             this.placePlayerInDatabase = '2';
         }
         // if game is not found, create game instance and wait a player2
@@ -101,6 +102,7 @@ export default class MultiPlayer extends Component {
         db.listen("GameInstance", this.idGame, (gameReturn) => {
             if (/*gameReturn.attributes.player1 != '0' && gameReturn.attributes.player2 != '0' || */ this.state.gameFound != 1){
                 this.setState({ gameFound : 1 });
+                clearInterval(this.clockCall);
             } 
             else {
                 // in game 
