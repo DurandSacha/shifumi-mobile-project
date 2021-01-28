@@ -131,7 +131,6 @@ export default class MultiPlayer extends Component {
         
         // IF all players has played
         if(enemyCurrentChoice != '0' && userCurrentChoice != '0' ){
-            console.log('makeSet in progress');
             this.MakeSet();
             this.setState({
                 visibilityCards : 0,
@@ -185,9 +184,9 @@ export default class MultiPlayer extends Component {
         this.result = "0";
         
         if (result == "Gagné"){
-            if (this.currentSet == 1) { this.setState({colorSet1 : 'green'}); this.pointUser = this.pointUser + 1; };
-            if (this.currentSet == 2) { this.setState({colorSet2 : 'green'}); this.pointUser = this.pointUser + 1; };
-            if (this.currentSet == 3) { this.setState({colorSet3 : 'green'}); this.pointUser = this.pointUser + 1; };
+            if (this.currentSet == 1) { this.setState({colorSet1 : 'rgb(106,206,0)'}); this.pointUser = this.pointUser + 1; };
+            if (this.currentSet == 2) { this.setState({colorSet2 : 'rgb(106,206,0)'}); this.pointUser = this.pointUser + 1; };
+            if (this.currentSet == 3) { this.setState({colorSet3 : 'rgb(106,206,0)'}); this.pointUser = this.pointUser + 1; };
         }
         else if (result == "Perdu"){
             if (this.currentSet == 1) { this.setState({colorSet1 : 'red'}); this.pointPlayer2 = this.pointPlayer2 + 1; };
@@ -204,7 +203,6 @@ export default class MultiPlayer extends Component {
         if(this.state.enemyCurrentChoice == this.state.userCurrentChoice){
             this.result = "null" ;
         }
-
         if(this.result != "null"){
             this.currentSet = this.currentSet + 1;
         }
@@ -276,7 +274,7 @@ export default class MultiPlayer extends Component {
                         <View style={[{flex:1 ,justifyContent:'center'}, styles.header]}>
 
 
-                            <View style={{flex:3}}>
+                            <View style={{flex:4}}>
                                 <Image source={Img.dosCarte} resizeMode="contain" style={styles.enemyCard}/>
                             </View>
 

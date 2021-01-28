@@ -68,9 +68,9 @@ export default class Game extends Component {
                 if(result == "null"){}
                 else if (result == "Gagné"){
                     this.pointUser = this.pointUser + 1 ;
-                    if (currentSet == 1) { this.setState({colorSet1 : 'green'}) };
-                    if (currentSet == 2) { this.setState({colorSet2 : 'green'}) };
-                    if (currentSet == 3) { this.setState({colorSet3 : 'green'}) };
+                    if (currentSet == 1) { this.setState({colorSet1 : 'rgb(106,206,0)'}) };
+                    if (currentSet == 2) { this.setState({colorSet2 : 'rgb(106,206,0)'}) };
+                    if (currentSet == 3) { this.setState({colorSet3 : 'rgb(106,206,0)'}) };
                 }
                 else{
                     if (currentSet == 1) { this.setState({colorSet1 : 'red'}) };
@@ -123,63 +123,40 @@ export default class Game extends Component {
 
     render =() => {
 
-        // animation
-        /*
-        let spinValue = new Animated.Value(0);
-
-        Animated.timing(
-            this.spinValue,
-        {
-            toValue: 1,
-            duration: 3000,
-            easing: Easing.linear, // Easing is an additional import from react-native
-            //useNativeDriver: true  // To make use of native driver for performance
-        }
-        ).start();
-        const spin = this.spinValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '360deg']
-            })
-        */
-        // end animation
-
         const { visibilityUserCard, visibilityEnemyCard, cardToDisplayEnemy, cardToDisplayUser, colorSet1, colorSet2, colorSet3 } = this.state;
 
         return (
             <View style={styles.view}>
-                {/*<StatusBar translucent backgroundColor="transparent" /> */}
                 <ImageBackground source={Img.background} style={styles.imageBackground}>
-                    <View style={styles.header}>
-                        <Image source={Img.dosCarte} resizeMode="contain" style={styles.enemyCard}/>
-                        <View style={[styles.containerEnemyCardPlayed, { opacity: visibilityEnemyCard   }]}>
-                            {/*<Image source={Img[cardToDisplayEnemy]} resizeMode="contain" style={styles.CardPlayedEnemy} /> */}
-                            <CardPlayed icon={Img[cardToDisplayEnemy]} texture={Img.carteBois} ></CardPlayed>
+                <View style={[{flex:1 ,justifyContent:'center'}, styles.header]}>
 
-                            {/*
-                            <Animated.View style={{transform: [{rotate: spin}] }} >
-                                <Animated.Image
-                                    style={{transform: [{rotate: spin}] }}
-                                    source={Img[cardToDisplayEnemy]} />
-                            </Animated.View>
-                            */}
+                    <View style={{flex:4}}>
+                        <Image source={Img.dosCarte} resizeMode="contain" style={styles.enemyCard}/>
+                    </View>
+
+                        <View style={[styles.containerEnemyCardPlayed, { flex:4, opacity: visibilityEnemyCard   }]}>
+                            <CardPlayed icon={Img[cardToDisplayEnemy]} texture={Img.carteBois} ></CardPlayed>
                         </View>
 
-                        <View>
+                        <View style={{flex:3 ,justifyContent:'center'}}>
                             <Text style={styles.BattleText}>Choisissez une carte</Text>
                             <CircleScore colorSet1={colorSet1} colorSet2={colorSet2} colorSet3={colorSet3} />
                         </View>
 
-                        <View style={[styles.containerUserCardPlayed, { opacity: visibilityUserCard } ]}>
-                            {/* <Image source={Img[cardToDisplayUser]} resizeMode="contain" style={styles.CardPlayedUser} /> */}
+                        <View style={[styles.containerUserCardPlayed, { flex:4 ,justifyContent:'center', opacity: visibilityUserCard } ]}>
                             <CardPlayed icon={Img[cardToDisplayUser]} texture={Img.carteBois} ></CardPlayed>
                         </View>
 
-                        <Text style={styles.setText}> Coup n°{ this.currentSet } </Text>
-                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
-                            
-                            <Card onPress={() => this.MakeSet("ciseau")} icon={Img.ciseau} texture={Img.carteBois} color="rgba(191,44,44,1)"/>
-                            <Card onPress={() => this.MakeSet("feuille")} icon={Img.feuille} texture={Img.carteBois} color="rgba(242,203,5,1)"/>
-                            <Card onPress={() => this.MakeSet("pierre")} icon={Img.pierre} texture={Img.carteBois} color="rgba(74,140,91,1)"/>
+                        <View style={{flex:1, justifyContent: 'center'}}>
+                            <Text style={styles.setText}> Coup n°{ this.currentSet } </Text>
+                        </View>
+
+                        <View style={{flex:5, justifyContent: 'center'}}>
+                            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch'}}>
+                                <Card onPress={() => this.MakeSet("ciseau")} icon={Img.ciseau} texture={Img.carteBois} color="rgba(191,44,44,1)"/>
+                                <Card onPress={() => this.MakeSet("feuille")} icon={Img.feuille} texture={Img.carteBois} color="rgba(242,203,5,1)"/>
+                                <Card onPress={() => this.MakeSet("pierre")} icon={Img.pierre} texture={Img.carteBois} color="rgba(74,140,91,1)"/>
+                            </View>
                         </View>
                     </View>
                 </ImageBackground>
@@ -266,14 +243,14 @@ const styles = StyleSheet.create({
     CardPlayedUser: {
         width: 90,
         height: 60,
-        marginTop: 70,
-        marginBottom: 10,
+        //marginTop: 70,
+        //marginBottom: 10,
     },
     CardPlayedEnemy: {
         width: 80,
         height: 55,
-        marginTop: -0,
-        marginBottom: 20,
+        //marginTop: -0,
+        //marginBottom: 20,
 
     },
     containerEnemyCardPlayed: {
@@ -292,7 +269,7 @@ const styles = StyleSheet.create({
     },
     BattleText: {
         fontSize: 17,
-        marginTop: -45,
+        //marginTop: -45,
         fontWeight: "bold",
         marginLeft: 75,
         color:'white',
