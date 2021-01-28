@@ -17,7 +17,7 @@ export default class MultiPlayer extends Component {
         super(props);
 
         this.state = {
-            gameFound : 0,
+            gameFound : 0,  //Replace this to 0 for search Player View 
             maxSet : 3,
             PlayerUserChoice: '',
             Player2Choice: '',
@@ -47,12 +47,11 @@ export default class MultiPlayer extends Component {
         this.idUser = Math.floor(Math.random() * Math.floor(15000)).toString();
         this.placePlayerInDatabase= null;
 
-
     }
 
     async componentWillUnmount(){
             game =  await db.get('GameInstance', this.idGame );
-            game.destroy().then((object) => { console.log('Clean Database ( ComponentWillUnmount ) '); }, (error) => {console.log(error.message);});
+            game.destroy().then((object) => { console.log('Clean Database ( ComponentWillUnmount ) '); }, (error) => {/*console.log(error.message); */ });
     }
 
     componentDidMount(){
@@ -80,7 +79,7 @@ export default class MultiPlayer extends Component {
         }      
         
         db.listen("GameInstance", this.idGame, (gameReturn) => {
-            if (this.state.gameFound != 1){
+            if (gameReturn.attributes.player1 != '0' && gameReturn.attributes.player2 != '0' && this.state.gameFound != 1){
                 this.setState({ gameFound : 1 });
             } 
             else {
