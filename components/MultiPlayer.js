@@ -67,6 +67,7 @@ export default class MultiPlayer extends Component {
             console.log('Game found : id = ' + this.idGame);
             await subscribeInAGame('player2',this.idGame, this.idUser)
             // joiner 
+            this.setState({ gameFound : 1 });
             this.placePlayerInDatabase = '2';
         }
         // if game is not found, create game instance and wait a player2
@@ -79,7 +80,7 @@ export default class MultiPlayer extends Component {
         }      
         
         db.listen("GameInstance", this.idGame, (gameReturn) => {
-            if (gameReturn.attributes.player1 != '0' && gameReturn.attributes.player2 != '0' && this.state.gameFound != 1){
+            if (/*gameReturn.attributes.player1 != '0' && gameReturn.attributes.player2 != '0' || */ this.state.gameFound != 1){
                 this.setState({ gameFound : 1 });
             } 
             else {
@@ -165,7 +166,8 @@ export default class MultiPlayer extends Component {
         console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & player2 choice: ' + this.state.enemyCurrentChoice);
         console.log('device' + this.placePlayerInDatabase + ' => set:' + this.currentSet + '---------- & user choice: ' + this.state.userCurrentChoice);
 
-        if (this.state.enemyCurrentChoice == this.state.userCurrentChoice){  result = "null";}
+        this.result = '0';
+        if (this.state.enemyCurrentChoice == this.state.userCurrentChoice){  result = "null"; this.result = 'null'; }
         else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "feuille"){ result = "Gagné"; }
         else if (this.state.enemyCurrentChoice == "pierre" && this.state.userCurrentChoice == "ciseau"){ result = "Perdu"; }
         else if (this.state.enemyCurrentChoice == "feuille" && this.state.userCurrentChoice == "ciseau"){ result = "Gagné"; }
@@ -183,13 +185,9 @@ export default class MultiPlayer extends Component {
             visibilityEnemyCard: 1,
         });
 
-        this.result = '0';
+        this.result = "0";
         
-        if(result == "null"){
-            //this.currentSet = this.currentSet - 1;
-            this.result = 'null';
-        }
-        else if (result == "Gagné"){
+        if (result == "Gagné"){
             if (this.currentSet == 1) { this.setState({colorSet1 : 'green'}); this.pointUser = this.pointUser + 1; };
             if (this.currentSet == 2) { this.setState({colorSet2 : 'green'}); this.pointUser = this.pointUser + 1; };
             if (this.currentSet == 3) { this.setState({colorSet3 : 'green'}); this.pointUser = this.pointUser + 1; };
@@ -206,7 +204,11 @@ export default class MultiPlayer extends Component {
 
     nextSet = async () => {
 
-        if(this.result != 'null'){
+        if(this.state.enemyCurrentChoice == this.state.userCurrentChoice){
+            this.result = "null" ;
+        }
+
+        if(this.result != "null"){
             this.currentSet = this.currentSet + 1;
         }
 

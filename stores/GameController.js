@@ -45,7 +45,7 @@ subscribeInAGame = async (place,instanceId,name) => {
   query.equalTo("id", instanceId);
   game = await db.get('GameInstance', instanceId );
   game.set(place, name);
-  game.save();
+  await game.save();
 
   return;
 }
