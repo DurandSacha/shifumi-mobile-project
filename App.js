@@ -12,6 +12,7 @@ import Buttons from './components/Layout/Buttons';
 import 'localstorage-polyfill';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Parse from 'parse';
+//import Parse from 'parse/dist/parse.min.js';
 
 /*
 Back end (Parse Server) is available and deployed with : https://github.com/DurandSacha/parse-server-example at https://shifumi-game-akarah.herokuapp.com/parse/function/hello
