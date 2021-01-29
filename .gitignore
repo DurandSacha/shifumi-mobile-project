@@ -11,6 +11,6 @@ npm-debug.*
 web-build/
 ansible/hosts.ini
 android/app/*
-
+shifumi-heroes-online.jks
 # macOS
 .DS_Store
