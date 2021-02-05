@@ -13,6 +13,7 @@ import 'localstorage-polyfill';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 // old: '@react-native-async-storage/async-storage';
 // @react-native-community/async-storage
+// use : react-native link @react-native-async-storage/async-storage   
 import Parse from 'parse';
 
 /*
