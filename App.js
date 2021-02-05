@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Game from "./components/Game";
 import MultiPlayer from "./components/MultiPlayer";
 import EndGame from "./components/EndGame";
+import Information from "./components/Information";
 import Configuration from "./components/Configuration";
 import 'react-native-gesture-handler';
 import Img from './assets/images/_image';
@@ -46,6 +47,7 @@ function HomeScreen({ navigation }) {
         <View style={styles.content}>
             <Buttons buttonText="Jeu Solo" navigation={navigation} NameRenderView="Game" texture={Img.bois} />
             <Buttons buttonText="Jeu multijoueur" navigation={navigation} NameRenderView="MultiGame" texture={Img.bois} />
+            <Buttons buttonText="Information" navigation={navigation} NameRenderView="Information" texture={Img.bois} />
             {/*<Buttons buttonText="Configuration" navigation={navigation} NameRenderView="Configuration" texture={Img.bois} />*/}
         </View>
       </ImageBackground>
@@ -77,6 +79,12 @@ function EndGameScreen({ navigation }) {
   return ( <EndGame navigation={navigation} result={result}/> );
 }
 
+/* Function for routing */
+function InformationScreen({ navigation }) {
+  const route = useRoute();
+  return ( <Information navigation={navigation}/> );
+}
+
 const Stack = createStackNavigator();
 
 /* routing system */
@@ -85,6 +93,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator headerMode="none" initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Information" component={InformationScreen} />
         <Stack.Screen name="Configuration" component={ConfigurationScreen} />
         <Stack.Screen name="Game" component={GameScreen} />
         <Stack.Screen name="MultiGame" component={MultiGameScreen} />
