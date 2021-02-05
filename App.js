@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image, AsyncStorage } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Game from "./components/Game";
@@ -10,9 +10,10 @@ import 'react-native-gesture-handler';
 import Img from './assets/images/_image';
 import Buttons from './components/Layout/Buttons';
 import 'localstorage-polyfill';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+//import AsyncStorage from '@react-native-async-storage/async-storage';
+// old: '@react-native-async-storage/async-storage';
+// @react-native-community/async-storage
 import Parse from 'parse';
-//import Parse from 'parse/dist/parse.min.js';
 
 /*
 Back end (Parse Server) is available and deployed with : https://github.com/DurandSacha/parse-server-example at https://shifumi-game-akarah.herokuapp.com/parse/function/hello

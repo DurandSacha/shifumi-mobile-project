@@ -12,7 +12,6 @@ import 'localstorage-polyfill';
 import Parse from 'parse';
 import db from '../utils/database';
 
-
 const br = `\n`;
 
 export default class MultiPlayer extends Component {
@@ -58,7 +57,7 @@ export default class MultiPlayer extends Component {
 
     async componentWillUnmount(){
             game =  await db.get('GameInstance', this.idGame );
-            game.destroy().then((object) => { console.log('Clean Database ( ComponentWillUnmount ) '); }, (error) => {/*console.log(error.message); */ });
+            game.destroy().then((object) => { /*console.log('Clean Database ( ComponentWillUnmount ) ');*/ }, (error) => {/*console.log(error.message); */ });
 
             // clean interval
             clearInterval(this.clockCall);
@@ -82,7 +81,7 @@ export default class MultiPlayer extends Component {
         this.idGame = await searchGameInstanceWithEmptyPlayer2();
         // join a existing game 
         if( this.idGame != null ){
-            console.log('Game found : id = ' + this.idGame);
+            //console.log('Game found : id = ' + this.idGame);
             await subscribeInAGame('player2',this.idGame, this.idUser)
             // joiner 
             this.setState({ gameFound : 1 });
@@ -93,7 +92,7 @@ export default class MultiPlayer extends Component {
         else{
             await createGameInstance(this.idUser);
             this.idGame = localStorage.getItem("gameId");
-            console.log('Game was created : ' + this.idGame);
+            //console.log('Game was created : ' + this.idGame);
             //this.timeoutForSearchGame();
             // host
             this.placePlayerInDatabase = '1';
@@ -110,7 +109,7 @@ export default class MultiPlayer extends Component {
                     this.majView(gameReturn);
                 }
             }
-        }).then((success) => { console.log("subscribe status ") }, (error) => { console.log(error.message)});      
+        }).then((success) => { /*console.log("subscribe status ")*/ }, (error) => { console.log(error.message)});      
     }
 
     // Refresh all states in a game  // executed in a listen function
