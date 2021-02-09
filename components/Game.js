@@ -10,6 +10,7 @@ import 'localstorage-polyfill';
 
 const br = `\n`;
 
+//SOLO game
 export default class Game extends Component {
 
     constructor(props) {

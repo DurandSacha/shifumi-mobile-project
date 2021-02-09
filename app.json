@@ -2,7 +2,7 @@
   "expo": {
     "name": "Shifumi Heroes",
     "slug": "shifumi-heroes-online",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "shifumi",
@@ -27,7 +27,7 @@
     },
     "android": {
       "package": "com.sachadurand.shifumi",
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
